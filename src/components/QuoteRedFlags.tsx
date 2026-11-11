@@ -23,7 +23,7 @@ export default function QuoteRedFlags({ p, est, quote, region, zip }: Props) {
   const [deposit, setDeposit] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const quoted = useMemo(() => Object.fromEntries(Object.entries(lines).map(([k, v]) => [k, num(v)])), [lines]);
+  const quoted = useMemo(() => Object.fromEntries(Object.entries(lines).filter(([, v]) => v.trim() !== "").map(([k, v]) => [k, num(v)])), [lines]);
   const flags = useMemo(() => {
     const f = priceFlags(quote, est, region.label, p.noun);
     const d = depositFlag(num(deposit), quote, region.state.code);
@@ -71,7 +71,7 @@ export default function QuoteRedFlags({ p, est, quote, region, zip }: Props) {
           <div className="mt-4 flex items-end gap-3">
             <label htmlFor="rf-deposit" className="flex-1 text-[15px] font-semibold">
               Deposit they asked for <span className="font-normal text-mute">(optional)</span>
-              <input id="rf-deposit" inputMode="numeric" placeholder="$" value={deposit} onChange={(e) => setDeposit(e.target.value)} className={`${input} mt-1.5 max-w-[12rem] !text-left`} />
+              <input id="rf-deposit" inputMode="numeric" placeholder="$" value={deposit} onChange={(e) => setDeposit(e.target.value)} className={`${input} mt-1.5 block max-w-[12rem] !text-left`} />
             </label>
           </div>
         </div>

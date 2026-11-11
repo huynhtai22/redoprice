@@ -75,6 +75,8 @@ export function lineChecks(est: Estimate, quoted: Record<string, number>, quoteT
     .concat(
       // Anything the quote total has that the lines don't explain
       (() => {
+        // Only meaningful once every line has been filled in
+        if (!est.breakdown.every((l) => l.label in quoted)) return [];
         const sum = Object.values(quoted).reduce((a, b) => a + (b > 0 ? b : 0), 0);
         const gap = quoteTotal - sum;
         return sum > 0 && quoteTotal > 0 && gap > Math.max(THRESHOLDS.minLineDollars, quoteTotal * 0.05)

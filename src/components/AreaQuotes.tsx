@@ -36,8 +36,8 @@ export default function AreaQuotes({ projectKey, projectNoun, zip, stateCode, qu
             <tbody>
               {a.quotes.map((q) => (
                 <tr key={q.id} className="border-t border-line">
-                  <td className="py-2 font-mono font-semibold tnum">{formatUSD(q.amount)}</td>
-                  <td className="py-2 text-ink-2">{[q.variant, q.size].filter(Boolean).join(", ") || "–"}</td>
+                  <td className="py-2 pr-3 font-mono font-semibold tnum">{formatUSD(q.amount)}</td>
+                  <td className="py-2 pr-3 text-ink-2">{[q.variant, q.size].filter(Boolean).join(", ") || "–"}</td>
                   <td className="hidden py-2 text-ink-2 sm:table-cell">{q.outcome ?? "–"}</td>
                   <td className="py-2 text-right text-ink-2">{q.month}</td>
                 </tr>
