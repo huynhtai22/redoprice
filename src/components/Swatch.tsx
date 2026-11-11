@@ -29,9 +29,8 @@ const S: Record<string, { bg: string; el: React.ReactNode }> = {
 };
 export default function Swatch({ name, className = "" }: { name?: string; className?: string }) {
   const s = S[name ?? ""] ?? S.shingle;
-  return (
-    <svg viewBox="0 0 64 44" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden>
-      <rect width="64" height="44" fill={s.bg} />{s.el}
-    </svg>
-  );
+  // v3: illustrated textures read as cartoonish next to photography, so render only a flat
+  // color chip of the material. The texture drawings above stay as data for later use.
+  void className;
+  return <span aria-hidden className="block h-1.5 w-full" style={{ background: s.bg }} />;
 }
