@@ -2,14 +2,14 @@ import Link from "next/link";
 import { MIN_SAMPLE, quotesForArea } from "@/lib/communityQuotes";
 import { formatUSD } from "@/lib/format";
 
-type Props = { projectKey: string; projectNoun: string; zip?: string; stateCode?: string; quote?: number; placeLabel?: string };
+type Props = { projectKey: string; projectNoun: string; zip?: string; stateCode?: string; quote?: number; placeLabel?: string; variant?: string };
 
 /**
  * Moderated, anonymized quotes from homeowners in the same area. Renders on server or client.
  * Below the minimum sample it shows nothing but a count and an invitation to share.
  */
-export default function AreaQuotes({ projectKey, projectNoun, zip, stateCode, quote, placeLabel }: Props) {
-  const a = quotesForArea(projectKey, { zip, stateCode });
+export default function AreaQuotes({ projectKey, projectNoun, zip, stateCode, quote, placeLabel, variant }: Props) {
+  const a = quotesForArea(projectKey, { zip, stateCode, variant });
   const share = <Link href={`/share-your-quote?project=${projectKey}`} className="link">Share yours anonymously</Link>;
 
   return (
@@ -28,8 +28,9 @@ export default function AreaQuotes({ projectKey, projectNoun, zip, stateCode, qu
       ) : (
         <>
           <p className="mt-1 text-[15px] text-ink-2">
-            {a.n} reviewed quotes shared by homeowners. The middle half paid <strong className="tnum text-ink">{formatUSD(a.stats!.p25)} to {formatUSD(a.stats!.p75)}</strong>; the median was <strong className="tnum text-ink">{formatUSD(a.stats!.median)}</strong>.
-            {quote ? <> Your quote is {quote > a.stats!.p75 ? "above" : quote < a.stats!.p25 ? "below" : "inside"} that band.</> : null}
+            {a.n} reviewed quotes shared by homeowners. {a.comparable ? <>For {a.comparableLabel?.toLowerCase() ?? "the same job type"}, the</> : <>Across all materials and job sizes, the</>} middle half paid <strong className="tnum text-ink">{formatUSD(a.stats!.p25)} to {formatUSD(a.stats!.p75)}</strong>; the median was <strong className="tnum text-ink">{formatUSD(a.stats!.median)}</strong>.
+            {quote && a.comparable ? <> Your quote is {quote > a.stats!.p75 ? "above" : quote < a.stats!.p25 ? "below" : "inside"} that band. Job sizes still differ, so treat this as a rough check.</> : null}
+            {quote && !a.comparable ? <> Not enough quotes for the same {variant ? "material" : "job type"} yet to compare yours directly.</> : null}
           </p>
           <table className="mt-3 w-full border-t border-ink text-[15px]">
             <thead><tr className="text-left text-[13px] text-mute"><th className="py-2 font-medium">Quoted</th><th className="py-2 font-medium">Job</th><th className="hidden py-2 font-medium sm:table-cell">Outcome</th><th className="py-2 text-right font-medium">Month</th></tr></thead>

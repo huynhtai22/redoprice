@@ -51,13 +51,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Script id="adsense" strategy="lazyOnload" crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} />
         )}
-        </SiteChrome>
         {ga && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${ga}`} strategy="afterInteractive" />
             <Script id="ga" strategy="afterInteractive">{`gtag('js',new Date());gtag('config','${ga}');`}</Script>
           </>
         )}
+        </SiteChrome>
       </body>
     </html>
   );

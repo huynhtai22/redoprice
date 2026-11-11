@@ -18,7 +18,7 @@ const num = (s: string) => Number(s.replace(/[^0-9.]/g, "")) || 0;
 type Props = { p: Project; est: Estimate; quote: number; region: Region; zip: string; inputs: Inputs };
 
 /** Shown under the calculator on /check-my-quote once a quote amount is entered. */
-export default function QuoteRedFlags({ p, est, quote, region, zip }: Props) {
+export default function QuoteRedFlags({ p, est, quote, region, zip, inputs }: Props) {
   const [lines, setLines] = useState<Record<string, string>>({});
   const [deposit, setDeposit] = useState("");
   const [copied, setCopied] = useState(false);
@@ -149,7 +149,7 @@ export default function QuoteRedFlags({ p, est, quote, region, zip }: Props) {
       </div>
 
       <div className="mt-10">
-        <AreaQuotes projectKey={p.key} projectNoun={p.noun} zip={zip} stateCode={region.state.code} quote={quote} />
+        <AreaQuotes projectKey={p.key} projectNoun={p.noun} zip={zip} stateCode={region.state.code} quote={quote} variant={String(inputs[p.variantKey] ?? "")} />
       </div>
     </section>
   );

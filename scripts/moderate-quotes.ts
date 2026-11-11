@@ -36,6 +36,17 @@ function parseCSV(text: string): Record<string, string>[] {
   return body.map((r) => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? "").trim()])));
 }
 
+/** Keep only "<number> <unit>" with a whitelisted unit, so no free text (names, addresses) can be published. */
+const UNITS: [RegExp, string][] = [[/sq\.?\s*f(ee|oo)?t|square\s*f(ee|oo)?t|sqft/i, "sq ft"], [/\bkw\b/i, "kW"], [/tons?\b/i, "tons"], [/windows?\b/i, "windows"], [/\b(ft|feet|foot|linear)\b/i, "ft"]];
+export function normalizeSize(v: unknown): string | undefined {
+  const t = String(v ?? "");
+  const m = t.replace(/,/g, "").match(/\d+(\.\d+)?/);
+  const unit = UNITS.find(([re]) => re.test(t))?.[1];
+  if (!m || !unit) return undefined;
+  const n = Number(m[0]);
+  return n > 0 && n < 100000 ? `${n.toLocaleString("en-US")} ${unit}` : undefined;
+}
+
 function importRows(path: string, approveClean: boolean) {
   const text = readFileSync(path, "utf8");
   const rows: Record<string, unknown>[] = path.endsWith(".csv") ? parseCSV(text) : JSON.parse(text);
@@ -61,7 +72,7 @@ function importRows(path: string, approveClean: boolean) {
     if (db.quotes.some((q) => q.project === project && q.zip3 === zip.slice(0, 3) && q.amount === amount)) flags.push("possible duplicate");
     const month = /^\d{4}-\d{2}$/.test(String(r.quoteMonth ?? "")) ? String(r.quoteMonth) : String(r.submittedAt ?? new Date().toISOString()).slice(0, 7);
     if (month > new Date().toISOString().slice(0, 7)) flags.push("month in the future");
-    const size = String(r.size ?? "").replace(/[^0-9a-zA-Z ,.]/g, "").slice(0, 24) || undefined; // no free text survives
+    const size = normalizeSize(r.size); // number + known unit only; anything else is dropped
 
     db.quotes.push({
       id, project, zip3: zip.slice(0, 3), state: st.code, variant, size, amount: Math.round(amount), month,
@@ -87,7 +98,7 @@ if (flag("--approve") !== undefined) decide(flag("--approve")!, "approved");
 else if (flag("--reject") !== undefined) decide(flag("--reject")!, "rejected");
 else if (args.includes("--list") || !args[0]) {
   const pend = db.quotes.filter((q) => q.status === "pending");
-  console.table(pend.map(({ id, project, state, zip3, variant, amount, month, flags }) => ({ id, project, state, zip3, variant, amount, month, flags: flags?.join("; ") ?? "" })));
+  console.table(pend.map(({ id, project, state, zip3, variant, size, amount, month, outcome, flags }) => ({ id, project, state, zip3, variant, size, amount, month, outcome, flags: flags?.join("; ") ?? "" })));
   const counts: Record<string, number> = {};
   db.quotes.filter((q) => q.status === "approved").forEach((q) => { counts[`${q.project} ${q.state}`] = (counts[`${q.project} ${q.state}`] ?? 0) + 1; });
   console.log(`Approved by project/state (published at ${db.minSample}+):`, counts);
