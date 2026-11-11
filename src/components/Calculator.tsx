@@ -412,12 +412,15 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
 }
 
 function PlanButton({ onAdd }: { onAdd: () => void }) {
+  // Confirm briefly, then offer the button again so a changed estimate can be saved too.
   const [added, setAdded] = useState(false);
-  if (added) return <Link href="/planner" className="inline-flex items-center gap-1.5 font-semibold text-good"><Icon name="check" className="h-4 w-4" />Saved to your plan. Open it</Link>;
   return (
-    <button onClick={() => { onAdd(); setAdded(true); }} className="inline-flex items-center gap-1.5 rounded bg-accent-500 px-3 py-1.5 font-semibold text-white hover:bg-accent-700">
-      <Icon name="plan" className="h-4 w-4" />Add to my plan
-    </button>
+    <span className="inline-flex items-center gap-3">
+      <button onClick={() => { onAdd(); setAdded(true); setTimeout(() => setAdded(false), 2500); }} className="inline-flex items-center gap-1.5 rounded bg-accent-500 px-3 py-1.5 font-semibold text-white hover:bg-accent-700">
+        <Icon name={added ? "check" : "plan"} className="h-4 w-4" />{added ? "Saved to your plan" : "Add to my plan"}
+      </button>
+      {added && <Link href="/planner" className="font-semibold text-ink underline underline-offset-4">Open plan</Link>}
+    </span>
   );
 }
 
