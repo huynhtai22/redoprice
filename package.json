@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "check:costs": "npx -y tsx scripts/check-costs.ts",
-    "import:oews": "npx -y tsx scripts/import-oews.ts"
+    "import:oews": "npx -y tsx scripts/import-oews.ts",
+    "quotes:moderate": "npx -y tsx scripts/moderate-quotes.ts",
+    "rollout:status": "npx -y tsx scripts/rollout-status.ts"
   },
   "dependencies": {
     "next": "15.5.29",

@@ -10,6 +10,7 @@ import RelatedProjects from "./RelatedProjects";
 import ContractorChecklist from "./ContractorChecklist";
 import LeadForm from "./LeadForm";
 import JsonLd from "./JsonLd";
+import CostExtras from "./CostExtras";
 import { COMPARISONS, RESALE, comparisonSlug, getVariant } from "@/lib/projects";
 import { METROS, NATIONAL, NATIONAL_REGION, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
 import type { Project, Variant } from "@/lib/engine";
@@ -197,6 +198,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
           <LeadForm projectKey={p.key} projectName={p.name} quoteNoun={p.quoteNoun} place={place} />
 
           <p className="text-[15px] text-ink-2">Already paid for one? <Link href={`/share-your-quote?project=${p.key}`} className="link">Tell us what it cost</Link>. No name, no email, and it keeps these numbers honest for your neighbors.</p>
+          <CostExtras p={p} state={state} metro={metro} />
         </div>
 
         <aside className="hidden lg:block">
