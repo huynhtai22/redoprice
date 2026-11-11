@@ -447,9 +447,10 @@ function ShareButton({ project }: { project: string }) {
 function NumberBox({ inp, value, onChange, id }: { inp: Extract<Input, { type: "slider" }>; value: number; onChange: (v: number) => void; id: string }) {
   const [draft, setDraft] = useState<string | null>(null);
   const commit = (raw: string) => {
-    const n = Number(raw.replace(/[^0-9.]/g, ""));
+    const cleaned = raw.replace(/[^0-9.]/g, "");
+    const n = Number(cleaned);
     setDraft(null);
-    if (!n) return;
+    if (cleaned === "" || !Number.isFinite(n)) return; // empty or invalid: keep the current value; 0 is allowed when min allows it
     onChange(Math.min(inp.max, Math.max(inp.min, Math.round(n / inp.step) * inp.step)));
   };
   return (

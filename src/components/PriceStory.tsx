@@ -42,6 +42,13 @@ function Waterfall({ p, inputs, region, est }: Props) {
     ] : []),
   ].filter((s, i) => i === 0 || Math.abs(s.delta) >= Math.max(50, est.typical * 0.005));
 
+  // Steps too small to show still count: whatever they add up to goes in one "small adjustments" row,
+  // so the rows always reconcile to the estimate.
+  const shownSum = steps.reduce((a, s) => a + s.delta, 0);
+  const leftover = est.typical - shownSum;
+  if (Math.abs(leftover) >= 50) steps.push({ label: "Smaller adjustments", delta: leftover });
+  else if (Math.abs(leftover) > 0) steps[steps.length - 1].delta += leftover;
+
   let run = 0;
   const rows = steps.map((s) => {
     const from = s.total ? 0 : run;
