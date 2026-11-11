@@ -13,8 +13,12 @@ import JsonLd from "./JsonLd";
 import Chapter, { type ChapterRef } from "./Chapter";
 import OnThisPage from "./OnThisPage";
 import TrustStrip from "./TrustStrip";
+import { PriceCheck, SourcesList } from "./Sources";
 import { COMPARISONS, RESALE, comparisonSlug, getVariant } from "@/lib/projects";
-import { METROS, NATIONAL, NATIONAL_REGION, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
+import { DATA_UPDATED, METROS, NATIONAL, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
+import { AUTHOR, REVIEWER } from "@/lib/editorial";
+import { pageNumbers } from "@/lib/numbers";
+import { sourcesFor } from "@/lib/sources";
 import type { Project, Variant } from "@/lib/engine";
 import { formatUSD, pct, roundMoney } from "@/lib/format";
 import { GUIDES } from "@/lib/guides";
@@ -31,13 +35,9 @@ const CLIMATE: Record<string, string> = {
 type Props = { p: Project; state?: StateRow; metro?: MetroRow; variant?: Variant; noindexNote?: boolean };
 
 export default function ProjectPage({ p, state, metro, variant }: Props) {
-  const region = state ? regionFor(state, metro) : NATIONAL_REGION;
-  const place = metro ? `${metro.name}, ${state!.code}` : state?.name;
-  const defaults = p.defaults(region);
-  const preset = variant ? variant.preset ?? { [p.variantKey]: variant.value } : undefined;
-  const typicalJob = p.compute({ ...defaults, ...preset }, region);
-  const national = p.compute(p.defaults(NATIONAL_REGION), NATIONAL_REGION);
-  const nationalJob = p.compute({ ...p.defaults(NATIONAL_REGION), ...preset }, NATIONAL_REGION);
+  // Every number on this page, and in its schema, comes from this one call.
+  const n = pageNumbers(p, state, metro, variant);
+  const { region, place, defaults, preset, typicalJob, national, nationalJob } = n;
 
   const title = variant
     ? `${variant.label} cost${place ? ` in ${place}` : ""}`
@@ -66,7 +66,9 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
     { id: "factors", short: "What changes the price" },
     { id: "hire", short: "Before you hire" },
     { id: "faq", short: "Questions" },
+    { id: "sources", short: "Sources" },
   ];
+  const sources = sourcesFor(p);
 
   return (
     <>
@@ -92,6 +94,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
           <Chapter id="estimate" n={1} total={chapters.length} short={chapters[0].short} title={`Price your ${p.noun}`}
             lead={<>Enter your ZIP code and describe the job. The price, the fair range and the math behind them update as you go.</>}>
             <Calculator projectSlug={p.slug} stateCode={state?.code} metroSlug={metro?.slug} preset={preset} />
+            <div className="mt-10"><PriceCheck p={p} ours={roundMoney(national.typical)} /></div>
             <div className="mt-10"><TrustStrip /></div>
           </Chapter>
         </div>
@@ -195,7 +198,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
             <AdSlot placement="midContent" className="my-6" />
 
-            <Chapter id="hire" n={chapters.findIndex((c) => c.id === "hire") + 1} total={chapters.length} short="Before you hire" next={chapters[chapters.length - 1]}
+            <Chapter id="hire" n={chapters.findIndex((c) => c.id === "hire") + 1} total={chapters.length} short="Before you hire" next={chapters[chapters.length - 2]}
               title="Before you hire anyone"
               lead={<>You know the fair price. Now make sure every quote is for the same job. Ask each {p.quoteNoun.replace(/s$/, "")} these questions, or print the quote-check sheet from your estimate above.</>}>
               <ContractorChecklist noun={p.quoteNoun.replace(/s$/, "")} bare />
@@ -219,10 +222,16 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
               <p className="mt-6 text-[15px] text-ink-2">Already paid for one? <Link href={`/share-your-quote?project=${p.key}`} className="link">Tell us what it cost</Link>. No name, no email, and it keeps these numbers honest for your neighbors.</p>
             </Chapter>
 
-            <Chapter id="faq" n={chapters.length} total={chapters.length} short="Questions"
+            <Chapter id="faq" n={chapters.length - 1} total={chapters.length} short="Questions" next={chapters[chapters.length - 1]}
               title={`${p.name}: questions people ask us`}
               lead={<>Short answers to what homeowners ask most about {p.noun} prices.</>}>
-              <FAQ faqs={p.faqs} bare />
+              <FAQ faqs={n.faqs} bare />
+            </Chapter>
+
+            <Chapter id="sources" n={chapters.length} total={chapters.length} short="Sources"
+              title="Sources"
+              lead={<>Where our {p.noun} numbers come from, and what each source is used for. <Link href="/how-we-calculate" className="link">How we calculate</Link> has the full method.</>}>
+              <SourcesList p={p} />
             </Chapter>
           </div>
 
@@ -252,8 +261,23 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
       </div>
 
       <JsonLd data={{
-        "@context": "https://schema.org", "@type": "WebApplication", name: `${p.calculatorName}${place ? ` – ${place}` : ""}`,
-        applicationCategory: "UtilitiesApplication", operatingSystem: "Any", url: SITE.url, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article", "@id": `${n.url}#article`, headline: title, url: n.url, mainEntityOfPage: n.url,
+            description: `${p.name} cost${place ? ` in ${place}` : ""}: typical ${n.usd(typicalJob.typical)}, fair range ${n.usd(typicalJob.low)} to ${n.usd(typicalJob.high)}.`,
+            dateModified: DATA_UPDATED, inLanguage: "en-US",
+            author: { "@type": "Organization", name: AUTHOR.name, url: `${SITE.url}${AUTHOR.href ?? "/about"}` },
+            ...(REVIEWER ? { reviewedBy: { "@type": "Person", name: REVIEWER.name, jobTitle: REVIEWER.role } } : {}),
+            publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
+            citation: sources.map((s) => ({ "@type": "CreativeWork", name: s.name, publisher: s.publisher, url: s.url })),
+          },
+          {
+            "@type": "WebApplication", "@id": `${n.url}#calculator`, name: `${p.calculatorName}${place ? ` – ${place}` : ""}`, url: n.url,
+            applicationCategory: "UtilitiesApplication", operatingSystem: "Any", isPartOf: { "@id": `${n.url}#article` },
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          },
+        ],
       }} />
     </>
   );

@@ -52,6 +52,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
   const [diy, setDiy] = useState(false);
   const started = useRef(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const inputsRef = useRef<HTMLDivElement>(null);
   const [stickyBar, setStickyBar] = useState(false);
 
   // Read shared-link params once on mount (?zip=..&material=..&q=..)
@@ -70,10 +71,19 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Mobile sticky estimate bar when the result card is off-screen
+  // Mobile price bar: on phones the result card sits below the inputs, so while the inputs are on screen
+  // and the card is not, a slim bar at the bottom shows the live price and range as you edit.
   useEffect(() => {
-    if (!resultRef.current || compact) return;
-    const io = new IntersectionObserver(([e]) => setStickyBar(!e.isIntersecting && e.boundingClientRect.top < 0), { threshold: 0 });
+    if (!resultRef.current || !inputsRef.current || compact) return;
+    let inputsSeen = false, resultSeen = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === inputsRef.current) inputsSeen = e.isIntersecting;
+        else resultSeen = e.isIntersecting;
+      }
+      setStickyBar(inputsSeen && !resultSeen);
+    }, { threshold: 0, rootMargin: "0px 0px -72px 0px" });
+    io.observe(inputsRef.current);
     io.observe(resultRef.current);
     return () => io.disconnect();
   }, [compact]);
@@ -152,7 +162,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
 
       <div className={`grid grid-cols-1 gap-5 ${compact ? "lg:grid-cols-[1fr_380px]" : "lg:grid-cols-[minmax(0,1fr)_400px]"} lg:items-start`}>
         {/* INPUTS (no ads may be placed in or beside this block) */}
-        <div className="card min-w-0 p-4 sm:p-6">
+        <div ref={inputsRef} className="card min-w-0 p-4 sm:p-6">
           {mode === "quote" && (
             <div className="mb-5 border-l-4 border-accent-500 bg-accent-50/60 p-4">
               <label htmlFor="quote-amount" className="text-[15px] font-semibold text-ink">The price you were quoted</label>
@@ -322,15 +332,18 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
 
       {!compact && <QuoteSheet p={p} inputs={inputs} region={region} est={est} />}
 
-      {/* Mobile sticky estimate bar */}
-      {stickyBar && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 px-4 py-2.5 backdrop-blur lg:hidden" style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom))" }}>
+      {/* Mobile price bar: live while you edit, gone once the result card is in view */}
+      {!compact && (
+        <div aria-hidden={!stickyBar} inert={!stickyBar}
+          className={`fixed inset-x-0 bottom-0 z-30 border-t border-line-2 bg-white/95 px-4 py-2 shadow-[0_-4px_16px_rgb(0_0_0/0.06)] backdrop-blur transition-transform duration-200 lg:hidden ${stickyBar ? "translate-y-0" : "translate-y-full"}`}
+          style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
           <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
-            <div>
-              <p className="text-[13px] font-semibold text-ink-2">{p.name} · {region.state.code}</p>
-              <p className="font-display text-2xl font-bold text-ink tnum">{formatUSD(roundMoney(est.typical))}</p>
+            <div className="min-w-0">
+              <p className="truncate text-[13px] text-ink-2 tnum">{region.state.code === "US" ? "US" : region.state.code} · fair range {formatUSD(roundMoney(est.low))}–{formatUSD(roundMoney(est.high))}</p>
+              <p className="font-display text-[1.6rem] font-bold leading-tight text-ink tnum">{formatUSD(roundMoney(est.typical))}</p>
             </div>
-            <button onClick={() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })} className="min-h-[44px] rounded bg-ink px-4 py-2 text-[15px] font-semibold text-white">See the math</button>
+            <button type="button" onClick={() => { resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); track("price_bar_tap", { project: p.key }); }}
+              className="min-h-[44px] shrink-0 rounded bg-ink px-4 py-2 text-[15px] font-semibold text-white">See the math</button>
           </div>
         </div>
       )}

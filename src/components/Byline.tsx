@@ -11,7 +11,7 @@ export default function Byline({ updated = DATA_UPDATED }: { updated?: string })
       <span>By <Link href={AUTHOR.href ?? "/about"} className="inline-flex min-h-[32px] items-center font-semibold text-ink hover:underline">{AUTHOR.name}</Link></span>
       {REVIEWER && <span>Reviewed by <span className="font-semibold text-ink">{REVIEWER.name}</span>, {REVIEWER.role}</span>}
       <span>Updated <time dateTime={updated}>{fmt(updated)}</time></span>
-      {DATA_IS_ESTIMATE && <span>Built from 2026 public wage and material data</span>}
+      {DATA_IS_ESTIMATE && <span>A cost model, checked against public wage and price data</span>}
       <Link href="/how-we-calculate" className="link inline-flex min-h-[32px] items-center">How we calculate</Link>
     </div>
   );

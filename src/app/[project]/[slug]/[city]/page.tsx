@@ -1,8 +1,9 @@
+import { pageNumbers } from "@/lib/numbers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProjectPage from "@/components/ProjectPage";
 import { PROJECTS, getProject } from "@/lib/projects";
-import { METROS, STATES, getMetro, getState, regionFor } from "@/lib/data";
+import { METROS, STATES, getMetro, getState } from "@/lib/data";
 import { formatUSD, roundMoney } from "@/lib/format";
 import { isIndexable } from "@/lib/indexing";
 
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ project: 
   const { project, slug, city } = await params;
   const p = getProject(project); const st = getState(slug); const m = getMetro(slug, city);
   if (!p || !st || !m) return {};
-  const r = regionFor(st, m); const e = p.compute(p.defaults(r), r);
+  const e = pageNumbers(p, st, m).typicalJob;
   return {
     title: `${p.name} Cost in ${m.name}, ${st.code} (2026): ${formatUSD(roundMoney(e.low))}–${formatUSD(roundMoney(e.high))}`,
     description: `Is your ${p.noun} quote fair? Typical ${p.name.toLowerCase()} prices in ${m.name}, adjusted for local labor. Check any quote against the local range.`,

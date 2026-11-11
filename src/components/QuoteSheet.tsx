@@ -50,7 +50,8 @@ function Sheet({ p, inputs, region, est }: { p: Project; inputs: Inputs; region:
       <header className="flex items-end justify-between border-b-2 border-black pb-2">
         <div>
           <p className="text-[11pt] font-semibold">{SITE.name} quote-check sheet</p>
-          <h1 className="font-display text-[20pt] font-bold leading-tight">{p.name}: {region.label}</h1>
+          {/* Not a heading: this sheet lives in the page DOM, and the page already has its one H1 */}
+          <p className="font-display text-[20pt] font-bold leading-tight">{p.name}: {region.label}</p>
         </div>
         <p className="text-right text-[9pt]">Printed {today}<br />{SITE.url.replace(/^https?:\/\//, "")}/{p.slug}</p>
       </header>

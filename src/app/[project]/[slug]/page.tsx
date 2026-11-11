@@ -1,8 +1,9 @@
+import { pageNumbers } from "@/lib/numbers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProjectPage from "@/components/ProjectPage";
 import { PROJECTS, getProject, getVariant } from "@/lib/projects";
-import { STATES, getState, regionFor } from "@/lib/data";
+import { STATES, getState } from "@/lib/data";
 import { formatUSD, roundMoney } from "@/lib/format";
 import { isIndexable } from "@/lib/indexing";
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ project: 
   if (variant) {
     return { title: `${variant.label} Cost (2026): Price Calculator & Pros/Cons`, description: `${variant.label} cost, lifespan and cost per year compared with other ${p.variantPlural}. ${variant.blurb.slice(0, 90)}`, alternates: { canonical: `/${p.slug}/${variant.slug}` } };
   }
-  const e = p.compute(p.defaults(regionFor(state!)), regionFor(state!));
+  const e = pageNumbers(p, state).typicalJob;
   return {
     title: `${p.name} Cost in ${state!.name} (2026): ${formatUSD(roundMoney(e.low))}–${formatUSD(roundMoney(e.high))}`,
     description: `What a ${p.noun} costs in ${state!.name}, adjusted for local labor and materials. Free calculator with a breakdown by ${p.variantNoun}.`,
