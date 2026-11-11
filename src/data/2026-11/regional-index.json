@@ -1,0 +1,864 @@
+{
+ "meta": {
+  "dataset": "regional-index",
+  "version": "2026.11-estimate",
+  "updated": "2026-11-11",
+  "status": "estimate",
+  "sources": [
+   "BLS Occupational Employment and Wage Statistics (OEWS), construction trades (to be imported)",
+   "BLS Producer Price Index for construction materials (to be imported)"
+  ],
+  "notes": "ESTIMATE. laborIndex and materialIndex are hand-set approximations relative to the US average (1.00). Replace by running `npm run import:oews -- <oews-csv>` with the latest OEWS state file. zip3 ranges map the first 3 ZIP digits to a state."
+ },
+ "states": [
+  {
+   "code": "AL",
+   "name": "Alabama",
+   "slug": "alabama",
+   "laborIndex": 0.84,
+   "materialIndex": 0.98,
+   "climate": [
+    "hurricane",
+    "heat"
+   ],
+   "zip3": [
+    [
+     350,
+     369
+    ]
+   ]
+  },
+  {
+   "code": "AK",
+   "name": "Alaska",
+   "slug": "alaska",
+   "laborIndex": 1.22,
+   "materialIndex": 1.25,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     995,
+     999
+    ]
+   ]
+  },
+  {
+   "code": "AZ",
+   "name": "Arizona",
+   "slug": "arizona",
+   "laborIndex": 0.93,
+   "materialIndex": 1.0,
+   "climate": [
+    "heat"
+   ],
+   "zip3": [
+    [
+     850,
+     865
+    ]
+   ]
+  },
+  {
+   "code": "AR",
+   "name": "Arkansas",
+   "slug": "arkansas",
+   "laborIndex": 0.82,
+   "materialIndex": 0.97,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     716,
+     729
+    ]
+   ]
+  },
+  {
+   "code": "CA",
+   "name": "California",
+   "slug": "california",
+   "laborIndex": 1.2,
+   "materialIndex": 1.06,
+   "climate": [
+    "heat",
+    "wildfire"
+   ],
+   "zip3": [
+    [
+     900,
+     961
+    ]
+   ]
+  },
+  {
+   "code": "CO",
+   "name": "Colorado",
+   "slug": "colorado",
+   "laborIndex": 1.02,
+   "materialIndex": 1.01,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     800,
+     816
+    ]
+   ]
+  },
+  {
+   "code": "CT",
+   "name": "Connecticut",
+   "slug": "connecticut",
+   "laborIndex": 1.12,
+   "materialIndex": 1.03,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     60,
+     69
+    ]
+   ]
+  },
+  {
+   "code": "DE",
+   "name": "Delaware",
+   "slug": "delaware",
+   "laborIndex": 1.03,
+   "materialIndex": 1.01,
+   "climate": [],
+   "zip3": [
+    [
+     197,
+     199
+    ]
+   ]
+  },
+  {
+   "code": "DC",
+   "name": "District of Columbia",
+   "slug": "district-of-columbia",
+   "laborIndex": 1.15,
+   "materialIndex": 1.04,
+   "climate": [],
+   "zip3": [
+    [
+     200,
+     200
+    ],
+    [
+     202,
+     205
+    ]
+   ]
+  },
+  {
+   "code": "FL",
+   "name": "Florida",
+   "slug": "florida",
+   "laborIndex": 0.88,
+   "materialIndex": 1.0,
+   "climate": [
+    "hurricane",
+    "heat"
+   ],
+   "zip3": [
+    [
+     320,
+     339
+    ],
+    [
+     341,
+     349
+    ]
+   ]
+  },
+  {
+   "code": "GA",
+   "name": "Georgia",
+   "slug": "georgia",
+   "laborIndex": 0.86,
+   "materialIndex": 0.98,
+   "climate": [
+    "hurricane"
+   ],
+   "zip3": [
+    [
+     300,
+     319
+    ],
+    [
+     398,
+     399
+    ]
+   ]
+  },
+  {
+   "code": "HI",
+   "name": "Hawaii",
+   "slug": "hawaii",
+   "laborIndex": 1.25,
+   "materialIndex": 1.3,
+   "climate": [
+    "hurricane"
+   ],
+   "zip3": [
+    [
+     967,
+     968
+    ]
+   ]
+  },
+  {
+   "code": "ID",
+   "name": "Idaho",
+   "slug": "idaho",
+   "laborIndex": 0.9,
+   "materialIndex": 1.01,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     832,
+     838
+    ]
+   ]
+  },
+  {
+   "code": "IL",
+   "name": "Illinois",
+   "slug": "illinois",
+   "laborIndex": 1.18,
+   "materialIndex": 1.01,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     600,
+     629
+    ]
+   ]
+  },
+  {
+   "code": "IN",
+   "name": "Indiana",
+   "slug": "indiana",
+   "laborIndex": 0.98,
+   "materialIndex": 0.99,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     460,
+     479
+    ]
+   ]
+  },
+  {
+   "code": "IA",
+   "name": "Iowa",
+   "slug": "iowa",
+   "laborIndex": 0.95,
+   "materialIndex": 0.99,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     500,
+     528
+    ]
+   ]
+  },
+  {
+   "code": "KS",
+   "name": "Kansas",
+   "slug": "kansas",
+   "laborIndex": 0.92,
+   "materialIndex": 0.98,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     660,
+     679
+    ]
+   ]
+  },
+  {
+   "code": "KY",
+   "name": "Kentucky",
+   "slug": "kentucky",
+   "laborIndex": 0.92,
+   "materialIndex": 0.98,
+   "climate": [],
+   "zip3": [
+    [
+     400,
+     427
+    ]
+   ]
+  },
+  {
+   "code": "LA",
+   "name": "Louisiana",
+   "slug": "louisiana",
+   "laborIndex": 0.88,
+   "materialIndex": 0.99,
+   "climate": [
+    "hurricane",
+    "heat"
+   ],
+   "zip3": [
+    [
+     700,
+     714
+    ]
+   ]
+  },
+  {
+   "code": "ME",
+   "name": "Maine",
+   "slug": "maine",
+   "laborIndex": 0.95,
+   "materialIndex": 1.04,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     39,
+     49
+    ]
+   ]
+  },
+  {
+   "code": "MD",
+   "name": "Maryland",
+   "slug": "maryland",
+   "laborIndex": 1.0,
+   "materialIndex": 1.02,
+   "climate": [],
+   "zip3": [
+    [
+     206,
+     219
+    ]
+   ]
+  },
+  {
+   "code": "MA",
+   "name": "Massachusetts",
+   "slug": "massachusetts",
+   "laborIndex": 1.2,
+   "materialIndex": 1.04,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     10,
+     27
+    ]
+   ]
+  },
+  {
+   "code": "MI",
+   "name": "Michigan",
+   "slug": "michigan",
+   "laborIndex": 1.02,
+   "materialIndex": 1.0,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     480,
+     499
+    ]
+   ]
+  },
+  {
+   "code": "MN",
+   "name": "Minnesota",
+   "slug": "minnesota",
+   "laborIndex": 1.1,
+   "materialIndex": 1.01,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     550,
+     567
+    ]
+   ]
+  },
+  {
+   "code": "MS",
+   "name": "Mississippi",
+   "slug": "mississippi",
+   "laborIndex": 0.8,
+   "materialIndex": 0.98,
+   "climate": [
+    "hurricane",
+    "heat"
+   ],
+   "zip3": [
+    [
+     386,
+     397
+    ]
+   ]
+  },
+  {
+   "code": "MO",
+   "name": "Missouri",
+   "slug": "missouri",
+   "laborIndex": 1.0,
+   "materialIndex": 0.99,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     630,
+     658
+    ]
+   ]
+  },
+  {
+   "code": "MT",
+   "name": "Montana",
+   "slug": "montana",
+   "laborIndex": 0.98,
+   "materialIndex": 1.03,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     590,
+     599
+    ]
+   ]
+  },
+  {
+   "code": "NE",
+   "name": "Nebraska",
+   "slug": "nebraska",
+   "laborIndex": 0.92,
+   "materialIndex": 0.99,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     680,
+     693
+    ]
+   ]
+  },
+  {
+   "code": "NV",
+   "name": "Nevada",
+   "slug": "nevada",
+   "laborIndex": 1.05,
+   "materialIndex": 1.02,
+   "climate": [
+    "heat"
+   ],
+   "zip3": [
+    [
+     889,
+     898
+    ]
+   ]
+  },
+  {
+   "code": "NH",
+   "name": "New Hampshire",
+   "slug": "new-hampshire",
+   "laborIndex": 1.0,
+   "materialIndex": 1.03,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     30,
+     38
+    ]
+   ]
+  },
+  {
+   "code": "NJ",
+   "name": "New Jersey",
+   "slug": "new-jersey",
+   "laborIndex": 1.2,
+   "materialIndex": 1.03,
+   "climate": [
+    "hurricane"
+   ],
+   "zip3": [
+    [
+     70,
+     89
+    ]
+   ]
+  },
+  {
+   "code": "NM",
+   "name": "New Mexico",
+   "slug": "new-mexico",
+   "laborIndex": 0.88,
+   "materialIndex": 1.01,
+   "climate": [
+    "heat",
+    "hail"
+   ],
+   "zip3": [
+    [
+     870,
+     884
+    ]
+   ]
+  },
+  {
+   "code": "NY",
+   "name": "New York",
+   "slug": "new-york",
+   "laborIndex": 1.22,
+   "materialIndex": 1.05,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     5,
+     5
+    ],
+    [
+     100,
+     149
+    ]
+   ]
+  },
+  {
+   "code": "NC",
+   "name": "North Carolina",
+   "slug": "north-carolina",
+   "laborIndex": 0.86,
+   "materialIndex": 0.98,
+   "climate": [
+    "hurricane"
+   ],
+   "zip3": [
+    [
+     270,
+     289
+    ]
+   ]
+  },
+  {
+   "code": "ND",
+   "name": "North Dakota",
+   "slug": "north-dakota",
+   "laborIndex": 0.98,
+   "materialIndex": 1.02,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     580,
+     588
+    ]
+   ]
+  },
+  {
+   "code": "OH",
+   "name": "Ohio",
+   "slug": "ohio",
+   "laborIndex": 1.0,
+   "materialIndex": 0.99,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     430,
+     458
+    ]
+   ]
+  },
+  {
+   "code": "OK",
+   "name": "Oklahoma",
+   "slug": "oklahoma",
+   "laborIndex": 0.86,
+   "materialIndex": 0.98,
+   "climate": [
+    "hail",
+    "heat"
+   ],
+   "zip3": [
+    [
+     730,
+     749
+    ]
+   ]
+  },
+  {
+   "code": "OR",
+   "name": "Oregon",
+   "slug": "oregon",
+   "laborIndex": 1.1,
+   "materialIndex": 1.02,
+   "climate": [
+    "wildfire"
+   ],
+   "zip3": [
+    [
+     970,
+     979
+    ]
+   ]
+  },
+  {
+   "code": "PA",
+   "name": "Pennsylvania",
+   "slug": "pennsylvania",
+   "laborIndex": 1.05,
+   "materialIndex": 1.0,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     150,
+     196
+    ]
+   ]
+  },
+  {
+   "code": "RI",
+   "name": "Rhode Island",
+   "slug": "rhode-island",
+   "laborIndex": 1.08,
+   "materialIndex": 1.03,
+   "climate": [
+    "hurricane",
+    "snow"
+   ],
+   "zip3": [
+    [
+     28,
+     29
+    ]
+   ]
+  },
+  {
+   "code": "SC",
+   "name": "South Carolina",
+   "slug": "south-carolina",
+   "laborIndex": 0.84,
+   "materialIndex": 0.98,
+   "climate": [
+    "hurricane"
+   ],
+   "zip3": [
+    [
+     290,
+     299
+    ]
+   ]
+  },
+  {
+   "code": "SD",
+   "name": "South Dakota",
+   "slug": "south-dakota",
+   "laborIndex": 0.86,
+   "materialIndex": 1.0,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     570,
+     577
+    ]
+   ]
+  },
+  {
+   "code": "TN",
+   "name": "Tennessee",
+   "slug": "tennessee",
+   "laborIndex": 0.88,
+   "materialIndex": 0.98,
+   "climate": [
+    "hail"
+   ],
+   "zip3": [
+    [
+     370,
+     385
+    ]
+   ]
+  },
+  {
+   "code": "TX",
+   "name": "Texas",
+   "slug": "texas",
+   "laborIndex": 0.88,
+   "materialIndex": 0.98,
+   "climate": [
+    "hail",
+    "hurricane",
+    "heat"
+   ],
+   "zip3": [
+    [
+     750,
+     799
+    ],
+    [
+     885,
+     885
+    ]
+   ]
+  },
+  {
+   "code": "UT",
+   "name": "Utah",
+   "slug": "utah",
+   "laborIndex": 0.95,
+   "materialIndex": 1.01,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     840,
+     847
+    ]
+   ]
+  },
+  {
+   "code": "VT",
+   "name": "Vermont",
+   "slug": "vermont",
+   "laborIndex": 0.98,
+   "materialIndex": 1.04,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     50,
+     59
+    ]
+   ]
+  },
+  {
+   "code": "VA",
+   "name": "Virginia",
+   "slug": "virginia",
+   "laborIndex": 0.95,
+   "materialIndex": 1.0,
+   "climate": [],
+   "zip3": [
+    [
+     201,
+     201
+    ],
+    [
+     220,
+     246
+    ]
+   ]
+  },
+  {
+   "code": "WA",
+   "name": "Washington",
+   "slug": "washington",
+   "laborIndex": 1.15,
+   "materialIndex": 1.03,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     980,
+     994
+    ]
+   ]
+  },
+  {
+   "code": "WV",
+   "name": "West Virginia",
+   "slug": "west-virginia",
+   "laborIndex": 0.95,
+   "materialIndex": 1.0,
+   "climate": [
+    "snow"
+   ],
+   "zip3": [
+    [
+     247,
+     268
+    ]
+   ]
+  },
+  {
+   "code": "WI",
+   "name": "Wisconsin",
+   "slug": "wisconsin",
+   "laborIndex": 1.04,
+   "materialIndex": 1.0,
+   "climate": [
+    "snow",
+    "hail"
+   ],
+   "zip3": [
+    [
+     530,
+     549
+    ]
+   ]
+  },
+  {
+   "code": "WY",
+   "name": "Wyoming",
+   "slug": "wyoming",
+   "laborIndex": 0.98,
+   "materialIndex": 1.03,
+   "climate": [
+    "hail",
+    "snow"
+   ],
+   "zip3": [
+    [
+     820,
+     831
+    ]
+   ]
+  }
+ ]
+}

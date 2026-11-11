@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* RedoPrice: clean fintech-style neutrals + ONE accent (price & primary CTA) */
+  --color-ink: #0e1726;
+  --color-ink-2: #3b4658;
+  --color-mute: #6b7686;
+  --color-line: #e4e7ec;
+  --color-canvas: #f5f6f8;
+  --color-accent-50: #fff4ed;
+  --color-accent-100: #ffe4d1;
+  --color-accent-500: #f2601d;
+  --color-accent-600: #d94e0f;
+  --color-accent-700: #b33e0b;
+  --color-good: #138a5b;
+  --color-good-50: #e8f6ef;
+  --color-warn: #b45309;
+  --color-warn-50: #fff7e6;
+  --color-bad: #c2322b;
+  --color-bad-50: #fdecea;
+  --color-navy: #1d3557;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { background: var(--color-canvas); color: var(--color-ink); }
+::selection { background: var(--color-accent-100); }
+
+.card { background: #fff; border: 1px solid var(--color-line); border-radius: 1.25rem; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.animate-rise { animation: rise .4s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .animate-rise { animation: none; } html { scroll-behavior: auto; } }
+
+/* range input */
+input[type="range"] { accent-color: var(--color-accent-500); height: 28px; }
+
+/* Article typography */
+.prose-x h2 { font-family: var(--font-display); font-size: 1.45rem; font-weight: 700; margin: 2rem 0 .6rem; letter-spacing: -.01em; }
+.prose-x h3 { font-weight: 700; margin: 1.25rem 0 .4rem; }
+.prose-x p { margin-bottom: 1rem; line-height: 1.75; color: var(--color-ink-2); }
+.prose-x ul, .prose-x ol { padding-left: 1.25rem; margin-bottom: 1rem; color: var(--color-ink-2); }
+.prose-x ul { list-style: disc; } .prose-x ol { list-style: decimal; }
+.prose-x li { margin-bottom: .35rem; line-height: 1.65; }
+.prose-x a { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 3px; }
+.prose-x strong { color: var(--color-ink); }
+.prose-x table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .925rem; }
+.prose-x th, .prose-x td { border-bottom: 1px solid var(--color-line); padding: .5rem .25rem; text-align: left; }
+
+/* Reserved ad space */
+.ad-slot { min-height: var(--ad-h-m, 0px); }
+@media (min-width: 1024px) { .ad-slot { min-height: var(--ad-h-d, 0px); } }

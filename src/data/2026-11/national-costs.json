@@ -1,0 +1,97 @@
+{
+ "meta": {
+  "dataset": "national-costs",
+  "version": "2026.11-estimate",
+  "updated": "2026-11-11",
+  "status": "estimate",
+  "sources": [
+   "Own cost model built from typical installed-cost ranges (materials + labor) for the US, cross-checked against manufacturer list prices and big-box retail material prices (to be sampled)",
+   "BLS Producer Price Index for asphalt shingles, steel mill products, lumber and plastics (for quarterly inflation updates)",
+   "LBNL Tracking the Sun (residential solar installed price per watt, to be refreshed)"
+  ],
+  "notes": "ESTIMATE. National installed rates before regional adjustment. low/typical/high are per unit. laborShare is the share of the installed rate that is labor (adjusted by the regional labor index; the rest by the material index). Not copied from any competitor's price table. Replace with calibrated numbers and first-party quote data as it comes in."
+ },
+ "roofing": {
+  "unit": "sq ft of roof",
+  "materials": {
+   "architectural-asphalt": { "low": 4.5, "typical": 5.75, "high": 7.25, "laborShare": 0.55, "lifespanYears": 28 },
+   "three-tab-asphalt":     { "low": 3.75, "typical": 4.75, "high": 6.0, "laborShare": 0.58, "lifespanYears": 20 },
+   "standing-seam-metal":   { "low": 10.0, "typical": 13.0, "high": 17.0, "laborShare": 0.5, "lifespanYears": 50 },
+   "metal-shingles":        { "low": 8.0, "typical": 10.5, "high": 13.5, "laborShare": 0.5, "lifespanYears": 45 },
+   "concrete-tile":         { "low": 9.0, "typical": 12.0, "high": 15.5, "laborShare": 0.52, "lifespanYears": 50 },
+   "clay-tile":             { "low": 12.0, "typical": 16.0, "high": 22.0, "laborShare": 0.5, "lifespanYears": 75 },
+   "slate":                 { "low": 16.0, "typical": 22.0, "high": 30.0, "laborShare": 0.55, "lifespanYears": 100 },
+   "wood-shake":            { "low": 7.5, "typical": 10.0, "high": 13.0, "laborShare": 0.58, "lifespanYears": 30 }
+  },
+  "tearOffPerSqFt": { "0": [0, 0, 0], "1": [1.0, 1.3, 1.75], "2": [1.6, 2.1, 2.8] },
+  "pitch": {
+   "low":       { "areaFactor": 1.05, "laborFactor": 1.0 },
+   "medium":    { "areaFactor": 1.12, "laborFactor": 1.0 },
+   "steep":     { "areaFactor": 1.25, "laborFactor": 1.15 },
+   "verysteep": { "areaFactor": 1.4,  "laborFactor": 1.3 }
+  },
+  "overhangFactor": 1.08,
+  "storiesLaborFactor": { "1": 1.0, "2": 1.06, "3": 1.14 },
+  "permit": [150, 350, 650]
+ },
+ "fence": {
+  "unit": "linear ft",
+  "materials": {
+   "wood-privacy":  { "low": 22, "typical": 30, "high": 42, "laborShare": 0.45, "lifespanYears": 15, "gate": [250, 350, 550] },
+   "vinyl":         { "low": 28, "typical": 38, "high": 52, "laborShare": 0.35, "lifespanYears": 25, "gate": [350, 500, 800] },
+   "chain-link":    { "low": 12, "typical": 18, "high": 26, "laborShare": 0.45, "lifespanYears": 20, "gate": [150, 250, 400] },
+   "aluminum":      { "low": 28, "typical": 40, "high": 58, "laborShare": 0.35, "lifespanYears": 30, "gate": [350, 500, 850] },
+   "wrought-iron":  { "low": 35, "typical": 52, "high": 75, "laborShare": 0.4, "lifespanYears": 50, "gate": [500, 800, 1400] },
+   "composite":     { "low": 42, "typical": 58, "high": 80, "laborShare": 0.35, "lifespanYears": 30, "gate": [450, 650, 1000] }
+  },
+  "heightFactor": { "4": 0.78, "6": 1.0, "8": 1.32 },
+  "removalPerFt": [3, 4, 6],
+  "slopeLaborFactor": 1.12,
+  "permit": [50, 150, 400]
+ },
+ "windows": {
+  "unit": "window",
+  "materials": {
+   "vinyl":      { "low": 550, "typical": 800, "high": 1100, "laborShare": 0.3, "lifespanYears": 25 },
+   "fiberglass": { "low": 800, "typical": 1100, "high": 1500, "laborShare": 0.3, "lifespanYears": 35 },
+   "wood":       { "low": 900, "typical": 1300, "high": 1900, "laborShare": 0.3, "lifespanYears": 30 },
+   "aluminum":   { "low": 500, "typical": 700, "high": 1000, "laborShare": 0.3, "lifespanYears": 20 },
+   "composite":  { "low": 800, "typical": 1150, "high": 1600, "laborShare": 0.3, "lifespanYears": 30 }
+  },
+  "styleFactor": { "double-hung": 1.0, "slider": 0.95, "casement": 1.15, "picture": 1.05, "bay-bow": 3.5 },
+  "tripleGlazingFactor": 1.18,
+  "fullFrameLaborFactor": 1.45,
+  "permit": [0, 100, 300]
+ },
+ "hvac": {
+  "unit": "ton",
+  "materials": {
+   "central-ac":     { "low": 1700, "typical": 2200, "high": 2900, "laborShare": 0.45, "lifespanYears": 15 },
+   "heat-pump":      { "low": 2200, "typical": 2900, "high": 3800, "laborShare": 0.45, "lifespanYears": 15 },
+   "furnace-ac":     { "low": 2600, "typical": 3500, "high": 4600, "laborShare": 0.45, "lifespanYears": 17 },
+   "gas-furnace":    { "low": 1100, "typical": 1500, "high": 2100, "laborShare": 0.45, "lifespanYears": 20 },
+   "ductless-mini-split": { "low": 3000, "typical": 4200, "high": 5500, "laborShare": 0.45, "lifespanYears": 18, "perZone": true }
+  },
+  "sqftPerTon": { "hot": 550, "mixed": 650, "cold": 700 },
+  "sqftPerZone": 600,
+  "efficiencyFactor": { "standard": 1.0, "high": 1.18, "premium": 1.4 },
+  "ductwork": { "good": [0, 0, 0], "repair": [1000, 1500, 2500], "replace-per-sqft": [2.0, 2.75, 4.0] },
+  "permit": [100, 250, 500]
+ },
+ "solar": {
+  "unit": "watt",
+  "materials": {
+   "standard": { "low": 2.6, "typical": 3.0, "high": 3.6, "laborShare": 0.4, "lifespanYears": 25 },
+   "premium":  { "low": 3.0, "typical": 3.5, "high": 4.2, "laborShare": 0.4, "lifespanYears": 30 }
+  },
+  "orientationFactor": { "south": 1.0, "east-west": 0.85, "flat": 0.9 },
+  "shadingFactor": { "none": 1.0, "some": 0.88, "heavy": 0.72 },
+  "battery": [10000, 12500, 16000],
+  "minKw": 2,
+  "maxKw": 20,
+  "rateEscalation": 0.03,
+  "degradation": 0.005,
+  "permit": [300, 600, 1200],
+  "federalCreditNote": "The 30% federal Residential Clean Energy Credit (IRC 25D) does not apply to systems placed in service after Dec 31, 2025 (One Big Beautiful Bill Act, July 2025). Leased and PPA systems may still carry a business credit that installers can pass through."
+ }
+}
