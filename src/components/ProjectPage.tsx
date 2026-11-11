@@ -55,11 +55,11 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
   return (
     <>
-      <div className="border-b border-line bg-white">
+      <div className="border-b border-ink">
         <div className="mx-auto max-w-6xl px-4 pb-6 pt-5">
           <Breadcrumbs items={crumbs} />
-          <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1>
-          <p className="mt-2 max-w-3xl text-ink-2">
+          <h1 className="mt-3 max-w-4xl font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">{title}</h1>
+          <p className="mt-3 max-w-3xl text-lg leading-relaxed text-ink-2">
             {place
               ? <>A typical {variant ? variant.label.toLowerCase() : p.noun} job in {place} runs about <strong className="text-ink tnum">{formatUSD(roundMoney(typicalJob.low))} to {formatUSD(roundMoney(typicalJob.high))}</strong>. Adjust the inputs below for your home.</>
               : variant ? <>{variant.blurb} Typical cost: <strong className="text-ink tnum">{formatUSD(roundMoney(typicalJob.low))} to {formatUSD(roundMoney(typicalJob.high))}</strong> (US average).</>
@@ -80,21 +80,21 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
         <div className="min-w-0 space-y-12">
           {/* Local cost table (unique per page: computed from this region's data) */}
           <section>
-            <h2 className="font-display text-2xl font-bold tracking-tight">{p.name} cost by {p.variantNoun}{place ? ` in ${place}` : ""}</h2>
+            <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{p.name} cost by {p.variantNoun}{place ? ` in ${place}` : ""}</h2>
             <p className="mt-1 text-sm text-ink-2">For a typical home{place ? ` in ${place}` : ""}, using the default inputs above. Lifetime cost divides the typical price by expected years of life.</p>
-            <div className="mt-4 overflow-x-auto rounded-2xl border border-line bg-white">
+            <div className="mt-4 overflow-x-auto border-y border-ink">
               <table className="w-full min-w-[560px] text-sm">
-                <thead className="bg-canvas text-left text-xs uppercase tracking-wide text-mute">
+                <thead className="text-left font-mono text-[11px] uppercase tracking-wider text-mute">
                   <tr><th className="px-4 py-3 capitalize">{p.variantNoun}</th><th className="px-4 py-3">Low</th><th className="px-4 py-3">Typical</th><th className="px-4 py-3">High</th><th className="px-4 py-3">Per year of life</th></tr>
                 </thead>
                 <tbody className="divide-y divide-line">
                   {table.map(({ v, e }) => (
                     <tr key={v.slug} className={variant?.slug === v.slug ? "bg-accent-50/60" : ""}>
                       <td className="px-4 py-3 font-semibold"><Link href={`/${p.slug}/${v.slug}`} className="hover:text-accent-700 hover:underline">{v.label}</Link></td>
-                      <td className="px-4 py-3 tnum">{formatUSD(roundMoney(e.low))}</td>
-                      <td className="px-4 py-3 font-bold tnum">{formatUSD(roundMoney(e.typical))}</td>
-                      <td className="px-4 py-3 tnum">{formatUSD(roundMoney(e.high))}</td>
-                      <td className="px-4 py-3 tnum text-ink-2">{e.lifespanYears ? formatUSD(e.typical / e.lifespanYears) : "–"}</td>
+                      <td className="px-4 py-3 font-mono text-[14px] tnum">{formatUSD(roundMoney(e.low))}</td>
+                      <td className="px-4 py-3 font-mono text-[14px] font-semibold tnum">{formatUSD(roundMoney(e.typical))}</td>
+                      <td className="px-4 py-3 font-mono text-[14px] tnum">{formatUSD(roundMoney(e.high))}</td>
+                      <td className="px-4 py-3 font-mono text-[14px] tnum text-ink-2">{e.lifespanYears ? formatUSD(e.typical / e.lifespanYears) : "–"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -103,9 +103,10 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
           </section>
 
           {state && (
-            <section className="card p-5 sm:p-6">
-              <h2 className="font-display text-xl font-bold">What drives the price in {place}</h2>
-              <ul className="mt-3 space-y-3 text-ink-2">
+            <section className="grid-paper border border-line bg-paper p-5 sm:p-7">
+              <p className="label">Local conditions</p>
+              <h2 className="mt-1 font-display text-[1.6rem] font-bold">What drives the price in {place}</h2>
+              <ul className="mt-4 space-y-3 text-ink-2">
                 <li><strong className="text-ink">Labor:</strong> construction labor here is {Math.abs(region.laborIndex - 1) < 0.02 ? "close to" : <><strong className="tnum">{pct(region.laborIndex - 1)}</strong> {region.laborIndex > 1 ? "above" : "below"}</>} the US average.</li>
                 <li><strong className="text-ink">Materials:</strong> delivered material prices run {Math.abs(region.materialIndex - 1) < 0.02 ? "close to" : <><strong className="tnum">{pct(region.materialIndex - 1)}</strong> {region.materialIndex > 1 ? "above" : "below"}</>} the national average.</li>
                 <li><strong className="text-ink">Compared with the US:</strong> the typical {p.noun} job is {formatUSD(roundMoney(typicalJob.typical))} here vs {formatUSD(roundMoney(national.typical))} nationally ({pct(typicalJob.typical / national.typical - 1)}).</li>
@@ -117,37 +118,44 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
           {variant && (
             <section className="grid gap-4 sm:grid-cols-2">
-              <div className="card p-5"><h2 className="font-bold text-good">Pros</h2><ul className="mt-2 list-disc space-y-1 pl-5 text-ink-2">{variant.pros.map((x) => <li key={x}>{x}</li>)}</ul></div>
-              <div className="card p-5"><h2 className="font-bold text-bad">Cons</h2><ul className="mt-2 list-disc space-y-1 pl-5 text-ink-2">{variant.cons.map((x) => <li key={x}>{x}</li>)}</ul></div>
+              <div className="border-t-2 border-good pt-3"><h2 className="label !text-good">In its favor</h2><ul className="mt-2 list-[square] space-y-1.5 pl-5 text-ink-2">{variant.pros.map((x) => <li key={x}>{x}</li>)}</ul></div>
+              <div className="border-t-2 border-bad pt-3"><h2 className="label !text-bad">Against it</h2><ul className="mt-2 list-[square] space-y-1.5 pl-5 text-ink-2">{variant.cons.map((x) => <li key={x}>{x}</li>)}</ul></div>
             </section>
           )}
 
           <section>
-            <h2 className="font-display text-2xl font-bold tracking-tight">What affects {p.noun} cost</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {p.costFactors.map((f) => (
-                <div key={f.title} className="card p-4"><h3 className="font-semibold">{f.title}</h3><p className="mt-1 text-sm leading-relaxed text-ink-2">{f.body}</p></div>
+            <h2 className="font-display text-[1.75rem] font-bold tracking-tight">What moves the price of a {p.noun}</h2>
+            <ol className="mt-4 border-t border-ink">
+              {p.costFactors.map((f, i) => (
+                <li key={f.title} className="grid grid-cols-[2.25rem_1fr] gap-2 border-b border-line py-4">
+                  <span className="font-mono text-sm text-accent-600">{String(i + 1).padStart(2, "0")}</span>
+                  <div><h3 className="font-semibold">{f.title}</h3><p className="mt-1 leading-relaxed text-ink-2">{f.body}</p></div>
+                </li>
               ))}
-            </div>
+            </ol>
           </section>
 
           <AdSlot placement="midContent" />
 
           {comps.length > 0 && (
             <section>
-              <h2 className="font-display text-2xl font-bold tracking-tight">Compare side by side</h2>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <h2 className="font-display text-[1.75rem] font-bold tracking-tight">Head to head</h2>
+              <ul className="mt-3 border-t border-ink">
                 {comps.map(([a, b]) => (
-                  <Link key={a + b} href={`/${p.slug}/compare/${comparisonSlug(a, b)}`} className="inline-block max-w-full rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold hover:border-ink/30">
-                    {getVariant(p, a)!.label} vs {getVariant(p, b)!.label} →
-                  </Link>
+                  <li key={a + b} className="border-b border-line">
+                    <Link href={`/${p.slug}/compare/${comparisonSlug(a, b)}`} className="group flex items-baseline justify-between gap-3 py-3">
+                      <span><span className="font-semibold">{getVariant(p, a)!.label}</span> <span className="font-display italic text-mute">vs</span> <span className="font-semibold">{getVariant(p, b)!.label}</span></span>
+                      <span className="font-mono text-ink-2 group-hover:text-accent-600">→</span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </section>
           )}
 
-          <section className="card p-5 sm:p-6">
-            <h2 className="font-display text-xl font-bold">Does a new {p.noun} add value when you sell?</h2>
+          <section className="border-l-4 border-blue pl-5">
+            <p className="label">Selling soon?</p>
+            <h2 className="mt-1 font-display text-[1.6rem] font-bold">Does a new {p.noun} pay you back at sale?</h2>
             <p className="mt-2 text-ink-2">
               Homeowners typically recoup an estimated <strong className="text-ink">{Math.round(resale.recoupLow * 100)}% to {Math.round(resale.recoupHigh * 100)}%</strong> of the cost at sale,
               or about <strong className="text-ink tnum">{formatUSD(roundMoney(typicalJob.typical * resale.recoupLow))} to {formatUSD(roundMoney(typicalJob.typical * resale.recoupHigh))}</strong> on this job. {resale.note}
@@ -161,13 +169,13 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
           {guides.length > 0 && (
             <section>
-              <h2 className="font-display text-2xl font-bold tracking-tight">Read next</h2>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <h2 className="font-display text-[1.75rem] font-bold tracking-tight">Read this before you sign</h2>
+              <div className="mt-3 border-t border-ink">
                 {guides.map((g) => (
-                  <Link key={g.slug} href={`/guides/${g.slug}`} className="card p-4 hover:border-ink/25">
-                    <p className="text-xs font-bold uppercase tracking-wide text-accent-700">{g.kicker}</p>
-                    <p className="mt-1 font-semibold">{g.title}</p>
-                    <p className="mt-1 text-sm text-ink-2">{g.description}</p>
+                  <Link key={g.slug} href={`/guides/${g.slug}`} className="group block border-b border-line py-4">
+                    <p className="label">{g.kicker}</p>
+                    <p className="mt-1 font-display text-xl font-semibold group-hover:underline group-hover:underline-offset-4">{g.title}</p>
+                    <p className="mt-1 text-[15px] text-ink-2">{g.description}</p>
                   </Link>
                 ))}
               </div>
@@ -176,7 +184,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
           <LeadForm projectKey={p.key} projectName={p.name} quoteNoun={p.quoteNoun} place={place} />
 
-          <p className="text-sm text-ink-2">Already have a quote or finished the job? <Link href={`/share-your-quote?project=${p.key}`} className="font-semibold text-accent-700 underline">Share what you paid, anonymously</Link> to help other homeowners.</p>
+          <p className="text-[15px] text-ink-2">Already paid for one? <Link href={`/share-your-quote?project=${p.key}`} className="link">Tell us what it cost</Link>. No name, no email, and it keeps these numbers honest for your neighbors.</p>
         </div>
 
         <aside className="hidden lg:block">
@@ -188,14 +196,14 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
       <div className="mx-auto mt-12 max-w-6xl space-y-12 px-4">
         <section id="states" className="scroll-mt-20">
-          <h2 className="font-display text-2xl font-bold tracking-tight">{state ? (metro ? `Other cities in ${state.name}` : `${p.name} cost in ${state.name} cities`) : `${p.name} cost by state`}</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{state ? (metro ? `Other cities in ${state.name}` : `${p.name} cost in ${state.name} cities`) : `${p.name} cost by state`}</h2>
+          <div className="mt-4 columns-2 gap-6 border-t border-ink pt-3 text-[15px] sm:columns-3 lg:columns-5">
             {(state ? metros : STATES).map((x) => {
               const href = state ? `/${p.slug}/${state.slug}/${(x as MetroRow).slug}` : `/${p.slug}/${(x as StateRow).slug}`;
-              return <Link key={href} href={href} className="inline-block max-w-full rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-ink/30">{x.name}</Link>;
+              return <Link key={href} href={href} className="block break-inside-avoid py-1 hover:text-accent-700 hover:underline">{x.name}</Link>;
             })}
-            {state && metros.length === 0 && <span className="text-sm text-ink-2">City pages for {state.name} are coming soon.</span>}
-            {state && <Link href={`/${p.slug}`} className="rounded-full px-3 py-1.5 text-sm font-semibold text-accent-700">All states →</Link>}
+            {state && metros.length === 0 && <span className="block text-ink-2">No city pages for {state.name} yet. The state figures above apply.</span>}
+            {state && <Link href={`/${p.slug}#states`} className="link block py-1">All states</Link>}
           </div>
         </section>
         <RelatedProjects exclude={p.slug} stateSlug={state?.slug} title={state ? `More project costs in ${state.name}` : "Price your next project"} />

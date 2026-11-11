@@ -32,7 +32,7 @@ function hvacVerdict(age: number, sys: keyof typeof HVAC_LIFE, repair: number, r
   return { call: "Repair", tone: "good", why: `Age x repair cost is ${formatUSD(score)}, well under the $5,000 threshold. Repairing is the better value.` };
 }
 
-const seg = (on: boolean) => `rounded-full border px-3.5 py-2 text-sm font-semibold ${on ? "border-ink bg-ink text-white" : "border-line bg-white text-ink-2"}`;
+const seg = (on: boolean) => `border px-3.5 py-2 text-sm font-semibold ${on ? "border-ink bg-ink text-white" : "border-line-2 bg-white text-ink-2"}`;
 
 export default function RepairOrReplace() {
   const [tab, setTab] = useState<"roof" | "hvac">("roof");
@@ -56,7 +56,7 @@ export default function RepairOrReplace() {
           <div className="mt-5 grid gap-5">
             <label className="block"><span className="flex justify-between text-sm font-bold">Roof age <span className="tnum">{age} years</span></span><input type="range" min={0} max={60} value={age} onChange={(e) => setAge(Number(e.target.value))} className="w-full" /></label>
             <fieldset><legend className="text-sm font-bold">Material</legend><div className="mt-2 flex flex-wrap gap-1.5">{(Object.keys(ROOF_LIFE) as (keyof typeof ROOF_LIFE)[]).map((m) => <button key={m} onClick={() => setMat(m)} className={seg(mat === m)}>{m === "asphalt" ? "Asphalt shingles" : m === "metal" ? "Metal" : "Tile or slate"}</button>)}</div></fieldset>
-            <fieldset><legend className="text-sm font-bold">What do you see?</legend><div className="mt-2 grid gap-2">{(Object.keys(ROOF_DAMAGE) as (keyof typeof ROOF_DAMAGE)[]).map((d) => <button key={d} onClick={() => setDmg(d)} className={`rounded-xl border px-3 py-2.5 text-left text-sm ${dmg === d ? "border-accent-500 bg-accent-50 font-semibold" : "border-line"}`}>{ROOF_DAMAGE[d].label}</button>)}</div></fieldset>
+            <fieldset><legend className="text-sm font-bold">What do you see?</legend><div className="mt-2 grid gap-2">{(Object.keys(ROOF_DAMAGE) as (keyof typeof ROOF_DAMAGE)[]).map((d) => <button key={d} onClick={() => setDmg(d)} className={`border px-3 py-2.5 text-left text-sm ${dmg === d ? "border-accent-500 bg-accent-50 font-semibold" : "border-line"}`}>{ROOF_DAMAGE[d].label}</button>)}</div></fieldset>
           </div>
         ) : (
           <div className="mt-5 grid gap-5">
@@ -71,8 +71,8 @@ export default function RepairOrReplace() {
         <p className="text-sm font-semibold text-ink-2">Our call</p>
         <p className={`mt-1 font-display text-4xl font-extrabold ${v.tone === "good" ? "text-good" : v.tone === "warn" ? "text-accent-600" : "text-bad"}`}>{v.call}</p>
         <p className="mt-2 text-ink-2">{v.why}</p>
-        {v.cost && <p className="mt-3 rounded-xl bg-canvas p-3 text-sm">Typical repair cost for this: <strong className="tnum">{v.cost}</strong> (estimate)</p>}
-        <Link href={tab === "roof" ? "/roof-replacement-cost" : "/hvac-replacement-cost"} className="mt-4 inline-flex rounded-full bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600">
+        {v.cost && <p className="mt-3 bg-canvas p-3 text-sm">Typical repair cost for this: <strong className="tnum">{v.cost}</strong> (estimate)</p>}
+        <Link href={tab === "roof" ? "/roof-replacement-cost" : "/hvac-replacement-cost"} className="mt-4 inline-flex bg-ink px-4 py-2.5 text-[15px] font-semibold text-paper hover:bg-accent-600">
           See what replacement would cost →
         </Link>
         <p className="mt-3 text-xs text-mute">A rule of thumb, not an inspection. If water is coming in, protect the area first and call a pro.</p>

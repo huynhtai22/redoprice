@@ -45,7 +45,7 @@ export default function AdSlot({ placement, className = "" }: { placement: Place
             data-ad-format={placement === "sidebar" ? "vertical" : "auto"} data-full-width-responsive="true" />
         )
       ) : (
-        <div style={style} className="ad-slot grid place-items-center rounded-xl border border-dashed border-ink/15 bg-white/60 text-xs font-medium text-mute">
+        <div style={style} className="ad-slot grid place-items-center border border-dashed border-ink/15 bg-white/60 text-xs font-medium text-mute">
           Ad slot · {placement}
         </div>
       )}

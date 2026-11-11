@@ -24,7 +24,7 @@ export default function LeadForm({ projectKey, projectName, quoteNoun, place }: 
     if (res.ok) { setStatus("done"); track("lead_submit", { project: projectKey }); } else { setStatus("error"); setError(res.error); }
   }
 
-  const input = "mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-base outline-none focus:border-accent-500 focus:ring-2 focus:ring-accent-100";
+  const input = "mt-1 w-full border border-line-2 bg-white px-3 py-2.5 text-base outline-none focus:border-accent-500 focus:ring-2 focus:ring-accent-100";
   return (
     <section id="quote-form" data-ad-exclusion-zone className="card p-5 sm:p-6">
       {status === "done" ? (
@@ -35,7 +35,7 @@ export default function LeadForm({ projectKey, projectName, quoteNoun, place }: 
             <h2 className="font-display text-lg font-bold">Want real quotes to compare with this estimate?</h2>
             <p className="text-sm text-ink-2">Free and optional. Your estimate link is sent along so pros quote the same job.</p>
           </div>
-          <button onClick={() => { setOpen(true); track("lead_open", { project: projectKey, from: "form" }); }} className="shrink-0 rounded-full border border-ink px-4 py-2 text-sm font-semibold hover:bg-ink hover:text-white">Get local quotes</button>
+          <button onClick={() => { setOpen(true); track("lead_open", { project: projectKey, from: "form" }); }} className="shrink-0 border border-ink px-4 py-2 text-sm font-semibold hover:bg-ink hover:text-white">Get local quotes</button>
         </div>
       ) : (
         <form onSubmit={onSubmit} className="grid gap-3 sm:grid-cols-2">
@@ -56,7 +56,7 @@ export default function LeadForm({ projectKey, projectName, quoteNoun, place }: 
             <span>{LEAD_CONSENT_TEXT} See our <Link href="/privacy" className="underline">Privacy Policy</Link>.</span>
           </label>
           {status === "error" && <p className="text-sm text-bad sm:col-span-2" role="alert">{error}</p>}
-          <button disabled={status === "sending"} className="rounded-full bg-accent-500 px-5 py-3 font-semibold text-white hover:bg-accent-600 disabled:opacity-60 sm:col-span-2 sm:justify-self-start">
+          <button disabled={status === "sending"} className="bg-ink px-5 py-3 font-semibold text-paper hover:bg-accent-600 disabled:opacity-60 sm:col-span-2 sm:justify-self-start">
             {status === "sending" ? "Sending…" : "Request quotes"}
           </button>
         </form>

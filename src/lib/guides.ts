@@ -81,7 +81,7 @@ export const GUIDES: Guide[] = [
         "Who pulls the permit? A contractor who suggests skipping permits is shifting risk onto you.",
         "What exactly is included, and what is not? Get removal, cleanup and disposal in writing.",
         "How do you price surprises? Unit prices for hidden damage stop the bill from growing without limit.",
-        "What warranty do you offer on labor, and what does the manufacturer cover? Registered installers sometimes unlock longer manufacturer warranties.",
+        "What warranty do you offer on labor, and what does the manufacturer cover? Installers certified by the manufacturer can often offer a longer warranty.",
         "What is the payment schedule? Tie payments to milestones, not dates.",
         "How will you protect my yard, landscaping and interior?",
         "Can I talk to two recent customers with a similar project?",

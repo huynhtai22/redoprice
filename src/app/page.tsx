@@ -1,109 +1,157 @@
 import Link from "next/link";
 import Calculator from "@/components/Calculator";
 import AdSlot from "@/components/AdSlot";
-import Icon from "@/components/Icons";
 import DataNote from "@/components/DataNote";
 import JsonLd from "@/components/JsonLd";
+import Sketch, { HouseDiagram } from "@/components/Sketch";
 import { COMPARISONS, PROJECTS, comparisonSlug } from "@/lib/projects";
-import { METROS, STATES } from "@/lib/data";
+import { METROS, NATIONAL_REGION, STATES } from "@/lib/data";
 import { GUIDES } from "@/lib/guides";
+import { formatUSD, roundMoney } from "@/lib/format";
 import { SITE } from "@/lib/site";
 
 const INTENTS = [
-  { href: "#projects", icon: "plan", title: "Plan a project", body: "Get a realistic budget for your home and ZIP code, and compare materials by lifetime cost." },
-  { href: "/check-my-quote", icon: "quote", title: "Check my quote", body: "Got a number from a contractor? See where it falls on the local low, typical and high range." },
-  { href: "/repair-or-replace", icon: "alert", title: "Emergency repair", body: "Leak or broken AC? Get a quick repair-or-replace answer and what to ask before you sign." },
+  { n: "01", href: "#estimate", title: "I'm planning a job", body: "Get a budget for your house and ZIP code before you call anyone." },
+  { n: "02", href: "/check-my-quote", title: "I've got a quote in hand", body: "See whether it's fair, on the high side, or suspiciously cheap." },
+  { n: "03", href: "/repair-or-replace", title: "Something just broke", body: "Leaking roof or dead AC. Find out if it's a repair or a replacement." },
 ];
 
+const DIAGRAM_ORDER = ["roofing", "solar", "hvac", "windows", "fence"] as const;
+
 export default function Home() {
+  const us = Object.fromEntries(PROJECTS.map((p) => [p.key, p.compute(p.defaults(NATIONAL_REGION), NATIONAL_REGION)]));
   const comps = PROJECTS.flatMap((p) => COMPARISONS[p.key].slice(0, 2).map(([a, b]) => ({ p, a, b })));
   return (
     <>
-      <section className="border-b border-line bg-white">
-        <div className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:pt-12">
-          <p className="inline-flex items-center gap-2 rounded-full bg-accent-50 px-3 py-1 text-xs font-bold text-accent-700"><span className="h-1.5 w-1.5 rounded-full bg-accent-500" />Free · no sign-up · adjusted for your ZIP</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
-            Know what it should cost <span className="text-accent-500">before anyone quotes you.</span>
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-ink-2">Live cost calculators for roofs, solar, HVAC, windows and fences. Your inputs, your area&apos;s labor and material prices, and the math shown.</p>
+      <section className="border-b border-ink">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-12 pt-10 lg:grid-cols-[7fr_5fr] lg:gap-14 lg:pt-14">
+          <div>
+            <p className="label">Home repair cost calculators · Data updated Nov 2026</p>
+            <h1 className="mt-4 font-display text-[2.6rem] font-bold leading-[1.04] tracking-tight sm:text-6xl">
+              Know the number before anyone <em className="font-normal italic text-accent-600">knocks on your door.</em>
+            </h1>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-2">
+              Put in your house and your ZIP code. You get the price a fair contractor should land near, with the math written out:
+              materials, labor, tear-off, permit. When the quotes come in, you&apos;ll know which one is padded.
+            </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {INTENTS.map((x) => (
-              <Link key={x.title} href={x.href} className="group flex gap-3 rounded-2xl border border-line bg-canvas/60 p-4 transition hover:border-ink/25 hover:bg-white">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-accent-600 shadow-sm"><Icon name={x.icon} /></span>
-                <span><span className="flex items-center gap-1 font-bold">{x.title}<Icon name="arrow" className="h-4 w-4 transition group-hover:translate-x-0.5" /></span><span className="mt-0.5 block text-sm text-ink-2">{x.body}</span></span>
-              </Link>
-            ))}
+            <p className="label mt-10">What brings you here?</p>
+            <ol className="mt-2 border-t border-ink">
+              {INTENTS.map((x) => (
+                <li key={x.n} className="border-b border-line">
+                  <Link href={x.href} className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-3 py-4">
+                    <span className="font-mono text-sm text-accent-600">{x.n}</span>
+                    <span>
+                      <span className="font-display text-xl font-semibold group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">{x.title}</span>
+                      <span className="mt-0.5 block text-[15px] text-ink-2">{x.body}</span>
+                    </span>
+                    <span className="font-mono text-ink-2 transition group-hover:translate-x-1 group-hover:text-accent-600">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className="mt-8">
-            <Calculator projectSlug={PROJECTS[0].slug} projectSwitcher compact />
-          </div>
-          <div className="mt-3"><DataNote /></div>
+          <figure className="self-start">
+            <div className="grid-paper border border-line bg-paper p-3"><HouseDiagram className="w-full" /></div>
+            <figcaption className="mt-3">
+              <ol className="grid gap-0 text-[15px]">
+                {DIAGRAM_ORDER.map((k, i) => {
+                  const p = PROJECTS.find((x) => x.key === k)!;
+                  return (
+                    <li key={k}>
+                      <Link href={`/${p.slug}`} className="leader py-1.5 hover:text-accent-700">
+                        <span><span className="mr-2 font-mono text-accent-600">{i + 1}</span>{p.name}</span>
+                        <span className="font-mono text-[14px] tnum text-ink-2">~{formatUSD(roundMoney(us[k].typical))}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className="mt-2 text-xs text-mute">Typical US price for a standard job. Your ZIP changes it.</p>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      <div className="mx-auto mt-8 max-w-6xl px-4"><AdSlot placement="afterResult" /></div>
+      <section id="estimate" className="mx-auto max-w-6xl scroll-mt-16 px-4 pt-12">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <h2 className="font-display text-3xl font-bold tracking-tight">Run an estimate</h2>
+          <DataNote />
+        </div>
+        <div className="mt-5"><Calculator projectSlug={PROJECTS[0].slug} projectSwitcher compact /></div>
+      </section>
 
-      <section id="projects" className="mx-auto mt-10 max-w-6xl scroll-mt-20 px-4">
-        <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">Plan a project</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mx-auto mt-10 max-w-6xl px-4"><AdSlot placement="afterResult" /></div>
+
+      <section className="mx-auto mt-14 max-w-6xl px-4">
+        <h2 className="font-display text-3xl font-bold tracking-tight">Five jobs, priced properly</h2>
+        <p className="mt-1 max-w-2xl text-ink-2">The big-ticket replacements that most houses over 30 years old need. Each calculator adjusts for where you live.</p>
+        <div className="mt-6 border-t border-ink">
           {PROJECTS.map((p) => (
-            <Link key={p.slug} href={`/${p.slug}`} className="card group p-5 transition hover:border-ink/25 hover:shadow-sm">
-              <Icon name={p.icon} className="h-7 w-7 text-accent-600" />
-              <p className="mt-3 font-bold">{p.name}</p>
-              <p className="mt-1 text-sm text-ink-2">{p.short}</p>
-              <p className="mt-3 text-sm font-semibold text-accent-700 group-hover:underline">Open calculator →</p>
+            <Link key={p.slug} href={`/${p.slug}`} className="group grid grid-cols-[4rem_1fr] items-center gap-4 border-b border-line py-4 sm:grid-cols-[5rem_1.2fr_2fr_auto]">
+              <Sketch name={p.key} className="h-12 w-16 text-blue" />
+              <span className="font-display text-xl font-semibold group-hover:underline group-hover:underline-offset-4">{p.name}</span>
+              <span className="col-span-2 text-[15px] text-ink-2 sm:col-span-1">{p.short}</span>
+              <span className="col-span-2 font-mono text-sm tnum sm:col-span-1 sm:text-right">
+                <span className="text-mute">US typical </span>{formatUSD(roundMoney(us[p.key].typical))} <span className="text-accent-600">→</span>
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto mt-12 grid max-w-6xl gap-8 px-4 lg:grid-cols-2">
+      <section className="mx-auto mt-16 grid max-w-6xl gap-12 px-4 lg:grid-cols-[3fr_2fr]">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight">Popular comparisons</h2>
-          <ul className="mt-3 divide-y divide-line rounded-2xl border border-line bg-white">
+          <h2 className="font-display text-3xl font-bold tracking-tight">Head to head</h2>
+          <p className="mt-1 text-ink-2">The arguments homeowners have at the kitchen table, settled with numbers.</p>
+          <ul className="mt-5 border-t border-ink">
             {comps.map(({ p, a, b }) => (
-              <li key={p.slug + a + b}><Link href={`/${p.slug}/compare/${comparisonSlug(a, b)}`} className="flex items-center justify-between px-4 py-3 text-sm font-semibold hover:text-accent-700">
-                {p.variants.find((v) => v.slug === a)!.label} vs {p.variants.find((v) => v.slug === b)!.label}<Icon name="arrow" className="h-4 w-4" />
-              </Link></li>
+              <li key={p.slug + a + b} className="border-b border-line">
+                <Link href={`/${p.slug}/compare/${comparisonSlug(a, b)}`} className="group flex items-baseline justify-between gap-3 py-3">
+                  <span className="text-[16px]"><span className="font-semibold">{p.variants.find((v) => v.slug === a)!.label}</span> <span className="font-display italic text-mute">vs</span> <span className="font-semibold">{p.variants.find((v) => v.slug === b)!.label}</span></span>
+                  <span className="font-mono text-ink-2 group-hover:text-accent-600">→</span>
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight">Roof replacement cost near you</h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {METROS.slice(0, 20).map((m) => {
+          <h2 className="font-display text-3xl font-bold tracking-tight">Roof prices by city</h2>
+          <p className="mt-1 text-ink-2">Labor alone swings 40% between metros.</p>
+          <ul className="mt-5 columns-2 gap-6 border-t border-ink pt-3 text-[15px]">
+            {METROS.slice(0, 24).map((m) => {
               const st = STATES.find((s) => s.code === m.state)!;
-              return <Link key={m.slug} href={`/roof-replacement-cost/${st.slug}/${m.slug}`} className="inline-block max-w-full rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-ink/30">{m.name}, {m.state}</Link>;
+              return <li key={m.slug} className="break-inside-avoid py-1"><Link href={`/roof-replacement-cost/${st.slug}/${m.slug}`} className="hover:text-accent-700 hover:underline">{m.name}<span className="ml-1 font-mono text-xs text-mute">{m.state}</span></Link></li>;
             })}
-            <Link href="/roof-replacement-cost#states" className="rounded-full px-3 py-1.5 text-sm font-semibold text-accent-700">All states →</Link>
-          </div>
+          </ul>
+          <Link href="/roof-replacement-cost#states" className="link mt-3 inline-block text-[15px]">Every state and city</Link>
         </div>
       </section>
 
-      <section className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="flex items-end justify-between"><h2 className="font-display text-2xl font-bold tracking-tight">Guides</h2><Link href="/guides" className="text-sm font-semibold text-accent-700">All guides →</Link></div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {GUIDES.slice(0, 6).map((g) => (
-            <Link key={g.slug} href={`/guides/${g.slug}`} className="card p-5 hover:border-ink/25">
-              <p className="text-xs font-bold uppercase tracking-wide text-accent-700">{g.kicker}</p>
-              <p className="mt-1 font-semibold">{g.title}</p>
-              <p className="mt-1 text-sm text-ink-2">{g.description}</p>
+      <section className="mx-auto mt-16 max-w-6xl px-4">
+        <div className="flex items-end justify-between"><h2 className="font-display text-3xl font-bold tracking-tight">Worth reading first</h2><Link href="/guides" className="link text-[15px]">All guides</Link></div>
+        <div className="mt-5 grid border-t border-ink md:grid-cols-2">
+          {GUIDES.slice(0, 6).map((g, i) => (
+            <Link key={g.slug} href={`/guides/${g.slug}`} className={`group border-b border-line py-5 ${i % 2 === 0 ? "md:pr-8" : "md:border-l md:pl-8"}`}>
+              <p className="label">{g.kicker}</p>
+              <p className="mt-1 font-display text-xl font-semibold leading-snug group-hover:underline group-hover:underline-offset-4">{g.title}</p>
+              <p className="mt-1 text-[15px] text-ink-2">{g.description}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="card grid gap-6 p-6 sm:grid-cols-3 sm:p-8">
-          {[["Your number, not a national average", "Every estimate uses your inputs and your area's labor and material costs."], ["The math, shown", "Materials, labor, removal and permits as a visible breakdown, with sources and an updated date."], ["No sign-up to see a price", "Estimates are instant and free. We only ask for contact details if you want quotes."]].map(([t, b]) => (
-            <div key={t}><p className="font-bold">{t}</p><p className="mt-1 text-sm text-ink-2">{b}</p></div>
-          ))}
-        </div>
+      <section className="mx-auto mt-16 max-w-6xl px-4">
+        <blockquote className="border-l-4 border-accent-500 pl-5 sm:pl-8">
+          <p className="max-w-3xl font-display text-2xl italic leading-snug sm:text-3xl">
+            &ldquo;Most cost sites give you one national range and a button to get called by five contractors. We give you your number and show our working.&rdquo;
+          </p>
+          <footer className="mt-3 text-[15px] text-ink-2">No sign-up to see a price. <Link href="/how-we-calculate" className="link">How we calculate</Link></footer>
+        </blockquote>
       </section>
 
-      <div className="mx-auto mt-12 max-w-6xl px-4"><AdSlot placement="beforeFooter" /></div>
+      <div className="mx-auto mt-14 max-w-6xl px-4"><AdSlot placement="beforeFooter" /></div>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: SITE.name, url: SITE.url }} />
     </>
   );

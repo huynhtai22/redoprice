@@ -37,14 +37,14 @@ export default function ConsentBanner() {
   };
   if (!show) return null;
   return (
-    <div role="dialog" aria-label="Cookie choices" className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl rounded-2xl border border-line bg-white p-4 shadow-xl sm:inset-x-auto sm:left-4">
+    <div role="dialog" aria-label="Cookie choices" className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl border border-line-2 bg-white p-4 shadow-xl sm:inset-x-auto sm:left-4">
       <p className="text-sm leading-relaxed text-ink-2">
         We use cookies to show ads and measure how the calculators are used. Your estimate never leaves your browser
         unless you send it. <Link href="/privacy#cookies" className="underline">Learn more</Link>
       </p>
       <div className="mt-3 flex gap-2">
-        <button onClick={() => choose(true)} className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white">Accept</button>
-        <button onClick={() => choose(false)} className="rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink">Necessary only</button>
+        <button onClick={() => choose(true)} className="bg-ink px-4 py-2 text-sm font-semibold text-white">Accept</button>
+        <button onClick={() => choose(false)} className="border border-line px-4 py-2 text-sm font-semibold text-ink">Necessary only</button>
       </div>
     </div>
   );

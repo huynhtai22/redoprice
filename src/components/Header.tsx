@@ -1,37 +1,39 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Logo from "./Logo";
-import Icon from "./Icons";
-import { NAV } from "@/lib/site";
 import { PROJECTS } from "@/lib/projects";
+
+const SHORT: Record<string, string> = { roofing: "Roofs", solar: "Solar", hvac: "Heating & AC", windows: "Windows", fence: "Fences" };
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const path = usePathname();
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-4 px-4 py-3">
+    <header className="sticky top-0 z-40 border-b border-ink bg-canvas/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" aria-label="RedoPrice home" onClick={() => setOpen(false)}><Logo /></Link>
-        <nav className="hidden items-center gap-1 text-sm font-semibold md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-6 text-[15px] md:flex" aria-label="Main">
           {PROJECTS.map((p) => (
-            <Link key={p.slug} href={`/${p.slug}`} className="rounded-full px-3 py-1.5 text-ink-2 hover:bg-canvas hover:text-ink">{p.name.split(" ")[0]}</Link>
+            <Link key={p.slug} href={`/${p.slug}`} className={`underline-offset-[6px] hover:underline ${path.startsWith(`/${p.slug}`) ? "font-semibold underline decoration-accent-500 decoration-2" : "text-ink-2"}`}>{SHORT[p.key]}</Link>
           ))}
-          <Link href="/check-my-quote" className="ml-2 rounded-full bg-ink px-4 py-2 text-white hover:bg-navy">Check my quote</Link>
+          <Link href="/check-my-quote" className="border border-ink px-3 py-1.5 font-mono text-[13px] uppercase tracking-wider hover:bg-ink hover:text-paper">Check a quote</Link>
         </nav>
-        <button className="rounded-md p-2 md:hidden" aria-expanded={open} aria-controls="mnav" onClick={() => setOpen((o) => !o)}>
+        <button className="-mr-2 p-2 md:hidden" aria-expanded={open} aria-controls="mnav" onClick={() => setOpen((o) => !o)}>
           <span className="sr-only">Menu</span>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+          <span className="font-mono text-xs uppercase tracking-wider">{open ? "Close" : "Menu"}</span>
         </button>
       </div>
       {open && (
-        <nav id="mnav" className="border-t border-line bg-white px-4 py-3 md:hidden" aria-label="Mobile">
-          <ul className="grid gap-1">
-            {PROJECTS.map((p) => (
-              <li key={p.slug}><Link href={`/${p.slug}`} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-2 py-2.5 font-medium"><Icon name={p.icon} className="h-5 w-5 text-accent-600" />{p.calculatorName}</Link></li>
-            ))}
+        <nav id="mnav" className="border-t border-line bg-paper px-4 pb-4 md:hidden" aria-label="Mobile">
+          <p className="label pt-4">Cost calculators</p>
+          <ul className="mt-1 divide-y divide-line">
+            {PROJECTS.map((p) => <li key={p.slug}><Link href={`/${p.slug}`} onClick={() => setOpen(false)} className="block py-3 font-display text-lg">{p.calculatorName}</Link></li>)}
           </ul>
-          <ul className="mt-2 grid gap-1 border-t border-line pt-2">
-            {NAV.slice(1).map((n) => <li key={n.href}><Link href={n.href} onClick={() => setOpen(false)} className="block rounded-lg px-2 py-2.5 font-semibold">{n.label}</Link></li>)}
+          <p className="label pt-4">Tools</p>
+          <ul className="mt-1 divide-y divide-line">
+            {[["/check-my-quote", "Is my quote fair?"], ["/repair-or-replace", "Repair or replace?"], ["/guides", "Guides"]].map(([h, l]) => <li key={h}><Link href={h} onClick={() => setOpen(false)} className="block py-3 font-display text-lg">{l}</Link></li>)}
           </ul>
         </nav>
       )}

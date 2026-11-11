@@ -36,11 +36,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-5 lg:grid-cols-[minmax(0,1fr)_300px]">
         <article className="min-w-0">
           <Breadcrumbs items={[{ href: "/guides", label: "Guides" }, { href: `/guides/${g.slug}`, label: g.kicker }]} />
-          <p className="mt-4 text-xs font-bold uppercase tracking-wide text-accent-700">{g.kicker}</p>
-          <h1 className="mt-1 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{g.title}</h1>
+          <p className="mt-4 label">{g.kicker}</p>
+          <h1 className="mt-1 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">{g.title}</h1>
           <p className="mt-2 text-sm text-mute">By the RedoPrice team · Updated <time dateTime={g.updated}>{new Date(g.updated + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></p>
           {p && (
-            <Link href={`/${p.slug}`} className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-accent-100 bg-accent-50 p-4 text-sm font-semibold">
+            <Link href={`/${p.slug}`} className="mt-5 flex items-center justify-between gap-3 border border-accent-100 bg-accent-50 p-4 text-sm font-semibold">
               <span>Get your own number: {p.calculatorName}</span><span className="text-accent-700">Open →</span>
             </Link>
           )}
@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               return el;
             })}
           </div>
-          {p && <Link href={`/${p.slug}`} className="mt-6 inline-flex rounded-full bg-accent-500 px-5 py-3 font-semibold text-white hover:bg-accent-600">Try the {p.name.toLowerCase()} calculator →</Link>}
+          {p && <Link href={`/${p.slug}`} className="mt-6 inline-flex bg-ink px-5 py-3 font-semibold text-paper hover:bg-accent-600">Try the {p.name.toLowerCase()} calculator →</Link>}
         </article>
         <aside className="hidden lg:block"><div className="sticky top-20 pt-10"><AdSlot placement="sidebar" /></div></aside>
       </div>
@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="font-display text-2xl font-bold">More guides</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            {GUIDES.filter((x) => x.slug !== g.slug).slice(0, 3).map((x) => <Link key={x.slug} href={`/guides/${x.slug}`} className="card p-4 hover:border-ink/25"><p className="text-xs font-bold uppercase text-accent-700">{x.kicker}</p><p className="mt-1 font-semibold">{x.title}</p></Link>)}
+            {GUIDES.filter((x) => x.slug !== g.slug).slice(0, 3).map((x) => <Link key={x.slug} href={`/guides/${x.slug}`} className="card p-4 hover:border-ink/25"><p className="label">{x.kicker}</p><p className="mt-1 font-semibold">{x.title}</p></Link>)}
           </div>
         </section>
         <RelatedProjects exclude={p?.slug} />

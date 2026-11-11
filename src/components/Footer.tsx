@@ -1,40 +1,34 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { PROJECTS } from "@/lib/projects";
-import { SITE } from "@/lib/site";
 import { DATA_UPDATED } from "@/lib/data";
 import ConsentLink from "./ConsentLink";
 
 export default function Footer() {
+  const col = (title: string, items: [string, string][]) => (
+    <div>
+      <p className="label !text-paper/50">{title}</p>
+      <ul className="mt-3 space-y-2">{items.map(([h, l]) => <li key={h}><Link href={h} className="text-paper/80 hover:text-paper hover:underline">{l}</Link></li>)}</ul>
+    </div>
+  );
   return (
-    <footer className="mt-16 bg-ink text-white">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 text-sm sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="mt-20 bg-ink text-paper">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 text-[15px] md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Logo light />
-          <p className="mt-3 text-white/60">{SITE.tagline}. Cost data updated {DATA_UPDATED}.</p>
+          <p className="mt-3 max-w-xs font-display text-lg italic leading-snug text-paper/75">Know the number before anyone knocks on your door.</p>
+          <p className="mt-4 font-mono text-xs text-paper/45">Cost data updated {DATA_UPDATED}</p>
         </div>
+        {col("Calculators", PROJECTS.map((p) => [`/${p.slug}`, p.calculatorName.replace(" Calculator", "")]))}
+        {col("Tools & reading", [["/check-my-quote", "Is my quote fair?"], ["/repair-or-replace", "Repair or replace?"], ["/share-your-quote", "Share what you paid"], ["/guides", "Guides"], ["/how-we-calculate", "How we calculate"]])}
         <div>
-          <p className="font-semibold">Calculators</p>
-          <ul className="mt-2 space-y-1.5">{PROJECTS.map((p) => <li key={p.slug}><Link href={`/${p.slug}`} className="text-white/65 hover:text-white">{p.calculatorName}</Link></li>)}</ul>
-        </div>
-        <div>
-          <p className="font-semibold">Tools & guides</p>
-          <ul className="mt-2 space-y-1.5">
-            {[["/check-my-quote", "Is my quote fair?"], ["/repair-or-replace", "Repair or replace?"], ["/share-your-quote", "Share your real quote"], ["/guides", "Guides"], ["/how-we-calculate", "How we calculate"]].map(([h, l]) => <li key={h}><Link href={h} className="text-white/65 hover:text-white">{l}</Link></li>)}
-          </ul>
-        </div>
-        <div>
-          <p className="font-semibold">Company</p>
-          <ul className="mt-2 space-y-1.5">
-            {[["/about", "About"], ["/contact", "Contact"], ["/privacy", "Privacy Policy"], ["/terms", "Terms of Use"], ["/disclaimer", "Disclaimer"]].map(([h, l]) => <li key={h}><Link href={h} className="text-white/65 hover:text-white">{l}</Link></li>)}
-            <li><ConsentLink /></li>
-          </ul>
+          {col("The small print", [["/about", "About"], ["/contact", "Contact"], ["/privacy", "Privacy"], ["/terms", "Terms"], ["/disclaimer", "Disclaimer"]])}
+          <div className="mt-2 text-paper/80"><ConsentLink /></div>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <p className="mx-auto max-w-6xl px-4 py-5 text-xs leading-relaxed text-white/45">
-          Estimates are for planning only and are not quotes or professional advice. Actual prices depend on your home, materials and contractor.
-          {" "}This site shows ads and may earn money when you request quotes through partners. © {new Date().getFullYear()} {SITE.name}.
+      <div className="border-t border-paper/15">
+        <p className="mx-auto max-w-6xl px-4 py-5 text-[13px] leading-relaxed text-paper/50">
+          These are estimates for planning, not quotes. Your house, your materials and your contractor decide the real price. We run ads and may be paid if you ask for quotes through us. © {new Date().getFullYear()} RedoPrice.
         </p>
       </div>
     </footer>

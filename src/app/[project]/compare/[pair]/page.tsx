@@ -32,10 +32,10 @@ export default async function Page({ params }: { params: Promise<{ project: stri
   const cheaperLife = perYear(a) < perYear(b) ? a : b;
   return (
     <>
-      <div className="border-b border-line bg-white">
+      <div className="border-b border-ink">
         <div className="mx-auto max-w-6xl px-4 pb-6 pt-5">
           <Breadcrumbs items={[{ href: `/${p.slug}`, label: p.name }, { href: `/${p.slug}/compare/${pair}`, label: `${a.v.label} vs ${b.v.label}` }]} />
-          <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{a.v.label} vs {b.v.label}: cost compared</h1>
+          <h1 className="mt-3 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">{a.v.label} vs {b.v.label}: cost compared</h1>
           <p className="mt-2 max-w-3xl text-ink-2">
             On a typical US home, <strong className="text-ink">{cheaperUp.v.label}</strong> costs less upfront ({formatUSD(roundMoney(Math.abs(a.e.typical - b.e.typical)))} less), while{" "}
             <strong className="text-ink">{cheaperLife.v.label}</strong> costs less per year of life. Plug in your home and ZIP to see your own numbers.
@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ project: stri
           <h2 className="font-display text-2xl font-bold">More comparisons</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {PROJECTS.flatMap((pp) => COMPARISONS[pp.key].map(([x, y]) => ({ pp, x, y }))).filter(({ pp, x, y }) => !(pp.slug === p.slug && comparisonSlug(x, y) === pair)).map(({ pp, x, y }) => (
-              <Link key={pp.slug + x + y} href={`/${pp.slug}/compare/${comparisonSlug(x, y)}`} className="inline-block max-w-full rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-ink/30">
+              <Link key={pp.slug + x + y} href={`/${pp.slug}/compare/${comparisonSlug(x, y)}`} className="inline-block max-w-full border border-line-2 bg-white px-3 py-1.5 text-sm hover:border-ink/30">
                 {pp.variants.find((v) => v.slug === x)!.label} vs {pp.variants.find((v) => v.slug === y)!.label}
               </Link>
             ))}

@@ -1,20 +1,22 @@
 import Link from "next/link";
-import Icon from "./Icons";
+import Sketch from "./Sketch";
 import { PROJECTS } from "@/lib/projects";
 
-/** "Planning more than one project?" grid. Drives pages per session. */
-export default function RelatedProjects({ exclude, stateSlug, title = "Price your next project" }: { exclude?: string; stateSlug?: string; title?: string }) {
+/** "Next job on the list" ledger. Drives pages per session. */
+export default function RelatedProjects({ exclude, stateSlug, title = "Next job on the list" }: { exclude?: string; stateSlug?: string; title?: string }) {
   const list = PROJECTS.filter((p) => p.slug !== exclude);
   return (
     <section>
-      <h2 className="font-display text-2xl font-bold tracking-tight">{title}</h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {list.map((p) => (
-          <Link key={p.slug} href={stateSlug ? `/${p.slug}/${stateSlug}` : `/${p.slug}`} className="card group p-4 transition hover:border-ink/25 hover:shadow-sm">
-            <Icon name={p.icon} className="h-6 w-6 text-accent-600" />
-            <p className="mt-2 font-semibold">{p.calculatorName}</p>
-            <p className="mt-1 text-sm text-ink-2">{p.short}</p>
-            <p className="mt-2 text-sm font-semibold text-accent-700 group-hover:underline">Estimate now →</p>
+      <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{title}</h2>
+      <div className="mt-4 grid border-t border-ink sm:grid-cols-2">
+        {list.map((p, i) => (
+          <Link key={p.slug} href={stateSlug ? `/${p.slug}/${stateSlug}` : `/${p.slug}`}
+            className={`group flex items-center gap-4 border-b border-line py-4 ${i % 2 ? "sm:border-l sm:pl-6" : "sm:pr-6"}`}>
+            <Sketch name={p.key} className="h-11 w-14 shrink-0 text-blue" />
+            <span className="min-w-0">
+              <span className="block font-display text-lg font-semibold group-hover:underline group-hover:underline-offset-4">{p.calculatorName.replace(" Calculator", "")}</span>
+              <span className="block text-[15px] text-ink-2">{p.short}</span>
+            </span>
           </Link>
         ))}
       </div>

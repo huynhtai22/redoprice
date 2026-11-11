@@ -25,7 +25,7 @@ export default function ShareQuoteForm({ defaultProject }: { defaultProject?: st
     if (res.ok) { setStatus("done"); track("share_quote_submit", { project: proj }); } else { setStatus("error"); setError(res.error); }
   }
 
-  const input = "mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-base outline-none focus:border-accent-500";
+  const input = "mt-1 w-full border border-line-2 bg-white px-3 py-2.5 text-base outline-none focus:border-accent-500";
   if (status === "done") return <div id="share-quote" className="card p-6 text-center font-semibold" aria-live="polite">Thank you. Your anonymous quote helps make these estimates more accurate for everyone.</div>;
   return (
     <section id="share-quote" data-ad-exclusion-zone className="card p-5 sm:p-6">
@@ -54,7 +54,7 @@ export default function ShareQuoteForm({ defaultProject }: { defaultProject?: st
         </label>
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
         {status === "error" && <p className="text-sm text-bad sm:col-span-2" role="alert">{error}</p>}
-        <button disabled={status === "sending"} className="rounded-full bg-ink px-5 py-3 font-semibold text-white disabled:opacity-60 sm:col-span-2 sm:justify-self-start">{status === "sending" ? "Sending…" : "Share anonymously"}</button>
+        <button disabled={status === "sending"} className="bg-ink px-5 py-3 font-semibold text-paper disabled:opacity-60 sm:col-span-2 sm:justify-self-start">{status === "sending" ? "Sending…" : "Share anonymously"}</button>
       </form>
     </section>
   );

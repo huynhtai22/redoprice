@@ -47,3 +47,7 @@ Never copy competitors' price tables. Calibrate with first-party data from `/sha
 ## Analytics events (dataLayer)
 
 `calc_start`, `calc_zip`, `calc_switch_project`, `quote_check_open`, `quote_check`, `compare_click`, `diy_toggle`, `share_link`, `related_click`, `lead_open`, `lead_submit`, `share_quote_submit`, `ror_tab`.
+
+## Design language (v2)
+
+A contractor's written estimate on kraft paper, with blueprint line drawings. Source Serif 4 headlines, IBM Plex Sans body, IBM Plex Mono for labels and figures. Palette: graphite ink, kraft paper, blueprint blue, pencil red for prices and marks. No gradients, no icon sets, square corners, ruled lists instead of card grids. Illustrations are hand-coded SVG line drawings (`src/components/Sketch.tsx`).

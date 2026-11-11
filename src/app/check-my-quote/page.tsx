@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <div className="border-b border-line bg-white">
+      <div className="border-b border-ink">
         <div className="mx-auto max-w-6xl px-4 pb-6 pt-5">
           <Breadcrumbs items={[{ href: "/check-my-quote", label: "Check my quote" }]} />
-          <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Is my quote fair?</h1>
+          <h1 className="mt-3 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">Is my quote fair?</h1>
           <p className="mt-2 max-w-3xl text-ink-2">Pick the project, enter the price you were quoted, and describe the job. We plot your quote on the low, typical and high range for your ZIP code.</p>
           <div className="mt-3"><DataNote /></div>
         </div>
