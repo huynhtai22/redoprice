@@ -10,7 +10,7 @@ const TONE = { good: "text-good border-good", warn: "text-warn border-warn", bad
 /** Two quick verdicts under every calculator: repair or replace, and DIY or hire. */
 export default function Verdicts({ p, est, inputs }: { p: Project; est: Estimate; inputs: Inputs }) {
   return (
-    <section aria-label="Verdicts" className="mt-5 grid border border-ink bg-paper md:grid-cols-2">
+    <section aria-label="Verdicts" className="mt-5 grid overflow-hidden rounded-md border border-line-2 bg-white md:grid-cols-2">
       <RepairPanel p={p} est={est} />
       <DiyPanel p={p} est={est} inputs={inputs} />
     </section>
@@ -37,7 +37,7 @@ function RepairPanel({ p, est }: { p: Project; est: Estimate }) {
   const maxAge = Math.max(10, Math.round(life * 1.5));
 
   return (
-    <div className="border-b border-ink p-5 sm:p-6 md:border-b-0 md:border-r">
+    <div className="border-b border-line p-5 sm:p-6 md:border-b-0 md:border-r">
       <p className="label">{cfg.repairWord ?? "Repair"} or {(cfg.replaceWord ?? "replace").toLowerCase()}?</p>
       <div className="mt-3 grid gap-4">
         <label className="block">

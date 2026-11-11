@@ -53,7 +53,7 @@ export default function Planner() {
 
   if (rows.length === 0) {
     return (
-      <div className="border border-ink bg-paper p-6 sm:p-8">
+      <div className="rounded-md border border-line-2 bg-white p-6 sm:p-8">
         <p className="label">Your plan is empty</p>
         <h2 className="mt-2 font-display text-2xl font-bold">Price a job, then press &ldquo;Add to my plan&rdquo;</h2>
         <p className="mt-2 max-w-2xl text-ink-2">Each saved estimate keeps your inputs and ZIP. Add as many as you like and this page adds them up into one budget, with a reserve for surprises and a monthly savings target. Nothing leaves this browser.</p>
@@ -84,12 +84,12 @@ export default function Planner() {
       )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
-        <div className="min-w-0 border border-ink bg-paper">
+        <div className="min-w-0 overflow-hidden rounded-md border border-line-2 bg-white">
           {WHEN.map((w) => {
             const list = rows.filter((r) => r.it.when === w.key);
             if (!list.length) return null;
             return (
-              <section key={w.key} className="border-b border-ink last:border-b-0">
+              <section key={w.key} className="border-b border-line-2 last:border-b-0">
                 <div className="flex items-baseline justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
                   <h2 className="font-display text-xl font-bold">{w.label} <span className="ml-1 font-sans text-sm font-normal text-mute">{w.hint}</span></h2>
                   <span className="font-mono text-sm tnum">{formatUSD(roundMoney(sum(list, "typical")))}</span>
@@ -125,7 +125,7 @@ export default function Planner() {
           })}
         </div>
 
-        <aside className="border border-ink bg-paper p-5 lg:sticky lg:top-20">
+        <aside className="rounded-md border border-line-2 bg-white p-5 lg:sticky lg:top-20">
           <p className="label">Budget</p>
           <ul className="mt-3 text-[15px]">
             <li className="leader py-1"><span className="text-ink-2">{rows.length} {rows.length === 1 ? "project" : "projects"}, typical</span><span className="font-mono tnum">{formatUSD(roundMoney(total.typical))}</span></li>

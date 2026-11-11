@@ -415,7 +415,7 @@ function PlanButton({ onAdd }: { onAdd: () => void }) {
   const [added, setAdded] = useState(false);
   if (added) return <Link href="/planner" className="inline-flex items-center gap-1.5 font-semibold text-good"><Icon name="check" className="h-4 w-4" />Saved to your plan. Open it</Link>;
   return (
-    <button onClick={() => { onAdd(); setAdded(true); }} className="inline-flex items-center gap-1.5 bg-ink px-3 py-1.5 font-semibold text-paper hover:bg-accent-600">
+    <button onClick={() => { onAdd(); setAdded(true); }} className="inline-flex items-center gap-1.5 rounded bg-accent-500 px-3 py-1.5 font-semibold text-white hover:bg-accent-700">
       <Icon name="plan" className="h-4 w-4" />Add to my plan
     </button>
   );
