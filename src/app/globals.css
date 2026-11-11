@@ -1,32 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-franklin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-plexmono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* No typewriter face: "mono" now means the text face with tabular figures. */
+  --font-mono: var(--font-franklin), ui-sans-serif, system-ui, sans-serif;
 
-  /* RedoPrice: estimate sheet on kraft paper. Graphite ink, blueprint blue, carpenter-pencil red. */
-  --color-ink: #1d2427;
-  --color-ink-2: #434c50;
-  --color-mute: #6f7675;
-  --color-line: #d8cfbf;
-  --color-line-2: #c3b8a4;
-  --color-canvas: #f3eee4;
-  --color-paper: #fbf8f2;
-  --color-blue: #1e4a72;
-  --color-blue-50: #e6edf3;
-  --color-navy: #1e4a72;
-  --color-accent-50: #f8e9e4;
-  --color-accent-100: #f0d3c9;
-  --color-accent-500: #b8392a;
-  --color-accent-600: #a33123;
-  --color-accent-700: #8c2a1e;
-  --color-good: #3f6b3a;
-  --color-good-50: #e8eedf;
-  --color-warn: #8a5a12;
-  --color-warn-50: #f6ecd6;
-  --color-bad: #a33123;
-  --color-bad-50: #f6e3de;
+  /* RedoPrice: editorial and neutral. Near-black ink, cool greys, one accent (deep green). */
+  --color-ink: #15191e;
+  --color-ink-2: #3b424a;
+  --color-mute: #69717a;
+  --color-line: #e2e5e9;
+  --color-line-2: #c9ced4;
+  --color-canvas: #ffffff;
+  --color-paper: #f7f8f7;
+  --color-blue: #0d6b4f;
+  --color-blue-50: #e8f3ee;
+  --color-navy: #0d6b4f;
+  --color-accent-50: #e8f3ee;
+  --color-accent-100: #cde6da;
+  --color-accent-500: #0d6b4f;
+  --color-accent-600: #0b5c44;
+  --color-accent-700: #094c38;
+  --color-good: #0d6b4f;
+  --color-good-50: #e8f3ee;
+  --color-warn: #9a5b00;
+  --color-warn-50: #fbf1de;
+  --color-bad: #b42318;
+  --color-bad-50: #fdecea;
 
   --radius-xl: 4px;
   --radius-2xl: 6px;
@@ -34,27 +35,23 @@
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-body { background: var(--color-canvas); color: var(--color-ink); font-size: 17px; }
-::selection { background: #f0d3c9; }
+body { background: var(--color-canvas); color: var(--color-ink); font-size: 17px; font-feature-settings: "kern"; }
+::selection { background: #cde6da; }
 
-.card { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 4px; }
+.card { background: #fff; border: 1px solid var(--color-line); border-radius: 6px; }
 .tnum { font-variant-numeric: tabular-nums; }
-.label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-mute); }
+.label { font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mute); }
+.font-mono { font-variant-numeric: tabular-nums; }
 .rule { border-top: 1px solid var(--color-ink); }
 .rule-dash { border-top: 1px dashed var(--color-line-2); }
-/* dotted leader between a label and a figure, like a written estimate */
+/* label ... figure rows; the leader is a hairline, not a dotted estimate-sheet line */
 .leader { display: flex; align-items: baseline; gap: .4rem; }
-.leader::after { content: ""; order: 1; flex: 1; border-bottom: 1.5px dotted var(--color-line-2); transform: translateY(-.25em); }
+.leader::after { content: ""; order: 1; flex: 1; border-bottom: 1px solid var(--color-line); transform: translateY(-.3em); }
 .leader > :last-child { order: 2; }
-/* faint blueprint grid */
-.grid-paper {
-  background-image:
-    linear-gradient(to right, rgb(30 74 114 / .07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(30 74 114 / .07) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.link { color: var(--color-blue); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-.link:hover { color: var(--color-accent-600); }
+/* retired v2 blueprint grid: kept as a no-op so old markup renders plain */
+.grid-paper { background: none; }
+.link { color: var(--color-accent-600); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgb(13 107 79 / .4); }
+.link:hover { color: var(--color-accent-700); text-decoration-color: currentColor; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .animate-rise { animation: rise .3s ease-out both; }
@@ -68,10 +65,10 @@ input[type="range"] { accent-color: var(--color-blue); height: 28px; }
 .prose-x h3 { font-weight: 600; margin: 1.25rem 0 .4rem; }
 .prose-x p { margin-bottom: 1.05rem; line-height: 1.75; color: var(--color-ink-2); }
 .prose-x ul, .prose-x ol { padding-left: 1.25rem; margin-bottom: 1rem; color: var(--color-ink-2); }
-.prose-x ul { list-style: square; } .prose-x ol { list-style: decimal; }
+.prose-x ul { list-style: disc; } .prose-x ol { list-style: decimal; }
 .prose-x li { margin-bottom: .4rem; line-height: 1.65; }
-.prose-x li::marker { color: var(--color-accent-500); }
-.prose-x a { color: var(--color-blue); text-decoration: underline; text-underline-offset: 3px; }
+.prose-x li::marker { color: var(--color-mute); }
+.prose-x a { color: var(--color-accent-600); text-decoration: underline; text-underline-offset: 3px; }
 .prose-x strong { color: var(--color-ink); }
 .prose-x table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
 .prose-x th, .prose-x td { border-bottom: 1px solid var(--color-line); padding: .5rem .25rem; text-align: left; }
@@ -79,3 +76,8 @@ input[type="range"] { accent-color: var(--color-blue); height: 28px; }
 /* Reserved ad space */
 .ad-slot { min-height: var(--ad-h-m, 0px); }
 @media (min-width: 1024px) { .ad-slot { min-height: var(--ad-h-d, 0px); } }
+
+/* Photography: a quiet frame, caption and credit underneath like a news photo */
+.photo { background: var(--color-paper); }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hairline { border-color: var(--color-line); }
