@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <Breadcrumbs items={[{ href: "/guides", label: "Guides" }, { href: `/guides/${g.slug}`, label: g.kicker }]} />
           <p className="mt-4 label">{g.kicker}</p>
           <h1 className="mt-1 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">{g.title}</h1>
-          <Byline projectKey={p?.key} updated={g.updated} />
+          <div className="mt-3 border-y border-line py-2.5"><Byline projectKey={p?.key} updated={g.updated} /></div>
           {p && (
             <Link href={`/${p.slug}`} className="mt-5 flex items-center justify-between gap-3 border border-accent-100 bg-accent-50 p-4 text-sm font-semibold">
               <span>Get your own number: {p.calculatorName}</span><span className="text-accent-700">Open →</span>

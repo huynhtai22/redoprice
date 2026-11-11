@@ -1,18 +1,25 @@
 import Link from "next/link";
 import { bylineFor, personUrl } from "@/lib/people";
+import { DATA_IS_ESTIMATE, DATA_UPDATED, datasetsFor } from "@/lib/data";
 import { longDate } from "@/lib/format";
 
-/** Article byline: author, reviewer (only a real one), updated date. */
-export default function Byline({ projectKey, updated }: { projectKey?: string; updated: string }) {
-  const { author, reviewer } = bylineFor(projectKey);
+/**
+ * Author, reviewer, date and sources in one quiet line under a headline.
+ * The reviewer is only named once a real, published profile exists (see src/lib/people.ts);
+ * until then the line says the trade review is pending and links to the open role.
+ */
+export default function Byline({ projectKey, updated = DATA_UPDATED, sourcesHref }: { projectKey?: string; updated?: string; sourcesHref?: string }) {
+  const { author, reviewer, openReviewer } = bylineFor(projectKey);
+  const n = datasetsFor(projectKey).length;
   return (
-    <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-y border-line py-2 text-[14px] text-ink-2">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13.5px] text-ink-2">
       <span>By <Link href={personUrl(author)} className="font-semibold text-ink hover:underline">{author.name}</Link></span>
-      {reviewer && <><span aria-hidden className="text-line-2">/</span><span>Checked by <Link href={personUrl(reviewer)} className="font-semibold text-ink hover:underline">{reviewer.name}</Link>, {reviewer.role.replace(/^Expert reviewer, /i, "")}</span></>}
-      <span aria-hidden className="text-line-2">/</span>
-      <span>Updated <time dateTime={updated} className="font-mono text-[13px] tnum">{longDate(updated)}</time></span>
-      <span aria-hidden className="text-line-2">/</span>
-      <Link href="/how-we-calculate#editorial" className="link text-[13px]">Editorial standards</Link>
-    </p>
+      {reviewer
+        ? <span>Reviewed by <Link href={personUrl(reviewer)} className="font-semibold text-ink hover:underline">{reviewer.name}</Link>, {reviewer.role.replace(/^Expert reviewer, /i, "")}</span>
+        : openReviewer && <Link href={personUrl(openReviewer)} className="text-mute hover:text-ink hover:underline" title="We have not signed a licensed trade reviewer for this topic yet">Trade review pending</Link>}
+      <span>Updated <time dateTime={updated}>{longDate(updated)}</time></span>
+      <Link href={sourcesHref ?? "/how-we-calculate"} className="link">{sourcesHref ? `${n} sources` : "How we calculate"}</Link>
+      {DATA_IS_ESTIMATE && <span className="rounded-sm bg-warn-50 px-1.5 py-0.5 text-[12px] font-medium text-warn">Partly modeled</span>}
+    </div>
   );
 }

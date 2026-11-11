@@ -36,19 +36,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <div className="mx-auto max-w-4xl px-4 pt-5">
       <Breadcrumbs items={[{ href: "/authors", label: "People" }, { href: personUrl(p), label: p.published ? p.name : p.role }]} />
 
-      <header className="mt-6 grid gap-6 border-y-2 border-ink py-6 sm:grid-cols-[120px_minmax(0,1fr)]">
-        <div className="grid-paper grid aspect-square w-[120px] place-items-center border border-ink bg-paper">
+      <header className="mt-6 grid gap-6 border-b border-line py-6 sm:grid-cols-[120px_minmax(0,1fr)]">
+        <div className="grid aspect-square w-[120px] place-items-center overflow-hidden rounded-md border border-line bg-paper">
           {p.photo
             // eslint-disable-next-line @next/next/no-img-element
             ? <img src={p.photo} alt={p.name} className="h-full w-full object-cover grayscale" />
-            : <span className="font-display text-4xl font-bold text-blue">{initials}</span>}
+            : <span className="font-display text-4xl font-bold text-accent-600">{initials}</span>}
         </div>
         <div className="min-w-0">
           <p className="label">{p.kind === "reviewer" ? "Expert reviewer" : "Author"}</p>
           <h1 className="mt-1 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-[2.6rem]">{p.published ? p.name : p.role}</h1>
           <p className="mt-1 text-lg text-ink-2">{p.published ? p.role : p.short}</p>
           {!p.published && (
-            <p className="mt-3 border-l-4 border-warn bg-warn-50 px-3 py-2 text-[15px] text-ink">
+            <p className="mt-3 rounded-md border-l-4 border-warn bg-warn-50 px-3 py-2 text-[15px] text-ink">
               <strong>This role is open.</strong> No one is listed as a reviewer until a real, licensed professional has signed on, and pages in this area say &quot;Trade review pending&quot; until then.
             </p>
           )}
@@ -79,7 +79,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <li>Installed price ranges and the split between materials and labor.</li>
               <li>Default assumptions: waste factors, removal, permits, job difficulty.</li>
               <li>The cost factors, FAQs and red flags on each page, for accuracy and missing caveats.</li>
-              <li>A signed-off review date, shown in the page&apos;s title block. Reviews repeat at least twice a year.</li>
+              <li>A signed-off review date, shown in the page&apos;s byline. Reviews repeat at least twice a year.</li>
             </ul>
           ) : (
             <ul>

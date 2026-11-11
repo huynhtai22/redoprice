@@ -59,17 +59,17 @@ export default function Page() {
       <div className="mx-auto max-w-4xl px-4 pt-5">
         <Breadcrumbs items={[{ href: "/how-we-calculate", label: "How we calculate" }]} />
         <p className="mt-6 label">Method</p>
-        <h1 className="mt-1 font-display text-[2.3rem] font-bold leading-[1.08] tracking-tight sm:text-[3.4rem]">How we calculate<br /><span className="italic text-blue">what it should cost</span></h1>
+        <h1 className="mt-1 font-display text-[2.3rem] font-bold leading-[1.08] tracking-[-0.015em] sm:text-[3.2rem]">How we calculate<br /><span className="text-accent-600">what it should cost</span></h1>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-2">
           No copied price tables, no lead-gen guesswork. Every estimate runs through the same short formula, fed by government data where it exists and by our own model where it does not. Below is the formula, a real example worked by hand, and the status of every dataset.
         </p>
-        <Byline updated={DATA_UPDATED} />
+        <div className="mt-5 border-y border-line py-3"><Byline updated={DATA_UPDATED} sourcesHref="#sources" /></div>
       </div>
 
-      {/* The formula, drawn like a dimensioned detail */}
+      {/* The formula, with numbered terms explained underneath */}
       <section className="mx-auto mt-10 max-w-5xl px-4">
-        <div className="grid-paper relative border-2 border-ink bg-paper px-5 pb-6 pt-8 sm:px-10">
-          <span className="absolute -top-3 left-4 bg-canvas px-2 font-mono text-[11px] uppercase tracking-[.16em] text-mute">Detail A · The formula</span>
+        <div className="relative rounded-md border border-line bg-paper px-5 pb-6 pt-8 sm:px-10">
+          <span className="absolute -top-3 left-4 bg-canvas px-2 label">The formula</span>
           <p className="text-center font-display text-[1.25rem] leading-[2.2] sm:text-[1.75rem]">
             Estimate = ( <Term n={1}>rate</Term> × <Term n={2}>material %</Term> × <Term n={3}>material index</Term> + <Term n={1}>rate</Term> × <Term n={4}>labor %</Term> × <Term n={5}>labor index</Term> × <Term n={6}>difficulty</Term> ) × <Term n={7}>size</Term> + removal + permit
           </p>
@@ -100,10 +100,10 @@ export default function Page() {
               </span>
             </li>
           ))}
-          <li className="grid gap-x-4 bg-ink px-3 py-4 text-paper sm:grid-cols-[2rem_12rem_minmax(0,1fr)] sm:px-0">
-            <span className="font-mono text-sm text-paper/60 sm:pl-0">=</span>
+          <li className="grid gap-x-4 rounded-b-md bg-ink px-3 py-4 text-white sm:grid-cols-[2rem_12rem_minmax(0,1fr)] sm:px-0">
+            <span className="font-mono text-sm text-white/60 sm:pl-0">=</span>
             <span className="font-semibold">Estimate, Texas</span>
-            <span className="font-mono text-lg tnum">{formatUSD(roundMoney(est.typical))} <span className="text-[14px] text-paper/60">typical · range {formatUSD(roundMoney(est.low))} to {formatUSD(roundMoney(est.high))}</span></span>
+            <span className="font-mono text-lg tnum">{formatUSD(roundMoney(est.typical))} <span className="text-[14px] text-white/60">typical · range {formatUSD(roundMoney(est.low))} to {formatUSD(roundMoney(est.high))}</span></span>
           </li>
         </ol>
         <p className="mt-3 text-[15px] text-ink-2">Try it with your own roof in the <Link href="/roof-replacement-cost/texas" className="link">Texas roof calculator</Link>.</p>
@@ -158,7 +158,7 @@ export default function Page() {
             <li>Labor wages: yearly, after each BLS wage release (spring).</li>
             <li>Material price levels and spot checks: quarterly.</li>
             <li>Electricity prices: monthly checks, updated when the state average moves more than 5%.</li>
-            <li>Any change that moves estimates gets a new release number, shown in each page&apos;s title block.</li>
+            <li>Any change that moves estimates gets a new release number, shown under each page&apos;s headline.</li>
           </ul>
 
           <h2 id="editorial">Editorial standards</h2>

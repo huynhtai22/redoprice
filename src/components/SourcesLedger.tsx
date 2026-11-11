@@ -4,8 +4,8 @@ import { longDate } from "@/lib/format";
 
 const tone: Record<DatasetMeta["status"], string> = {
   verified: "border-good text-good",
-  sourced: "border-blue text-blue",
-  partial: "border-blue/50 text-blue",
+  sourced: "border-accent-600 text-accent-600",
+  partial: "border-accent-100 text-accent-700",
   model: "border-ink-2 text-ink-2",
   estimate: "border-warn text-warn",
 };
@@ -36,10 +36,10 @@ export default function SourcesLedger({ projectKey, place }: { projectKey?: stri
         Every figure on this page{place ? ` for ${place}` : ""} is computed from the datasets below. Each one carries a release number and a status, so you can see
         what comes straight from public data and what is still our own model.
       </p>
-      <ol className="mt-4 border-t-2 border-ink">
+      <ol className="mt-4 border-t border-ink">
         {sets.map((d, i) => (
           <li key={d.dataset} className="grid gap-x-4 gap-y-1 border-b border-line py-3 sm:grid-cols-[2rem_minmax(0,1fr)_auto]">
-            <span className="hidden font-mono text-sm text-accent-600 sm:block">{String(i + 1).padStart(2, "0")}</span>
+            <span className="hidden text-sm font-semibold text-mute tnum sm:block">{String(i + 1).padStart(2, "0")}</span>
             <div className="min-w-0">
               <p className="font-semibold">{PURPOSE[d.dataset] ?? d.dataset}</p>
               <ul className="mt-1 space-y-0.5 text-[14px] text-ink-2">
@@ -54,7 +54,7 @@ export default function SourcesLedger({ projectKey, place }: { projectKey?: stri
               </ul>
             </div>
             <div className="flex items-center gap-3 sm:flex-col sm:items-end sm:gap-1">
-              <span className={`border px-1.5 py-0.5 font-mono text-[10.5px] uppercase tracking-wider ${tone[d.status]}`}>{STATUS_LABEL[d.status]}</span>
+              <span className={`rounded-sm border px-1.5 py-0.5 font-semibold text-[10.5px] uppercase tracking-wider ${tone[d.status]}`}>{STATUS_LABEL[d.status]}</span>
               <span className="font-mono text-[11px] text-mute tnum">rel. {d.version} · {longDate(d.updated)}</span>
             </div>
           </li>

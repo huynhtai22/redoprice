@@ -174,13 +174,13 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
 
         {/* RESULT */}
         <div ref={resultRef} className="min-w-0 lg:sticky lg:top-20">
-          <div className="overflow-hidden border border-ink bg-paper shadow-[4px_4px_0_0_rgb(29_36_39/0.12)]" aria-live="polite">
+          <div className="overflow-hidden rounded-md border border-line-2 bg-white shadow-[0_1px_2px_rgb(21_25_30/0.06),0_8px_24px_-12px_rgb(21_25_30/0.18)]" aria-live="polite">
             <div className="p-5 sm:p-6">
               <div className="flex items-center justify-between gap-2">
                 <p className="label">Estimate · {region.label}</p>
                 <span className="label">Est.</span>
               </div>
-              <p className="mt-2 font-display text-[2.9rem] font-bold leading-none tracking-tight text-accent-600 tnum sm:text-[3.4rem]">
+              <p className="mt-2 font-display text-[2.9rem] font-bold leading-none tracking-tight text-ink tnum sm:text-[3.4rem]">
                 <AnimatedNumber value={roundMoney(est.typical)} />
               </p>
               <p className="mt-2 text-[15px] text-ink-2 tnum">
@@ -192,7 +192,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
               <div className="relative mt-6 h-12" aria-hidden>
                 <div className="absolute inset-x-0 top-[26px] h-px bg-ink/40" />
                 {Array.from({ length: 21 }, (_, t) => <div key={t} className={`absolute top-[22px] w-px bg-ink/40 ${t % 5 === 0 ? "h-[9px]" : "h-[5px] translate-y-[2px]"}`} style={{ left: `${t * 5}%` }} />)}
-                <div className="absolute top-[20px] h-3 border-x border-blue bg-blue/15" style={{ left: pos(est.low), width: `calc(${pos(est.high)} - ${pos(est.low)})`, backgroundImage: "repeating-linear-gradient(135deg, rgb(30 74 114 / .25) 0 1px, transparent 1px 5px)" }} />
+                <div className="absolute top-[20px] h-3 rounded-sm bg-accent-500/20" style={{ left: pos(est.low), width: `calc(${pos(est.high)} - ${pos(est.low)})` }} />
                 <Marker at={pos(avg.typical)} label={region.state.code === "US" ? "US avg" : "Local avg"} cls="bg-blue" below />
                 <Marker at={pos(est.typical)} label="You" cls="bg-accent-500" />
                 {quote > 0 && <Marker at={pos(quote)} label="Quote" cls={verdict?.tone === "good" ? "bg-good" : verdict?.tone === "warn" ? "bg-warn" : "bg-bad"} below />}

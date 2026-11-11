@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
+import { Libre_Franklin, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,9 +9,8 @@ import MobileAnchorAd from "@/components/MobileAnchorAd";
 import { SITE } from "@/lib/site";
 import { ADSENSE_CLIENT } from "@/lib/ads";
 
-const plex = IBM_Plex_Sans({ subsets: ["latin"], variable: "--font-plex", display: "swap", weight: ["400", "500", "600", "700"] });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-plexmono", display: "swap", weight: ["400", "500", "600"] });
-const serif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif", display: "swap", weight: ["400", "600", "700"], style: ["normal", "italic"] });
+const franklin = Libre_Franklin({ subsets: ["latin"], variable: "--font-franklin", display: "swap", weight: ["400", "500", "600", "700"] });
+const serif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif", display: "swap", weight: ["600", "700"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
   ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } } : {}),
 };
 
-export const viewport: Viewport = { themeColor: "#1e4a72", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#ffffff", width: "device-width", initialScale: 1 };
 
 // Consent Mode v2 defaults: denied in EEA/UK/CH until the visitor chooses, granted elsewhere.
 const CONSENT_DEFAULTS = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
@@ -34,7 +33,7 @@ gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_persona
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const ga = process.env.NEXT_PUBLIC_GA_ID;
   return (
-    <html lang="en-US" className={`${plex.variable} ${plexMono.variable} ${serif.variable}`}>
+    <html lang="en-US" className={`${franklin.variable} ${serif.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULTS }} />
         {ADSENSE_CLIENT && <meta name="google-adsense-account" content={ADSENSE_CLIENT} />}
