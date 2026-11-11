@@ -5,6 +5,9 @@ import Calculator from "@/components/Calculator";
 import AdSlot from "@/components/AdSlot";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DataNote from "@/components/DataNote";
+import SourcesLedger from "@/components/SourcesLedger";
+import JsonLd from "@/components/JsonLd";
+import { pageSchema } from "@/lib/schema";
 import RelatedProjects from "@/components/RelatedProjects";
 import { COMPARISONS, PROJECTS, comparisonSlug, getProject, parseComparison } from "@/lib/projects";
 import { NATIONAL_REGION } from "@/lib/data";
@@ -40,7 +43,7 @@ export default async function Page({ params }: { params: Promise<{ project: stri
             On a typical US home, <strong className="text-ink">{cheaperUp.v.label}</strong> costs less upfront ({formatUSD(roundMoney(Math.abs(a.e.typical - b.e.typical)))} less), while{" "}
             <strong className="text-ink">{cheaperLife.v.label}</strong> costs less per year of life. Plug in your home and ZIP to see your own numbers.
           </p>
-          <div className="mt-3"><DataNote /></div>
+          <div className="mt-5"><DataNote projectKey={p.key} /></div>
         </div>
       </div>
       <div className="mx-auto mt-6 grid max-w-6xl gap-4 px-4 sm:grid-cols-2">
@@ -74,9 +77,11 @@ export default async function Page({ params }: { params: Promise<{ project: stri
             ))}
           </div>
         </section>
+        <SourcesLedger projectKey={p.key} />
         <RelatedProjects exclude={p.slug} />
         <AdSlot placement="beforeFooter" />
       </div>
+      <JsonLd data={pageSchema({ title: `${a.v.label} vs ${b.v.label}: cost compared`, description: `${a.v.label} vs ${b.v.label} on installed price and lifetime cost.`, path: `/${p.slug}/compare/${pair}`, projectKey: p.key })} />
     </>
   );
 }
