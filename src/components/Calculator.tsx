@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { PROJECTS, getProject, DIY } from "@/lib/projects";
+import { PROJECTS, getProject, LAUNCH_KEYS } from "@/lib/projects";
+import { addToPlan } from "@/lib/planner";
 import { getMetro, getState, NATIONAL_REGION, regionFor, stateFromZip, type Region } from "@/lib/data";
 import type { Estimate, Input, Inputs, Project } from "@/lib/engine";
 import { formatNum, formatUSD, formatUSD2, pct, roundMoney } from "@/lib/format";
@@ -10,6 +11,7 @@ import { track } from "@/lib/track";
 import AnimatedNumber from "./AnimatedNumber";
 import Swatch from "./Swatch";
 import Icon from "./Icons";
+import Verdicts from "./Verdicts";
 
 type Props = {
   projectSlug: string;
@@ -47,7 +49,6 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
   const [inputs, setInputs] = useState<Inputs>(() => ({ ...p.defaults(initialRegion), ...preset }));
   const [quoteStr, setQuoteStr] = useState("");
   const [showQuote, setShowQuote] = useState(mode === "quote");
-  const [diy, setDiy] = useState(false);
   const started = useRef(false);
   const resultRef = useRef<HTMLDivElement>(null);
   const [stickyBar, setStickyBar] = useState(false);
@@ -124,9 +125,6 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
     .map((v) => ({ v, t: p.compute({ ...inputs, [p.variantKey]: v.value }, region) }))
     .sort((a, b) => a.t.typical - b.t.typical);
 
-  const diyCfg = DIY[p.key];
-  const laborLine = est.breakdown.find((l) => /labor/i.test(l.label));
-  const diyUnits = Number(inputs.length ?? inputs.count ?? 0);
 
   // Bar scale
   const lo = Math.min(est.low, avg.typical, quote || Infinity) * 0.85;
@@ -138,13 +136,20 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
   return (
     <div id="calculator" data-ad-exclusion-zone className="relative">
       {projectSwitcher && (
-        <div className="mb-4 flex gap-5 overflow-x-auto border-b border-line" role="tablist" aria-label="Project">
-          {PROJECTS.map((pp) => (
-            <button key={pp.slug} role="tab" aria-selected={pp.slug === slug} onClick={() => switchProject(pp.slug)}
-              className={`shrink-0 border-b-2 px-1 pb-2 pt-1 text-[15px] transition ${pp.slug === slug ? "border-accent-500 font-semibold text-ink" : "border-transparent text-ink-2 hover:text-ink"}`}>
-              {pp.name}
-            </button>
-          ))}
+        <div className="mb-4 flex items-end gap-5 border-b border-line">
+          <div className="flex gap-5 overflow-x-auto" role="tablist" aria-label="Project">
+            {PROJECTS.filter((pp) => (LAUNCH_KEYS as readonly string[]).includes(pp.key)).map((pp) => (
+              <button key={pp.slug} role="tab" aria-selected={pp.slug === slug} onClick={() => switchProject(pp.slug)}
+                className={`shrink-0 border-b-2 px-1 pb-2 pt-1 text-[15px] transition ${pp.slug === slug ? "border-accent-500 font-semibold text-ink" : "border-transparent text-ink-2 hover:text-ink"}`}>
+                {pp.name}
+              </button>
+            ))}
+          </div>
+          <select aria-label="More projects" value={(LAUNCH_KEYS as readonly string[]).includes(p.key) ? "" : slug} onChange={(e) => e.target.value && switchProject(e.target.value)}
+            className={`mb-1.5 ml-auto shrink-0 border bg-white px-2 py-1 text-[14px] ${(LAUNCH_KEYS as readonly string[]).includes(p.key) ? "border-line-2 text-ink-2" : "border-ink font-semibold"}`}>
+            <option value="">More projects…</option>
+            {PROJECTS.filter((pp) => !(LAUNCH_KEYS as readonly string[]).includes(pp.key)).map((pp) => <option key={pp.slug} value={pp.slug}>{pp.name}</option>)}
+          </select>
         </div>
       )}
 
@@ -254,27 +259,6 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
                 </dl>
               )}
 
-              {/* DIY vs hire */}
-              {!compact && diyCfg && laborLine && (
-                <div className="mt-4 border border-dashed border-line-2 p-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[15px] font-semibold">Doing it yourself?</p>
-                    <div className="flex border border-line-2 text-xs font-semibold">
-                      {["Hire a pro", "DIY"].map((t, i) => (
-                        <button key={t} onClick={() => { setDiy(i === 1); track("diy_toggle", { project: p.key, diy: i === 1 }); }} className={`px-2.5 py-1 ${diy === (i === 1) ? "bg-ink text-paper" : "text-mute"}`}>{t}</button>
-                      ))}
-                    </div>
-                  </div>
-                  {diy && (
-                    <div className="mt-2 text-sm text-ink-2 animate-rise">
-                      <p>Skip about <strong className="text-good tnum">{formatUSD(roundMoney(laborLine.value - (diyCfg.tools[0] + diyCfg.tools[1]) / 2))}</strong> of labor after {formatUSD(diyCfg.tools[0])} to {formatUSD(diyCfg.tools[1])} in tools and rentals.</p>
-                      <p className="mt-1">Time: about {formatNum(Math.max(1, Math.ceil(diyUnits / diyCfg.unitsPerDay)))} days for two people. {diyCfg.difficulty}.</p>
-                      <p className="mt-1 text-xs text-mute">{diyCfg.warning}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-
               {/* Swap material: compare & play */}
               {!compact && alternatives.length > 0 && (
                 <div className="mt-5">
@@ -303,6 +287,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
                 </Link>
               ) : (
                 <>
+                  <PlanButton onAdd={() => { addToPlan({ slug: p.slug, inputs, stateCode: region.state.code === "US" ? undefined : region.state.code, metroSlug: region.metro?.slug, zip: zip.length === 5 ? zip : undefined }); track("plan_add", { project: p.key }); }} />
                   <ShareButton project={p.key} />
                   <a href="#quote-form" onClick={() => track("lead_open", { project: p.key, from: "result" })} className="font-semibold text-ink-2 underline-offset-4 hover:underline">
                     Get quotes from local {p.quoteNoun}
@@ -314,6 +299,8 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
           {!compact && <p className="mt-2 px-1 text-[11px] leading-relaxed text-mute">An estimate from our cost model, adjusted for your area. Not a quote. <Link href="/how-we-calculate" className="underline">How we calculate</Link></p>}
         </div>
       </div>
+
+      {!compact && mode === "full" && <Verdicts p={p} est={est} inputs={inputs} />}
 
       {/* Mobile sticky estimate bar */}
       {stickyBar && (
@@ -393,7 +380,7 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
             return (
               <button type="button" role="radio" aria-checked={on} key={o.value} onClick={() => onChange(o.value)}
                 className={`overflow-hidden border bg-white text-left transition ${on ? "border-ink ring-1 ring-ink" : "border-line hover:border-ink/50"}`}>
-                <Swatch name={o.swatch} className="block h-12 w-full" />
+                {o.swatch && <Swatch name={o.swatch} className="block h-12 w-full" />}
                 <span className="block px-2.5 pb-2 pt-1.5">
                   <span className="block text-[14px] font-semibold leading-tight">{o.label}</span>
                   {o.tag && <span className="mt-0.5 inline-block font-mono text-[10px] uppercase tracking-wider text-mute">{o.tag === "Budget" ? "$" : o.tag === "Mid-range" ? "$$" : "$$$"} · {o.tag}</span>}
@@ -421,6 +408,16 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
       </div>
       {(() => { const h = inp.options.find((o) => String(value) === o.value)?.hint; return h ? <p className="mt-1 text-xs text-mute">{h}</p> : null; })()}
     </fieldset>
+  );
+}
+
+function PlanButton({ onAdd }: { onAdd: () => void }) {
+  const [added, setAdded] = useState(false);
+  if (added) return <Link href="/planner" className="inline-flex items-center gap-1.5 font-semibold text-good"><Icon name="check" className="h-4 w-4" />Saved to your plan. Open it</Link>;
+  return (
+    <button onClick={() => { onAdd(); setAdded(true); }} className="inline-flex items-center gap-1.5 bg-ink px-3 py-1.5 font-semibold text-paper hover:bg-accent-600">
+      <Icon name="plan" className="h-4 w-4" />Add to my plan
+    </button>
   );
 }
 
