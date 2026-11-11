@@ -2,7 +2,7 @@
  * Shareable cost sheets rendered with next/og (Satori). Two formats:
  *  - "og":  1200x630, used as og:image / twitter:image for hub, material, state and city pages
  *  - "pin": 1000x1500, a tall Pinterest pin with the cost-by-material table
- * Deliberately plain: one serif for figures, one sans for text, ink on off-white, one accent.
+ * Design v3: Source Serif 4 for headlines and figures, Libre Franklin for text, ink on white, one green accent.
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -13,7 +13,7 @@ import { DATA_IS_ESTIMATE, DATA_UPDATED } from "../data";
 import { formatUSD, roundMoney } from "../format";
 import { SITE } from "../site";
 
-const C = { bg: "#faf8f4", ink: "#1d2427", ink2: "#4a5357", mute: "#7a8082", line: "#d9d4ca", accent: "#1e4a72", band: "#e3e9ef" };
+const C = { bg: "#ffffff", panel: "#f7f8f7", ink: "#15191e", ink2: "#3b424a", mute: "#69717a", line: "#e2e5e9", accent: "#0d6b4f", band: "#e8f3ee" };
 
 let fontsP: Promise<{ name: string; data: Buffer; weight: 400 | 600 | 700; style: "normal" }[]> | null = null;
 const fonts = () =>
