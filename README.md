@@ -2,6 +2,8 @@
 
 "Know what it should cost before anyone quotes you." Free home improvement cost calculators (roof, solar, HVAC, windows, fence) with ZIP-adjusted live estimates. AdSense-first.
 
+Live preview: https://redoprice.vercel.app (custom domain redoprice.com to be added).
+
 Stack: Next.js 15 (App Router) + TypeScript + Tailwind v4. Fully static (about 570 pages), deploys on Vercel.
 
 ```bash
