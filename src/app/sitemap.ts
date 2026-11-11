@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     p.variants.forEach((v) => out.push(u(`/${p.slug}/${v.slug}`, 0.7)));
     COMPARISONS[p.key].forEach(([a, b]) => out.push(u(`/${p.slug}/compare/${comparisonSlug(a, b)}`, 0.7)));
     if (isIndexable("state", p)) STATES.forEach((s) => out.push(u(`/${p.slug}/${s.slug}`, 0.6)));
-    if (isIndexable("city", p)) METROS.forEach((m) => out.push(u(`/${p.slug}/${STATES.find((s) => s.code === m.state)!.slug}/${m.slug}`, 0.5)));
+    METROS.filter((m) => isIndexable("city", p, m)).forEach((m) => out.push(u(`/${p.slug}/${STATES.find((s) => s.code === m.state)!.slug}/${m.slug}`, 0.5)));
   }
   GUIDES.forEach((g) => out.push({ url: `${SITE.url}/guides/${g.slug}`, lastModified: new Date(g.updated), priority: 0.6 }));
   return out;

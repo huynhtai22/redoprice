@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ project: 
     title: `${p.name} Cost in ${m.name}, ${st.code} (2026): ${formatUSD(roundMoney(e.low))}–${formatUSD(roundMoney(e.high))}`,
     description: `Is your ${p.noun} quote fair? Typical ${p.name.toLowerCase()} prices in ${m.name}, adjusted for local labor. Check any quote against the local range.`,
     alternates: { canonical: `/${p.slug}/${st.slug}/${m.slug}` },
-    robots: isIndexable("city", p) ? undefined : { index: false, follow: true },
+    robots: isIndexable("city", p, m) ? undefined : { index: false, follow: true },
   };
 }
 
