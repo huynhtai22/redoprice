@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "dataset": "community-quotes",
+    "updated": "2026-11-11",
+    "notes": "Moderated, anonymized quotes shared through /share-your-quote. Only status \"approved\" rows are ever published, and only once an area has at least minSample of them. Rows hold a 3-digit ZIP prefix, never a full ZIP, name, email or free text. Manage with `npm run quotes:moderate`."
+  },
+  "minSample": 5,
+  "quotes": []
+}

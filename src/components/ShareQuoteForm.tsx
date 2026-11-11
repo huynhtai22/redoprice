@@ -30,7 +30,7 @@ export default function ShareQuoteForm({ defaultProject }: { defaultProject?: st
   return (
     <section id="share-quote" data-ad-exclusion-zone className="card p-5 sm:p-6">
       <h2 className="font-display text-xl font-bold">Share your real quote (anonymous)</h2>
-      <p className="mt-1 text-sm text-ink-2">Got a quote or finished a project? Tell us what you were charged. We never ask for your name or contact details, and we only publish aggregated numbers.</p>
+      <p className="mt-1 text-sm text-ink-2">Got a quote or finished a project? Tell us what you were charged. We never ask for your name or contact details. Every quote is reviewed by hand, and an area is published only once it has at least five, with amounts rounded and location shown as a 3-digit ZIP area.</p>
       <form onSubmit={onSubmit} className="mt-4 grid gap-3 sm:grid-cols-2">
         <label className="text-sm font-semibold">Project
           <select name="project" value={proj} onChange={(e) => setProj(e.target.value as typeof proj)} className={input}>
@@ -51,6 +51,10 @@ export default function ShareQuoteForm({ defaultProject }: { defaultProject?: st
         </label>
         <label className="text-sm font-semibold">What happened?
           <select name="outcome" className={input}>{["Still deciding", "Hired this contractor", "Hired someone else", "Did not do the project"].map((x) => <option key={x}>{x}</option>)}</select>
+        </label>
+        <label className="flex items-start gap-2.5 text-sm text-ink-2 sm:col-span-2">
+          <input type="checkbox" name="real" required className="mt-1 h-4 w-4 shrink-0 accent-[var(--color-ink)]" />
+          <span>This is a real written quote or invoice I received for my own home.</span>
         </label>
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
         {status === "error" && <p className="text-sm text-bad sm:col-span-2" role="alert">{error}</p>}
