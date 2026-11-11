@@ -9,6 +9,7 @@ import metroData from "@/data/2026-11/metro-index.json";
 import energy from "@/data/2026-11/energy-solar.json";
 import housing from "@/data/2026-11/housing-defaults.json";
 import national from "@/data/2026-11/national-costs.json";
+import depth from "@/data/2026-11/national-costs-depth.json";
 
 export type DatasetMeta = {
   dataset: string;
@@ -36,6 +37,8 @@ export const ENERGY = energy as unknown as {
 };
 export const HOUSING = housing as unknown as { meta: DatasetMeta; typicalHomeSqft: Record<string, number> };
 export const NATIONAL = national;
+/** Rates for the projects added in Nov 2026, plus repair-cost ranges for every project. */
+export const DEPTH = depth;
 
 export const DATASETS: DatasetMeta[] = [
   national.meta as DatasetMeta,
@@ -43,6 +46,7 @@ export const DATASETS: DatasetMeta[] = [
   metroData.meta as DatasetMeta,
   energy.meta as DatasetMeta,
   housing.meta as DatasetMeta,
+  depth.meta as DatasetMeta,
 ];
 
 /** True while any dataset is still an estimate. Drives the "estimated data" labels in the UI. */
