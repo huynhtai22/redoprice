@@ -11,11 +11,13 @@ import ContractorChecklist from "./ContractorChecklist";
 import LeadForm from "./LeadForm";
 import JsonLd from "./JsonLd";
 import { COMPARISONS, RESALE, comparisonSlug, getVariant } from "@/lib/projects";
-import { METROS, NATIONAL, NATIONAL_REGION, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
+import { METROS, NATIONAL_REGION, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
 import type { Project, Variant } from "@/lib/engine";
 import { formatUSD, pct, roundMoney } from "@/lib/format";
 import { GUIDES } from "@/lib/guides";
 import { SITE } from "@/lib/site";
+import { DIY, REPAIR, commonRepairs } from "@/lib/verdicts";
+import { hasCityPages } from "@/lib/indexing";
 
 const CLIMATE: Record<string, string> = {
   hail: "Hail is common here. Impact-rated (Class 4) materials cost more but can lower insurance premiums and survive storms better.",
@@ -54,7 +56,11 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
   const guides = GUIDES.filter((g) => p.relatedGuides.includes(g.slug));
   const comps = COMPARISONS[p.key];
   const metros = state ? metrosInState(state.code).filter((m) => m.slug !== metro?.slug) : METROS.slice(0, 12);
-  const permit = (NATIONAL[p.key] as { permit: number[] }).permit;
+  const permit = p.permit;
+  const rep = REPAIR[p.key];
+  const diy = DIY[p.key];
+  const repairs = commonRepairs(p.key);
+  const cities = hasCityPages(p);
 
   return (
     <>
@@ -165,6 +171,34 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
             </section>
           )}
 
+          <section>
+            <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{rep.repairWord ?? "Repair"} or {(rep.replaceWord ?? "replace").toLowerCase()} {rep.item}?</h2>
+            <p className="mt-2 max-w-3xl text-ink-2">{rep.rule} Use the verdict under the calculator to test your own repair quote against a {formatUSD(roundMoney(typicalJob.typical))} replacement{place ? ` in ${place}` : ""}.</p>
+            <div className="mt-4 grid gap-8 sm:grid-cols-2">
+              <div>
+                <h3 className="label">Signs it is time to {(rep.replaceWord ?? "replace").toLowerCase()}</h3>
+                <ul className="mt-2 list-[square] space-y-1.5 pl-5 text-ink-2">{rep.signs.map((x) => <li key={x}>{x}</li>)}</ul>
+              </div>
+              {repairs.length > 0 && (
+                <div>
+                  <h3 className="label">Common repairs and typical cost</h3>
+                  <ul className="mt-2 border-t border-line text-[15px]">
+                    {repairs.map((r) => (
+                      <li key={r.label} className="leader border-b border-line py-2"><span className="text-ink-2">{r.label}</span><span className="font-mono tnum">{formatUSD(r.cost[0] * region.laborIndex)}–{formatUSD(r.cost[1] * region.laborIndex)}</span></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="font-display text-[1.75rem] font-bold tracking-tight">Can you do this {p.noun} yourself?</h2>
+            <p className="mt-2 font-semibold text-ink">{diy.level === "diy" ? "Yes, for most handy homeowners." : diy.level === "skilled" ? "Possible, if you have done similar work before." : "We would hire a pro for this one."}</p>
+            <p className="mt-1 max-w-3xl text-ink-2">{diy.skills} Budget about {formatUSD(diy.tools[0])} to {formatUSD(diy.tools[1])} for tools and rentals.</p>
+            <p className="mt-2 max-w-3xl text-[15px] text-ink-2"><strong className="text-ink">Watch out:</strong> {diy.risks}</p>
+          </section>
+
           <section className="border-l-[3px] border-accent-500 pl-5">
             <p className="label">Selling soon?</p>
             <h2 className="mt-1 font-display text-[1.6rem] font-bold">Does a new {p.noun} pay you back at sale?</h2>
@@ -208,13 +242,13 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
 
       <div className="mx-auto mt-12 max-w-6xl space-y-12 px-4">
         <section id="states" className="scroll-mt-20">
-          <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{state ? (metro ? `Other cities in ${state.name}` : `${p.name} cost in ${state.name} cities`) : `${p.name} cost by state`}</h2>
+          <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{state ? (metro ? `Other cities in ${state.name}` : cities ? `${p.name} cost in ${state.name} cities` : `${p.name} cost in other states`) : `${p.name} cost by state`}</h2>
           <div className="mt-4 columns-2 gap-6 border-t border-line pt-3 text-[15px] sm:columns-3 lg:columns-5">
-            {(state ? metros : STATES).map((x) => {
-              const href = state ? `/${p.slug}/${state.slug}/${(x as MetroRow).slug}` : `/${p.slug}/${(x as StateRow).slug}`;
+            {(state && cities ? metros : STATES.filter((s) => s.code !== state?.code)).map((x) => {
+              const href = state && cities ? `/${p.slug}/${state.slug}/${(x as MetroRow).slug}` : `/${p.slug}/${(x as StateRow).slug}`;
               return <Link key={href} href={href} className="block break-inside-avoid py-1 hover:text-accent-600 hover:underline">{x.name}</Link>;
             })}
-            {state && metros.length === 0 && <span className="block text-ink-2">No city pages for {state.name} yet. The state figures above apply.</span>}
+            {state && cities && metros.length === 0 && <span className="block text-ink-2">No city pages for {state.name} yet. The state figures above apply.</span>}
             {state && <Link href={`/${p.slug}#states`} className="link block py-1">All states</Link>}
           </div>
         </section>
