@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConsentBanner from "@/components/ConsentBanner";
+import SiteChrome from "@/components/SiteChrome";
 import MobileAnchorAd from "@/components/MobileAnchorAd";
 import { SITE } from "@/lib/site";
 import { ADSENSE_CLIENT } from "@/lib/ads";
@@ -41,8 +42,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
-        <Header />
+        <SiteChrome><Header /></SiteChrome>
         <main id="main" className="flex-1">{children}</main>
+        <SiteChrome>
         <Footer />
         <ConsentBanner />
         <MobileAnchorAd />
@@ -50,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Script id="adsense" strategy="lazyOnload" crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} />
         )}
+        </SiteChrome>
         {ga && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${ga}`} strategy="afterInteractive" />

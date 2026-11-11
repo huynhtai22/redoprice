@@ -9,7 +9,7 @@ import { isIndexable } from "@/lib/indexing";
 export default function sitemap(): MetadataRoute.Sitemap {
   const d = new Date(DATA_UPDATED);
   const u = (p: string, priority = 0.6) => ({ url: `${SITE.url}${p}`, lastModified: d, priority });
-  const out = [u("", 1), u("/check-my-quote", 0.8), u("/repair-or-replace", 0.8), u("/guides", 0.5), u("/how-we-calculate", 0.5), u("/share-your-quote", 0.4), u("/about", 0.3), u("/contact", 0.3), u("/privacy", 0.2), u("/terms", 0.2), u("/disclaimer", 0.2)];
+  const out = [u("", 1), u("/check-my-quote", 0.8), u("/repair-or-replace", 0.8), u("/guides", 0.5), u("/how-we-calculate", 0.5), u("/share-your-quote", 0.4), u("/widget", 0.4), u("/about", 0.3), u("/contact", 0.3), u("/privacy", 0.2), u("/terms", 0.2), u("/disclaimer", 0.2)];
   for (const p of PROJECTS) {
     out.push(u(`/${p.slug}`, 0.9));
     p.variants.forEach((v) => out.push(u(`/${p.slug}/${v.slug}`, 0.7)));
