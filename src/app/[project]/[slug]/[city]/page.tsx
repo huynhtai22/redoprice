@@ -4,11 +4,11 @@ import ProjectPage from "@/components/ProjectPage";
 import { PROJECTS, getProject } from "@/lib/projects";
 import { METROS, STATES, getMetro, getState, regionFor } from "@/lib/data";
 import { formatUSD, roundMoney } from "@/lib/format";
-import { isIndexable } from "@/lib/indexing";
+import { hasCityPages, isIndexable } from "@/lib/indexing";
 
 export const dynamicParams = false;
 export const generateStaticParams = () =>
-  PROJECTS.flatMap((p) => METROS.map((m) => ({ project: p.slug, slug: STATES.find((s) => s.code === m.state)!.slug, city: m.slug })));
+  PROJECTS.filter(hasCityPages).flatMap((p) => METROS.map((m) => ({ project: p.slug, slug: STATES.find((s) => s.code === m.state)!.slug, city: m.slug })));
 
 export async function generateMetadata({ params }: { params: Promise<{ project: string; slug: string; city: string }> }): Promise<Metadata> {
   const { project, slug, city } = await params;
@@ -26,6 +26,6 @@ export async function generateMetadata({ params }: { params: Promise<{ project: 
 export default async function Page({ params }: { params: Promise<{ project: string; slug: string; city: string }> }) {
   const { project, slug, city } = await params;
   const p = getProject(project); const st = getState(slug); const m = getMetro(slug, city);
-  if (!p || !st || !m) notFound();
+  if (!p || !st || !m || !hasCityPages(p)) notFound();
   return <ProjectPage p={p} state={st} metro={m} />;
 }

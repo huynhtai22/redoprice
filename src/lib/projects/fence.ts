@@ -7,6 +7,8 @@ type Mat = keyof typeof F.materials;
 
 export const fence: Project = {
   key: "fence",
+  group: "outside",
+  permit: F.permit as [number, number, number],
   slug: "fence-cost",
   name: "Fence installation",
   noun: "fence",

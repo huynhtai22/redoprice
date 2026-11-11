@@ -12,6 +12,8 @@ export const climateZone = (r: Region): "hot" | "mixed" | "cold" =>
 
 export const hvac: Project = {
   key: "hvac",
+  group: "systems",
+  permit: H.permit as [number, number, number],
   slug: "hvac-replacement-cost",
   name: "HVAC replacement",
   noun: "HVAC system",

@@ -7,6 +7,8 @@ type Mat = keyof typeof W.materials;
 
 export const windows: Project = {
   key: "windows",
+  group: "outside",
+  permit: W.permit as [number, number, number],
   slug: "window-replacement-cost",
   name: "Window replacement",
   noun: "window",
