@@ -3,7 +3,8 @@
  * Reserved, lazy-loaded AdSense slot. Configure in src/lib/ads.ts.
  * - Always reserves its height (no layout shift), even before the ad loads.
  * - Lazy slots only request an ad when within ~300px of the viewport.
- * - With no NEXT_PUBLIC_ADSENSE_CLIENT set, renders a labelled placeholder for layout review.
+ * - With no NEXT_PUBLIC_ADSENSE_CLIENT set, renders nothing (set NEXT_PUBLIC_SHOW_AD_PLACEHOLDERS=1 to see
+ *   labelled placeholders for layout review).
  */
 import { useEffect, useRef, useState } from "react";
 import { AD_SLOTS, ADSENSE_CLIENT, type Placement } from "@/lib/ads";
@@ -33,6 +34,7 @@ export default function AdSlot({ placement, className = "" }: { placement: Place
   }, [live, visible]);
 
   if (!cfg.enabled) return null;
+  if (!live && process.env.NEXT_PUBLIC_SHOW_AD_PLACEHOLDERS !== "1") return null;
   const style = { "--ad-h-m": `${cfg.minHeight.mobile}px`, "--ad-h-d": `${cfg.minHeight.desktop}px` } as React.CSSProperties;
 
   return (

@@ -5,12 +5,12 @@ import { SITE } from "@/lib/site";
 export default function Breadcrumbs({ items }: { items: { href: string; label: string }[] }) {
   const all = [{ href: "/", label: "Home" }, ...items];
   return (
-    <nav aria-label="Breadcrumb" className="text-xs text-mute">
+    <nav aria-label="Breadcrumb" className="text-[15px] text-ink-2">
       <ol className="flex flex-wrap items-center gap-1">
         {all.map((c, i) => (
           <li key={c.href} className="flex items-center gap-1">
             {i > 0 && <span aria-hidden>/</span>}
-            {i < all.length - 1 ? <Link href={c.href} className="hover:text-ink">{c.label}</Link> : <span className="text-ink-2">{c.label}</span>}
+            {i < all.length - 1 ? <Link href={c.href} className="inline-flex min-h-[32px] items-center hover:text-ink hover:underline">{c.label}</Link> : <span className="text-mute">{c.label}</span>}
           </li>
         ))}
       </ol>
