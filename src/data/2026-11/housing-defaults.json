@@ -1,13 +1,14 @@
 {
  "meta": {
   "dataset": "housing-defaults",
-  "version": "2026.11-estimate",
+  "version": "2026.11.1",
   "updated": "2026-11-11",
   "status": "estimate",
   "sources": [
    "US Census Bureau American Community Survey (to be imported)"
   ],
-  "notes": "ESTIMATE. Typical single-family home size (sq ft) used only as a sensible default input per state."
+  "notes": "ESTIMATE. Typical single-family home size (sq ft) used only as a sensible default input per state.",
+  "refs": []
  },
  "typicalHomeSqft": {
   "AL": 1800,

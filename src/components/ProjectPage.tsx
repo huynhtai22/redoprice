@@ -10,6 +10,8 @@ import RelatedProjects from "./RelatedProjects";
 import ContractorChecklist from "./ContractorChecklist";
 import LeadForm from "./LeadForm";
 import JsonLd from "./JsonLd";
+import SourcesLedger from "./SourcesLedger";
+import { pageSchema } from "@/lib/schema";
 import { COMPARISONS, RESALE, comparisonSlug, getVariant } from "@/lib/projects";
 import { METROS, NATIONAL, NATIONAL_REGION, STATES, metrosInState, regionFor, type MetroRow, type StateRow } from "@/lib/data";
 import type { Project, Variant } from "@/lib/engine";
@@ -69,7 +71,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
                 : variant ? <>{variant.blurb} Typical cost: <strong className="text-ink tnum">{formatUSD(roundMoney(typicalJob.low))} to {formatUSD(roundMoney(typicalJob.high))}</strong> (US average).</>
                 : p.intro}
             </p>
-            <div className="mt-4"><Byline /></div>
+            <div className="mt-4"><Byline projectKey={p.key} sourcesHref="#sources" /></div>
           </div>
           <Photo name={p.key} priority ratio="3 / 2" sizes="320px" className="hidden lg:block" />
         </div>
@@ -175,6 +177,8 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
             <p className="mt-2 text-xs text-mute">Estimated range from general market patterns; resale value depends heavily on your local market and the home&apos;s overall condition.</p>
           </section>
 
+          <SourcesLedger projectKey={p.key} place={place} />
+
           <FAQ faqs={p.faqs} />
 
           <ContractorChecklist noun={p.quoteNoun.replace(/s$/, "")} />
@@ -222,6 +226,7 @@ export default function ProjectPage({ p, state, metro, variant }: Props) {
         <AdSlot placement="beforeFooter" />
       </div>
 
+      <JsonLd data={pageSchema({ title, description: `${p.calculatorName}${place ? ` for ${place}` : ""}: typical cost ${formatUSD(roundMoney(typicalJob.low))} to ${formatUSD(roundMoney(typicalJob.high))}.`, path: crumbs.at(-1)!.href, projectKey: p.key })} />
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication", name: `${p.calculatorName}${place ? ` – ${place}` : ""}`,
         applicationCategory: "UtilitiesApplication", operatingSystem: "Any", url: SITE.url, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

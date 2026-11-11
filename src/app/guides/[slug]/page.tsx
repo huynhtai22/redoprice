@@ -5,10 +5,11 @@ import { Fragment } from "react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
+import Byline from "@/components/Byline";
+import { pageSchema } from "@/lib/schema";
 import RelatedProjects from "@/components/RelatedProjects";
 import { GUIDES, getGuide, type Block } from "@/lib/guides";
 import { getProject } from "@/lib/projects";
-import { SITE } from "@/lib/site";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => GUIDES.map((g) => ({ slug: g.slug }));
@@ -38,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <Breadcrumbs items={[{ href: "/guides", label: "Guides" }, { href: `/guides/${g.slug}`, label: g.kicker }]} />
           <p className="mt-4 label">{g.kicker}</p>
           <h1 className="mt-1 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">{g.title}</h1>
-          <p className="mt-2 text-sm text-mute">By the RedoPrice team · Updated <time dateTime={g.updated}>{new Date(g.updated + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></p>
+          <div className="mt-3 border-y border-line py-2.5"><Byline projectKey={p?.key} updated={g.updated} /></div>
           {p && (
             <Link href={`/${p.slug}`} className="mt-5 flex items-center justify-between gap-3 border border-accent-100 bg-accent-50 p-4 text-sm font-semibold">
               <span>Get your own number: {p.calculatorName}</span><span className="text-accent-700">Open →</span>
@@ -65,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <RelatedProjects exclude={p?.slug} />
         <AdSlot placement="beforeFooter" />
       </div>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "Article", headline: g.title, description: g.description, dateModified: g.updated, author: { "@type": "Organization", name: SITE.name }, publisher: { "@type": "Organization", name: SITE.name } }} />
+      <JsonLd data={pageSchema({ type: "Article", title: g.title, description: g.description, path: `/guides/${g.slug}`, projectKey: p?.key, modified: g.updated })} />
     </>
   );
 }

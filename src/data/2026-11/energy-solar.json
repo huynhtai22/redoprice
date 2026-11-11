@@ -1,14 +1,29 @@
 {
  "meta": {
   "dataset": "energy-and-solar",
-  "version": "2026.11-estimate",
+  "version": "2026.11.1",
   "updated": "2026-11-11",
   "status": "estimate",
   "sources": [
-   "EIA Electric Power Monthly, average residential price by state (to be refreshed)",
-   "NREL PVWatts v8, typical kWh per kW-DC per year by state (to be refreshed)"
+   "Electricity prices: modeled near 2025 EIA state residential averages, pending import of EIA Electric Power Monthly Table 5.6.A",
+   "Solar yield: modeled from NREL PVWatts typical kWh per kW by state (south-facing, unshaded)",
+   "Cross-check: BLS average price of electricity, US city average, $0.190/kWh in Oct 2026 (FRED APU000072610)"
   ],
-  "notes": "ESTIMATE. Electricity prices are approximate 2025 state residential averages in cents/kWh; solar yield is an approximate statewide kWh produced per installed kW per year for a south-facing, unshaded array."
+  "notes": "ESTIMATE. Electricity prices are approximate 2025 state residential averages in cents/kWh; solar yield is an approximate statewide kWh produced per installed kW per year for a south-facing, unshaded array.",
+  "refs": [
+   {
+    "label": "Average Price: Electricity per Kilowatt-Hour in U.S. City Average (APU000072610)",
+    "publisher": "U.S. Bureau of Labor Statistics (via FRED)",
+    "url": "https://fred.stlouisfed.org/series/APU000072610",
+    "period": "Oct 2026"
+   },
+   {
+    "label": "PVWatts Calculator",
+    "publisher": "National Renewable Energy Laboratory",
+    "url": "https://pvwatts.nrel.gov/",
+    "period": "model v8"
+   }
+  ]
  },
  "residentialCentsPerKwh": {
   "AL": 15.5,

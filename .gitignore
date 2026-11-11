@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# raw public downloads (large); only the small derived CSVs in data-raw are committed
+data-raw/*.zip
+data-raw/*.xlsx
