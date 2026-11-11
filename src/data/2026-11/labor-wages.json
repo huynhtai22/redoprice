@@ -1,0 +1,15 @@
+{
+ "meta": {
+  "dataset": "labor-wages",
+  "version": "2026.11.1",
+  "updated": "2026-11-11",
+  "status": "estimate",
+  "sources": ["Pending import of BLS OEWS May 2025 trade wages (run scripts/import_public_data.py)"],
+  "refs": [],
+  "notes": "Filled by scripts/import_public_data.py from the BLS OEWS national, state and metro files. Empty until then."
+ },
+ "trades": {},
+ "us": {},
+ "states": {},
+ "metros": {}
+}
