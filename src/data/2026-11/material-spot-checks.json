@@ -1,0 +1,19 @@
+{
+ "meta": {
+  "dataset": "material-spot-checks",
+  "version": "2026.11.1",
+  "updated": "2026-11-11",
+  "status": "estimate",
+  "sources": ["Public retail listings (Home Depot, Lowe's), checked by hand. Prices are store-specific and change often."],
+  "refs": [],
+  "notes": "One row per common material behind a calculator. price is the shelf price per listing unit, before tax and delivery; perUnit converts it to the calculator's unit. Rows with price null are still waiting for a manual check: retailer sites only show prices for a chosen store, so this cannot be automated. A reviewer fills price, store ZIP and checked date. Used to sanity-check the material share of national rates, not fed straight into estimates."
+ },
+ "items": [
+  { "project": "roofing", "material": "architectural-asphalt", "item": "GAF Timberline HDZ shingles, Weathered Wood", "retailer": "Home Depot", "url": "https://www.homedepot.com/p/GAF-Timberline-HDZ-Weathered-Wood-Algae-Resistant-Laminated-High-Definition-Shingles-33-33-sq-ft-per-Bundle-0487900/309755323", "listingUnit": "bundle (33.33 sq ft)", "unitsPerCalcUnit": 0.03, "price": null, "storeZip": null, "checked": null },
+  { "project": "roofing", "material": "architectural-asphalt", "item": "GAF Timberline HDZ Reflector Series, Coastal Slate", "retailer": "Home Depot", "url": "https://www.homedepot.com/p/GAF-Timberline-HDZ-Reflector-Series-Coastal-Slate-Laminated-High-Definition-Roofing-Shingles-33-33-Sq-Ft-per-Bundle-0494802/331963605", "listingUnit": "bundle (33.33 sq ft)", "unitsPerCalcUnit": 0.03, "price": null, "storeZip": null, "checked": null },
+  { "project": "roofing", "material": "architectural-asphalt", "item": "GAF Timberline ArmorShield II impact-resistant shingles", "retailer": "Home Depot", "url": "https://www.homedepot.com/p/GAF-Timberline-ArmorShield-II-Weathered-Wood-Impact-Resistant-Architectural-Shingles-33-3-sq-ft-per-Bundle-21-pieces-0448900EN/203427422", "listingUnit": "bundle (33.3 sq ft)", "unitsPerCalcUnit": 0.03, "price": null, "storeZip": null, "checked": null },
+  { "project": "fence", "material": "wood-privacy", "item": "Severe Weather 6 ft x 8 ft pressure-treated pine dog-ear privacy panel", "retailer": "Lowe's", "url": "https://www.lowes.com/pd/Severe-Weather-Actual-6-ft-x-8-ft-Wood-Pressure-Treated-Pine-Dog-Ear-Wood-Fence-Panel/3473855", "listingUnit": "panel (8 linear ft)", "unitsPerCalcUnit": 0.125, "price": null, "storeZip": null, "checked": null },
+  { "project": "fence", "material": "wood-privacy", "item": "Severe Weather 6 ft x 8 ft pressure-treated pine board-on-board panel", "retailer": "Lowe's", "url": "https://www.lowes.com/pd/Actual-6-ft-x-8-ft-Pressure-Treated-Pine-Dog-Ear-Wood-Fence-Panel/50428702", "listingUnit": "panel (8 linear ft)", "unitsPerCalcUnit": 0.125, "price": null, "storeZip": null, "checked": null },
+  { "project": "fence", "material": "wood-privacy", "item": "Severe Weather 6 ft x 8 ft spruce-pine-fir dog-ear panel", "retailer": "Lowe's", "url": "https://www.lowes.com/pd/Severe-Weather-Actual-6-ft-x-8-ft-Pressure-Treated-Spruce-Pine-Fir-Dog-Ear-Wood-Fence-Panel/4331592", "listingUnit": "panel (8 linear ft)", "unitsPerCalcUnit": 0.125, "price": null, "storeZip": null, "checked": null }
+ ]
+}

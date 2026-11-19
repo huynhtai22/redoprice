@@ -9,3 +9,6 @@ export const roundMoney = (n: number) => {
   const step = n < 1000 ? 10 : n < 10000 ? 50 : 100;
   return Math.round(n / step) * step;
 };
+/** "November 11, 2026" from an ISO date, without timezone drift. */
+export const longDate = (iso: string) =>
+  new Date(iso.slice(0, 10) + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });

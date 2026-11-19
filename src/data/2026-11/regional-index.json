@@ -1,14 +1,22 @@
 {
  "meta": {
   "dataset": "regional-index",
-  "version": "2026.11-estimate",
+  "version": "2026.11.1",
   "updated": "2026-11-11",
-  "status": "estimate",
+  "status": "partial",
   "sources": [
-   "BLS Occupational Employment and Wage Statistics (OEWS), construction trades (to be imported)",
-   "BLS Producer Price Index for construction materials (to be imported)"
+   "laborIndex: RedoPrice modeled estimate, pending import of BLS OEWS May 2025 state wages",
+   "U.S. Bureau of Economic Analysis (via FRED): Regional Price Parities by State, Goods, 2024"
   ],
-  "notes": "ESTIMATE. laborIndex and materialIndex are hand-set approximations relative to the US average (1.00). Replace by running `npm run import:oews -- <oews-csv>` with the latest OEWS state file. zip3 ranges map the first 3 ZIP digits to a state."
+  "notes": "laborIndex is still a modeled estimate (BLS import pending); materialIndex = BEA RPP goods / 100, a broad price level for goods in the state, not a construction-specific index. zip3 ranges map the first 3 ZIP digits to a state.",
+  "refs": [
+   {
+    "label": "Regional Price Parities by State, Goods, 2024",
+    "publisher": "U.S. Bureau of Economic Analysis (via FRED)",
+    "url": "https://fred.stlouisfed.org/release/tables?rid=403&eid=233639",
+    "period": "2024"
+   }
+  ]
  },
  "states": [
   {
@@ -16,7 +24,7 @@
    "name": "Alabama",
    "slug": "alabama",
    "laborIndex": 0.84,
-   "materialIndex": 0.98,
+   "materialIndex": 0.964,
    "climate": [
     "hurricane",
     "heat"
@@ -33,7 +41,7 @@
    "name": "Alaska",
    "slug": "alaska",
    "laborIndex": 1.22,
-   "materialIndex": 1.25,
+   "materialIndex": 1.063,
    "climate": [
     "snow"
    ],
@@ -49,7 +57,7 @@
    "name": "Arizona",
    "slug": "arizona",
    "laborIndex": 0.93,
-   "materialIndex": 1.0,
+   "materialIndex": 0.954,
    "climate": [
     "heat"
    ],
@@ -65,7 +73,7 @@
    "name": "Arkansas",
    "slug": "arkansas",
    "laborIndex": 0.82,
-   "materialIndex": 0.97,
+   "materialIndex": 0.936,
    "climate": [
     "hail"
    ],
@@ -81,7 +89,7 @@
    "name": "California",
    "slug": "california",
    "laborIndex": 1.2,
-   "materialIndex": 1.06,
+   "materialIndex": 1.061,
    "climate": [
     "heat",
     "wildfire"
@@ -98,7 +106,7 @@
    "name": "Colorado",
    "slug": "colorado",
    "laborIndex": 1.02,
-   "materialIndex": 1.01,
+   "materialIndex": 0.987,
    "climate": [
     "hail",
     "snow"
@@ -115,7 +123,7 @@
    "name": "Connecticut",
    "slug": "connecticut",
    "laborIndex": 1.12,
-   "materialIndex": 1.03,
+   "materialIndex": 0.973,
    "climate": [
     "snow"
    ],
@@ -131,7 +139,7 @@
    "name": "Delaware",
    "slug": "delaware",
    "laborIndex": 1.03,
-   "materialIndex": 1.01,
+   "materialIndex": 0.962,
    "climate": [],
    "zip3": [
     [
@@ -145,7 +153,7 @@
    "name": "District of Columbia",
    "slug": "district-of-columbia",
    "laborIndex": 1.15,
-   "materialIndex": 1.04,
+   "materialIndex": 1.065,
    "climate": [],
    "zip3": [
     [
@@ -163,7 +171,7 @@
    "name": "Florida",
    "slug": "florida",
    "laborIndex": 0.88,
-   "materialIndex": 1.0,
+   "materialIndex": 0.981,
    "climate": [
     "hurricane",
     "heat"
@@ -184,7 +192,7 @@
    "name": "Georgia",
    "slug": "georgia",
    "laborIndex": 0.86,
-   "materialIndex": 0.98,
+   "materialIndex": 0.989,
    "climate": [
     "hurricane"
    ],
@@ -204,7 +212,7 @@
    "name": "Hawaii",
    "slug": "hawaii",
    "laborIndex": 1.25,
-   "materialIndex": 1.3,
+   "materialIndex": 1.116,
    "climate": [
     "hurricane"
    ],
@@ -220,7 +228,7 @@
    "name": "Idaho",
    "slug": "idaho",
    "laborIndex": 0.9,
-   "materialIndex": 1.01,
+   "materialIndex": 0.963,
    "climate": [
     "snow"
    ],
@@ -236,7 +244,7 @@
    "name": "Illinois",
    "slug": "illinois",
    "laborIndex": 1.18,
-   "materialIndex": 1.01,
+   "materialIndex": 1.038,
    "climate": [
     "hail",
     "snow"
@@ -253,7 +261,7 @@
    "name": "Indiana",
    "slug": "indiana",
    "laborIndex": 0.98,
-   "materialIndex": 0.99,
+   "materialIndex": 0.955,
    "climate": [
     "hail"
    ],
@@ -269,7 +277,7 @@
    "name": "Iowa",
    "slug": "iowa",
    "laborIndex": 0.95,
-   "materialIndex": 0.99,
+   "materialIndex": 0.937,
    "climate": [
     "hail",
     "snow"
@@ -286,7 +294,7 @@
    "name": "Kansas",
    "slug": "kansas",
    "laborIndex": 0.92,
-   "materialIndex": 0.98,
+   "materialIndex": 0.94,
    "climate": [
     "hail"
    ],
@@ -302,7 +310,7 @@
    "name": "Kentucky",
    "slug": "kentucky",
    "laborIndex": 0.92,
-   "materialIndex": 0.98,
+   "materialIndex": 0.96,
    "climate": [],
    "zip3": [
     [
@@ -316,7 +324,7 @@
    "name": "Louisiana",
    "slug": "louisiana",
    "laborIndex": 0.88,
-   "materialIndex": 0.99,
+   "materialIndex": 0.937,
    "climate": [
     "hurricane",
     "heat"
@@ -333,7 +341,7 @@
    "name": "Maine",
    "slug": "maine",
    "laborIndex": 0.95,
-   "materialIndex": 1.04,
+   "materialIndex": 0.972,
    "climate": [
     "snow"
    ],
@@ -349,7 +357,7 @@
    "name": "Maryland",
    "slug": "maryland",
    "laborIndex": 1.0,
-   "materialIndex": 1.02,
+   "materialIndex": 1.025,
    "climate": [],
    "zip3": [
     [
@@ -363,7 +371,7 @@
    "name": "Massachusetts",
    "slug": "massachusetts",
    "laborIndex": 1.2,
-   "materialIndex": 1.04,
+   "materialIndex": 0.988,
    "climate": [
     "snow"
    ],
@@ -379,7 +387,7 @@
    "name": "Michigan",
    "slug": "michigan",
    "laborIndex": 1.02,
-   "materialIndex": 1.0,
+   "materialIndex": 0.96,
    "climate": [
     "snow"
    ],
@@ -395,7 +403,7 @@
    "name": "Minnesota",
    "slug": "minnesota",
    "laborIndex": 1.1,
-   "materialIndex": 1.01,
+   "materialIndex": 1.005,
    "climate": [
     "hail",
     "snow"
@@ -412,7 +420,7 @@
    "name": "Mississippi",
    "slug": "mississippi",
    "laborIndex": 0.8,
-   "materialIndex": 0.98,
+   "materialIndex": 0.962,
    "climate": [
     "hurricane",
     "heat"
@@ -429,7 +437,7 @@
    "name": "Missouri",
    "slug": "missouri",
    "laborIndex": 1.0,
-   "materialIndex": 0.99,
+   "materialIndex": 0.963,
    "climate": [
     "hail"
    ],
@@ -445,7 +453,7 @@
    "name": "Montana",
    "slug": "montana",
    "laborIndex": 0.98,
-   "materialIndex": 1.03,
+   "materialIndex": 0.96,
    "climate": [
     "hail",
     "snow"
@@ -462,7 +470,7 @@
    "name": "Nebraska",
    "slug": "nebraska",
    "laborIndex": 0.92,
-   "materialIndex": 0.99,
+   "materialIndex": 0.941,
    "climate": [
     "hail"
    ],
@@ -478,7 +486,7 @@
    "name": "Nevada",
    "slug": "nevada",
    "laborIndex": 1.05,
-   "materialIndex": 1.02,
+   "materialIndex": 0.963,
    "climate": [
     "heat"
    ],
@@ -494,7 +502,7 @@
    "name": "New Hampshire",
    "slug": "new-hampshire",
    "laborIndex": 1.0,
-   "materialIndex": 1.03,
+   "materialIndex": 0.986,
    "climate": [
     "snow"
    ],
@@ -510,7 +518,7 @@
    "name": "New Jersey",
    "slug": "new-jersey",
    "laborIndex": 1.2,
-   "materialIndex": 1.03,
+   "materialIndex": 1.071,
    "climate": [
     "hurricane"
    ],
@@ -526,7 +534,7 @@
    "name": "New Mexico",
    "slug": "new-mexico",
    "laborIndex": 0.88,
-   "materialIndex": 1.01,
+   "materialIndex": 0.961,
    "climate": [
     "heat",
     "hail"
@@ -543,7 +551,7 @@
    "name": "New York",
    "slug": "new-york",
    "laborIndex": 1.22,
-   "materialIndex": 1.05,
+   "materialIndex": 1.073,
    "climate": [
     "snow"
    ],
@@ -563,7 +571,7 @@
    "name": "North Carolina",
    "slug": "north-carolina",
    "laborIndex": 0.86,
-   "materialIndex": 0.98,
+   "materialIndex": 0.966,
    "climate": [
     "hurricane"
    ],
@@ -579,7 +587,7 @@
    "name": "North Dakota",
    "slug": "north-dakota",
    "laborIndex": 0.98,
-   "materialIndex": 1.02,
+   "materialIndex": 0.957,
    "climate": [
     "hail",
     "snow"
@@ -596,7 +604,7 @@
    "name": "Ohio",
    "slug": "ohio",
    "laborIndex": 1.0,
-   "materialIndex": 0.99,
+   "materialIndex": 0.937,
    "climate": [
     "snow"
    ],
@@ -612,7 +620,7 @@
    "name": "Oklahoma",
    "slug": "oklahoma",
    "laborIndex": 0.86,
-   "materialIndex": 0.98,
+   "materialIndex": 0.938,
    "climate": [
     "hail",
     "heat"
@@ -629,7 +637,7 @@
    "name": "Oregon",
    "slug": "oregon",
    "laborIndex": 1.1,
-   "materialIndex": 1.02,
+   "materialIndex": 1.053,
    "climate": [
     "wildfire"
    ],
@@ -645,7 +653,7 @@
    "name": "Pennsylvania",
    "slug": "pennsylvania",
    "laborIndex": 1.05,
-   "materialIndex": 1.0,
+   "materialIndex": 0.994,
    "climate": [
     "snow"
    ],
@@ -661,7 +669,7 @@
    "name": "Rhode Island",
    "slug": "rhode-island",
    "laborIndex": 1.08,
-   "materialIndex": 1.03,
+   "materialIndex": 0.972,
    "climate": [
     "hurricane",
     "snow"
@@ -678,7 +686,7 @@
    "name": "South Carolina",
    "slug": "south-carolina",
    "laborIndex": 0.84,
-   "materialIndex": 0.98,
+   "materialIndex": 0.963,
    "climate": [
     "hurricane"
    ],
@@ -694,7 +702,7 @@
    "name": "South Dakota",
    "slug": "south-dakota",
    "laborIndex": 0.86,
-   "materialIndex": 1.0,
+   "materialIndex": 0.955,
    "climate": [
     "hail",
     "snow"
@@ -711,7 +719,7 @@
    "name": "Tennessee",
    "slug": "tennessee",
    "laborIndex": 0.88,
-   "materialIndex": 0.98,
+   "materialIndex": 0.962,
    "climate": [
     "hail"
    ],
@@ -727,7 +735,7 @@
    "name": "Texas",
    "slug": "texas",
    "laborIndex": 0.88,
-   "materialIndex": 0.98,
+   "materialIndex": 0.981,
    "climate": [
     "hail",
     "hurricane",
@@ -749,7 +757,7 @@
    "name": "Utah",
    "slug": "utah",
    "laborIndex": 0.95,
-   "materialIndex": 1.01,
+   "materialIndex": 0.964,
    "climate": [
     "snow"
    ],
@@ -765,7 +773,7 @@
    "name": "Vermont",
    "slug": "vermont",
    "laborIndex": 0.98,
-   "materialIndex": 1.04,
+   "materialIndex": 0.973,
    "climate": [
     "snow"
    ],
@@ -781,7 +789,7 @@
    "name": "Virginia",
    "slug": "virginia",
    "laborIndex": 0.95,
-   "materialIndex": 1.0,
+   "materialIndex": 1.004,
    "climate": [],
    "zip3": [
     [
@@ -799,7 +807,7 @@
    "name": "Washington",
    "slug": "washington",
    "laborIndex": 1.15,
-   "materialIndex": 1.03,
+   "materialIndex": 1.044,
    "climate": [
     "snow"
    ],
@@ -815,7 +823,7 @@
    "name": "West Virginia",
    "slug": "west-virginia",
    "laborIndex": 0.95,
-   "materialIndex": 1.0,
+   "materialIndex": 0.965,
    "climate": [
     "snow"
    ],
@@ -831,7 +839,7 @@
    "name": "Wisconsin",
    "slug": "wisconsin",
    "laborIndex": 1.04,
-   "materialIndex": 1.0,
+   "materialIndex": 0.943,
    "climate": [
     "snow",
     "hail"
@@ -848,7 +856,7 @@
    "name": "Wyoming",
    "slug": "wyoming",
    "laborIndex": 0.98,
-   "materialIndex": 1.03,
+   "materialIndex": 0.954,
    "climate": [
     "hail",
     "snow"

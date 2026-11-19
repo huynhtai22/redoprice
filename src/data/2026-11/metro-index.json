@@ -1,13 +1,14 @@
 {
  "meta": {
   "dataset": "metro-index",
-  "version": "2026.11-estimate",
+  "version": "2026.11.1",
   "updated": "2026-11-11",
   "status": "estimate",
   "sources": [
-   "BLS OEWS metropolitan area wages, construction trades (to be imported)"
+   "Modeled estimate, pending import of BLS OEWS May 2025 metropolitan area wages"
   ],
-  "notes": "ESTIMATE. Metro laborIndex is relative to the US average (1.00) and overrides the state value on city pages. rank = rough metro population rank."
+  "notes": "ESTIMATE. Metro laborIndex is relative to the US average (1.00) and overrides the state value on city pages. rank = rough metro population rank.",
+  "refs": []
  },
  "metros": [
   {

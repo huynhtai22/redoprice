@@ -4,6 +4,7 @@ import { COMPARISONS, PROJECTS, comparisonSlug } from "@/lib/projects";
 import { DATA_UPDATED, METROS, STATES } from "@/lib/data";
 import { GUIDES } from "@/lib/guides";
 import { isIndexable } from "@/lib/indexing";
+import { PUBLISHED, personUrl } from "@/lib/people";
 
 /** Only pages in the active indexing wave are listed (see src/lib/indexing.ts). */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (isIndexable("state", p)) STATES.forEach((s) => out.push(u(`/${p.slug}/${s.slug}`, 0.6)));
     if (isIndexable("city", p)) METROS.forEach((m) => out.push(u(`/${p.slug}/${STATES.find((s) => s.code === m.state)!.slug}/${m.slug}`, 0.5)));
   }
+  out.push(u("/authors", 0.3));
+  PUBLISHED.forEach((p) => out.push(u(personUrl(p), 0.3)));
   GUIDES.forEach((g) => out.push({ url: `${SITE.url}/guides/${g.slug}`, lastModified: new Date(g.updated), priority: 0.6 }));
   return out;
 }
