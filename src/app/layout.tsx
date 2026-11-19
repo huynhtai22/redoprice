@@ -36,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-US" className={`${franklin.variable} ${serif.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULTS }} />
+        <link rel="preconnect" href="https://images.unsplash.com" />
         {ADSENSE_CLIENT && <meta name="google-adsense-account" content={ADSENSE_CLIENT} />}
       </head>
       <body className="flex min-h-screen flex-col antialiased">

@@ -37,14 +37,13 @@ export default function ConsentBanner() {
   };
   if (!show) return null;
   return (
-    <div role="dialog" aria-label="Cookie choices" className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl border border-line-2 bg-white p-4 shadow-xl sm:inset-x-auto sm:left-4">
-      <p className="text-sm leading-relaxed text-ink-2">
-        We use cookies to show ads and measure how the calculators are used. Your estimate never leaves your browser
-        unless you send it. <Link href="/privacy#cookies" className="underline">Learn more</Link>
+    <div role="dialog" aria-label="Cookie choices" className="fixed inset-x-0 bottom-0 z-50 border-t border-line-2 bg-white px-4 py-3 shadow-[0_-4px_16px_rgb(0_0_0/0.08)] sm:inset-x-auto sm:bottom-4 sm:left-4 sm:max-w-xl sm:rounded-md sm:border sm:p-4">
+      <p className="text-[15px] leading-snug text-ink-2">
+        Cookies help us show ads and count visits. <span className="hidden sm:inline">Your estimate never leaves your browser unless you send it. </span><Link href="/privacy#cookies" className="underline">Details</Link>
       </p>
-      <div className="mt-3 flex gap-2">
-        <button onClick={() => choose(true)} className="bg-ink px-4 py-2 text-sm font-semibold text-white">Accept</button>
-        <button onClick={() => choose(false)} className="border border-line px-4 py-2 text-sm font-semibold text-ink">Necessary only</button>
+      <div className="mt-2 flex gap-2 sm:mt-3">
+        <button onClick={() => choose(true)} className="min-h-[44px] flex-1 rounded bg-ink px-4 text-[15px] font-semibold text-white sm:flex-none">Accept</button>
+        <button onClick={() => choose(false)} className="min-h-[44px] flex-1 rounded border border-line-2 px-4 text-[15px] font-semibold text-ink sm:flex-none">Necessary only</button>
       </div>
     </div>
   );

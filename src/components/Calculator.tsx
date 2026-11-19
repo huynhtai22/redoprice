@@ -10,6 +10,8 @@ import { track } from "@/lib/track";
 import AnimatedNumber from "./AnimatedNumber";
 import Swatch from "./Swatch";
 import Icon from "./Icons";
+import PriceStory from "./PriceStory";
+import QuoteSheet, { PrintSheetButton } from "./QuoteSheet";
 
 type Props = {
   projectSlug: string;
@@ -50,6 +52,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
   const [diy, setDiy] = useState(false);
   const started = useRef(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const inputsRef = useRef<HTMLDivElement>(null);
   const [stickyBar, setStickyBar] = useState(false);
 
   // Read shared-link params once on mount (?zip=..&material=..&q=..)
@@ -68,10 +71,19 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Mobile sticky estimate bar when the result card is off-screen
+  // Mobile price bar: on phones the result card sits below the inputs, so while the inputs are on screen
+  // and the card is not, a slim bar at the bottom shows the live price and range as you edit.
   useEffect(() => {
-    if (!resultRef.current || compact) return;
-    const io = new IntersectionObserver(([e]) => setStickyBar(!e.isIntersecting && e.boundingClientRect.top < 0), { threshold: 0 });
+    if (!resultRef.current || !inputsRef.current || compact) return;
+    let inputsSeen = false, resultSeen = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === inputsRef.current) inputsSeen = e.isIntersecting;
+        else resultSeen = e.isIntersecting;
+      }
+      setStickyBar(inputsSeen && !resultSeen);
+    }, { threshold: 0, rootMargin: "0px 0px -72px 0px" });
+    io.observe(inputsRef.current);
     io.observe(resultRef.current);
     return () => io.disconnect();
   }, [compact]);
@@ -138,10 +150,10 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
   return (
     <div id="calculator" data-ad-exclusion-zone className="relative">
       {projectSwitcher && (
-        <div className="mb-4 flex gap-5 overflow-x-auto border-b border-line" role="tablist" aria-label="Project">
+        <div className="mb-4 flex flex-wrap gap-x-5 gap-y-1 border-b border-line" role="tablist" aria-label="Project">
           {PROJECTS.map((pp) => (
             <button key={pp.slug} role="tab" aria-selected={pp.slug === slug} onClick={() => switchProject(pp.slug)}
-              className={`shrink-0 border-b-2 px-1 pb-2 pt-1 text-[15px] transition ${pp.slug === slug ? "border-accent-500 font-semibold text-ink" : "border-transparent text-ink-2 hover:text-ink"}`}>
+              className={`min-h-[44px] shrink-0 border-b-2 px-1 pb-2 pt-1 text-[16px] transition ${pp.slug === slug ? "border-accent-500 font-semibold text-ink" : "border-transparent text-ink-2 hover:text-ink"}`}>
               {pp.name}
             </button>
           ))}
@@ -150,7 +162,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
 
       <div className={`grid grid-cols-1 gap-5 ${compact ? "lg:grid-cols-[1fr_380px]" : "lg:grid-cols-[minmax(0,1fr)_400px]"} lg:items-start`}>
         {/* INPUTS (no ads may be placed in or beside this block) */}
-        <div className="card min-w-0 p-4 sm:p-6">
+        <div ref={inputsRef} className="card min-w-0 p-4 sm:p-6">
           {mode === "quote" && (
             <div className="mb-5 border-l-4 border-accent-500 bg-accent-50/60 p-4">
               <label htmlFor="quote-amount" className="text-[15px] font-semibold text-ink">The price you were quoted</label>
@@ -172,13 +184,15 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
           </div>
         </div>
 
-        {/* RESULT */}
-        <div ref={resultRef} className="min-w-0 lg:sticky lg:top-20">
+        {/* Explainers sit directly under the inputs on desktop and after the result on phones */}
+        {!compact && <div className="order-1 min-w-0 lg:order-none lg:col-start-1 lg:row-start-2"><PriceStory p={p} inputs={inputs} region={region} est={est} onSet={set} /></div>}
+
+        {/* RESULT (right column on desktop, spans the inputs and the explainers below them) */}
+        <div ref={resultRef} className="min-w-0 lg:sticky lg:top-20 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="overflow-hidden rounded-md border border-line-2 bg-white shadow-[0_1px_2px_rgb(21_25_30/0.06),0_8px_24px_-12px_rgb(21_25_30/0.18)]" aria-live="polite">
             <div className="p-5 sm:p-6">
               <div className="flex items-center justify-between gap-2">
-                <p className="label">Estimate · {region.label}</p>
-                <span className="label">Est.</span>
+                <p className="text-[15px] font-semibold text-ink-2">Your estimate · {region.label}</p>
               </div>
               <p className="mt-2 font-display text-[2.9rem] font-bold leading-none tracking-tight text-ink tnum sm:text-[3.4rem]">
                 <AnimatedNumber value={roundMoney(est.typical)} />
@@ -234,7 +248,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
                 <ul className="mt-2 text-[15px]">
                   {est.breakdown.map((l) => (
                     <li key={l.label} className="leader py-1">
-                      <span className="text-ink-2">{l.label} <span className="font-mono text-xs text-mute">{Math.round((l.value / est.typical) * 100)}%</span></span>
+                      <span className="text-ink-2">{l.label} <span className="text-[13px] text-mute">{Math.round((l.value / est.typical) * 100)}%</span></span>
                       <span className="font-mono tnum">{formatUSD(roundMoney(l.value))}</span>
                     </li>
                   ))}
@@ -243,12 +257,12 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
               </div>
 
               {!compact && (
-                <dl className="mt-5 grid grid-cols-2 border-t border-dashed border-line-2">
+                <dl className="mt-5 grid grid-cols-2 border-t border-line">
                   {est.metrics.map((m, idx) => (
-                    <div key={m.label} className={`border-b border-dashed border-line-2 py-2.5 ${idx % 2 ? "pl-3" : "pr-3"}`}>
-                      <dt className="label !text-[10.5px]">{m.label}</dt>
+                    <div key={m.label} className={`border-b border-line py-2.5 ${idx % 2 ? "pl-3" : "pr-3"}`}>
+                      <dt className="text-[13px] text-ink-2">{m.label}</dt>
                       <dd className="mt-0.5 font-mono font-semibold tnum">{m.value}</dd>
-                      {m.hint && <dd className="text-[11px] text-mute">{m.hint}</dd>}
+                      {m.hint && <dd className="text-[13px] text-mute">{m.hint}</dd>}
                     </div>
                   ))}
                 </dl>
@@ -279,12 +293,12 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
               {!compact && alternatives.length > 0 && (
                 <div className="mt-5">
                   <p className="label">Swap the {p.variantNoun}</p>
-                  <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                  <div className="mt-2 grid grid-cols-2 gap-2">
                     {alternatives.slice(0, 6).map(({ v, t }) => {
                       const d = t.typical - est.typical;
                       return (
                         <button key={v.value} onClick={() => { set(p.variantKey, v.value); track("compare_click", { project: p.key, to: v.value }); }}
-                          className="shrink-0 border border-line bg-canvas/40 px-3 py-2 text-left text-xs hover:border-ink">
+                          className="min-h-[44px] rounded-sm border border-line bg-white px-3 py-2 text-left text-[14px] hover:border-ink">
                           <span className="block font-semibold text-ink">{v.label}</span>
                           <span className={`tnum font-bold ${d > 0 ? "text-warn" : "text-good"}`}>{d > 0 ? "+" : "−"}{formatUSD(Math.abs(roundMoney(d)))}</span>
                           {t.lifespanYears && <span className="text-mute"> · {t.lifespanYears} yr</span>}
@@ -304,6 +318,7 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
               ) : (
                 <>
                   <ShareButton project={p.key} />
+                  <PrintSheetButton project={p.key} />
                   <a href="#quote-form" onClick={() => track("lead_open", { project: p.key, from: "result" })} className="font-semibold text-ink-2 underline-offset-4 hover:underline">
                     Get quotes from local {p.quoteNoun}
                   </a>
@@ -311,19 +326,24 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
               )}
             </div>
           </div>
-          {!compact && <p className="mt-2 px-1 text-[11px] leading-relaxed text-mute">An estimate from our cost model, adjusted for your area. Not a quote. <Link href="/how-we-calculate" className="underline">How we calculate</Link></p>}
+          {!compact && <p className="mt-2 px-1 text-[13px] leading-relaxed text-mute">An estimate from our cost model, adjusted for your area. Not a quote. <Link href="/how-we-calculate" className="underline">How we calculate</Link></p>}
         </div>
       </div>
 
-      {/* Mobile sticky estimate bar */}
-      {stickyBar && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 px-4 py-2.5 backdrop-blur lg:hidden" style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom))" }}>
+      {!compact && <QuoteSheet p={p} inputs={inputs} region={region} est={est} />}
+
+      {/* Mobile price bar: live while you edit, gone once the result card is in view */}
+      {!compact && (
+        <div aria-hidden={!stickyBar} inert={!stickyBar}
+          className={`fixed inset-x-0 bottom-0 z-30 border-t border-line-2 bg-white/95 px-4 py-2 shadow-[0_-4px_16px_rgb(0_0_0/0.06)] backdrop-blur transition-transform duration-200 lg:hidden ${stickyBar ? "translate-y-0" : "translate-y-full"}`}
+          style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
           <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
-            <div>
-              <p className="label">{p.name} · {region.state.code}</p>
-              <p className="font-display text-2xl font-bold text-accent-600 tnum">{formatUSD(roundMoney(est.typical))}</p>
+            <div className="min-w-0">
+              <p className="truncate text-[13px] text-ink-2 tnum">{region.state.code === "US" ? "US" : region.state.code} · fair range {formatUSD(roundMoney(est.low))}–{formatUSD(roundMoney(est.high))}</p>
+              <p className="font-display text-[1.6rem] font-bold leading-tight text-ink tnum">{formatUSD(roundMoney(est.typical))}</p>
             </div>
-            <button onClick={() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })} className="bg-ink px-4 py-2 text-sm font-semibold text-paper">See the math</button>
+            <button type="button" onClick={() => { resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); track("price_bar_tap", { project: p.key }); }}
+              className="min-h-[44px] shrink-0 rounded bg-ink px-4 py-2 text-[15px] font-semibold text-white">See the math</button>
           </div>
         </div>
       )}
@@ -334,9 +354,9 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
 function Marker({ at, label, cls, below = false }: { at: string; label: string; cls: string; below?: boolean }) {
   return (
     <div className="absolute top-0 -translate-x-1/2 transition-[left] duration-300" style={{ left: at }}>
-      {!below && <span className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono text-[10px] font-semibold uppercase text-ink">{label}</span>}
+      {!below && <span className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap text-[12px] font-semibold text-ink">{label}</span>}
       <span className={`mt-[14px] block h-5 w-[3px] ${cls}`} />
-      {below && <span className="absolute left-1/2 top-[38px] -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase text-mute">{label}</span>}
+      {below && <span className="absolute left-1/2 top-[38px] -translate-x-1/2 whitespace-nowrap text-[12px] text-ink-2">{label}</span>}
     </div>
   );
 }
@@ -351,9 +371,9 @@ function ZipField({ zip, onZip, error, region }: { zip: string; onZip: (z: strin
           <input id="zip" inputMode="numeric" autoComplete="postal-code" maxLength={5} placeholder="e.g. 75201" value={zip}
             onChange={(e) => onZip(e.target.value.replace(/\D/g, "").slice(0, 5))} className="w-full bg-transparent px-2 py-2.5 text-base outline-none" />
         </div>
-        <span className="hidden shrink-0 font-mono text-xs text-ink-2 sm:block">Priced for: {region.label}</span>
+        <span className="hidden shrink-0 text-[14px] text-ink-2 sm:block">Priced for: {region.label}</span>
       </div>
-      {error ? <p className="mt-1 text-xs text-bad">{error}</p> : <p className="mt-1 font-mono text-xs text-mute sm:hidden">Priced for: {region.label}</p>}
+      {error ? <p className="mt-1 text-[14px] text-bad">{error}</p> : <p className="mt-1 text-[14px] text-ink-2 sm:hidden">Priced for: {region.label}</p>}
     </div>
   );
 }
@@ -365,10 +385,10 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
       <div>
         <div className="flex items-baseline justify-between">
           <label htmlFor={id} className="text-[15px] font-semibold">{inp.label}</label>
-          <span className="font-mono text-lg font-semibold tnum">{inp.prefix}{formatNum(Number(value))} <span className="text-sm font-medium text-mute">{inp.unit}</span></span>
+          <NumberBox inp={inp} value={Number(value)} onChange={onChange} id={`${id}-n`} />
         </div>
-        {inp.help && <p className="text-xs text-mute">{inp.help}</p>}
-        <input id={id} type="range" min={inp.min} max={inp.max} step={inp.step} value={Number(value)} onChange={(e) => onChange(Number(e.target.value))} className="mt-1 w-full" />
+        {inp.help && <p className="text-[14px] text-mute">{inp.help}</p>}
+        <input id={id} type="range" aria-label={inp.label} min={inp.min} max={inp.max} step={inp.step} value={Number(value)} onChange={(e) => onChange(Number(e.target.value))} className="mt-1 w-full" />
       </div>
     );
   }
@@ -395,8 +415,8 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
                 className={`overflow-hidden border bg-white text-left transition ${on ? "border-ink ring-1 ring-ink" : "border-line hover:border-ink/50"}`}>
                 <Swatch name={o.swatch} className="block h-12 w-full" />
                 <span className="block px-2.5 pb-2 pt-1.5">
-                  <span className="block text-[14px] font-semibold leading-tight">{o.label}</span>
-                  {o.tag && <span className="mt-0.5 inline-block font-mono text-[10px] uppercase tracking-wider text-mute">{o.tag === "Budget" ? "$" : o.tag === "Mid-range" ? "$$" : "$$$"} · {o.tag}</span>}
+                  <span className="block text-[15px] font-semibold leading-tight">{o.label}</span>
+                  {o.tag && <span className="mt-0.5 inline-block text-[13px] text-ink-2">{o.tag}</span>}
                 </span>
               </button>
             );
@@ -413,13 +433,13 @@ function Field({ inp, value, onChange, compact }: { inp: Input; value: string | 
           const on = String(value) === o.value;
           return (
             <button type="button" role="radio" aria-checked={on} key={o.value} onClick={() => onChange(o.value)} title={o.hint}
-              className={`border px-3.5 py-2 text-[15px] transition ${on ? "border-ink bg-ink font-semibold text-paper" : "border-line-2 bg-white text-ink-2 hover:border-ink"}`}>
+              className={`min-h-[44px] border px-4 py-2 text-[15px] transition ${on ? "border-ink bg-ink font-semibold text-paper" : "border-line-2 bg-white text-ink-2 hover:border-ink"}`}>
               {o.label}
             </button>
           );
         })}
       </div>
-      {(() => { const h = inp.options.find((o) => String(value) === o.value)?.hint; return h ? <p className="mt-1 text-xs text-mute">{h}</p> : null; })()}
+      {(() => { const h = inp.options.find((o) => String(value) === o.value)?.hint; return h ? <p className="mt-1 text-[14px] text-mute">{h}</p> : null; })()}
     </fieldset>
   );
 }
@@ -430,8 +450,31 @@ function ShareButton({ project }: { project: string }) {
     <button onClick={async () => {
       try { await navigator.clipboard.writeText(window.location.href); setDone(true); setTimeout(() => setDone(false), 2000); } catch { /* ignore */ }
       track("share_link", { project });
-    }} className="inline-flex items-center gap-1.5 font-semibold text-ink">
+    }} className="inline-flex min-h-[40px] items-center gap-1.5 font-semibold text-ink">
       <Icon name={done ? "check" : "link"} className="h-4 w-4" />{done ? "Link copied" : "Copy link to this estimate"}
     </button>
+  );
+}
+
+/** Typed number next to a slider: easier than dragging for many people, and exact. */
+function NumberBox({ inp, value, onChange, id }: { inp: Extract<Input, { type: "slider" }>; value: number; onChange: (v: number) => void; id: string }) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const commit = (raw: string) => {
+    const cleaned = raw.replace(/[^0-9.]/g, "");
+    const n = Number(cleaned);
+    setDraft(null);
+    if (cleaned === "" || !Number.isFinite(n)) return; // empty or invalid: keep the current value; 0 is allowed when min allows it
+    onChange(Math.min(inp.max, Math.max(inp.min, Math.round(n / inp.step) * inp.step)));
+  };
+  return (
+    <span className="flex items-center gap-1.5">
+      <label htmlFor={id} className="sr-only">{inp.label} in {inp.unit}</label>
+      {inp.prefix && <span className="text-[16px] font-semibold text-mute">{inp.prefix}</span>}
+      <input id={id} inputMode="numeric" value={draft ?? formatNum(value)}
+        onChange={(e) => setDraft(e.target.value)} onBlur={(e) => commit(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter") commit((e.target as HTMLInputElement).value); }}
+        className="w-[6.5rem] rounded-sm border border-line-2 bg-white px-2 py-1.5 text-right text-[17px] font-semibold tnum outline-none focus:border-ink focus:ring-2 focus:ring-accent-100" />
+      <span className="text-[15px] text-mute">{inp.unit}</span>
+    </span>
   );
 }

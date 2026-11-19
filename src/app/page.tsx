@@ -13,9 +13,9 @@ import { formatUSD, roundMoney } from "@/lib/format";
 import { SITE } from "@/lib/site";
 
 const INTENTS = [
-  { n: "01", href: "#estimate", title: "I'm planning a job", body: "Get a budget for your house and ZIP code before you call anyone." },
-  { n: "02", href: "/check-my-quote", title: "I've got a quote in hand", body: "See whether it's fair, on the high side, or suspiciously cheap." },
-  { n: "03", href: "/repair-or-replace", title: "Something just broke", body: "Leaking roof or dead AC. Find out if it's a repair or a replacement." },
+  { n: "01", href: "#estimate", title: "Plan a project", body: "A budget for your house and ZIP code, before you call anyone." },
+  { n: "02", href: "/check-my-quote", title: "Check a quote", body: "See whether a price you were given is fair, high, or suspiciously cheap." },
+  { n: "03", href: "/repair-or-replace", title: "Repair or replace", body: "Leaking roof or dead AC? Find out which one makes sense." },
 ];
 
 

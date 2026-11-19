@@ -8,7 +8,7 @@ export default function Footer() {
   const col = (title: string, items: [string, string][]) => (
     <div>
       <p className="label">{title}</p>
-      <ul className="mt-3 space-y-2">{items.map(([h, l]) => <li key={h}><Link href={h} className="text-ink-2 hover:text-ink hover:underline">{l}</Link></li>)}</ul>
+      <ul className="mt-2">{items.map(([h, l]) => <li key={h}><Link href={h} className="inline-flex min-h-[40px] items-center text-ink-2 hover:text-ink hover:underline">{l}</Link></li>)}</ul>
     </div>
   );
   return (
