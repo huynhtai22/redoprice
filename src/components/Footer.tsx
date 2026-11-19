@@ -20,7 +20,7 @@ export default function Footer() {
           <p className="mt-4 text-[13px] text-mute">Cost data updated {DATA_UPDATED}</p>
         </div>
         {col("Calculators", PROJECTS.map((p) => [`/${p.slug}`, p.calculatorName.replace(" Calculator", "")]))}
-        {col("Tools & reading", [["/check-my-quote", "Is my quote fair?"], ["/repair-or-replace", "Repair or replace?"], ["/share-your-quote", "Share what you paid"], ["/guides", "Guides"], ["/how-we-calculate", "How we calculate"]])}
+        {col("Tools & reading", [["/check-my-quote", "Is my quote fair?"], ["/repair-or-replace", "Repair or replace?"], ["/share-your-quote", "Share what you paid"], ["/widget", "Free calculator widget"], ["/guides", "Guides"], ["/how-we-calculate", "How we calculate"]])}
         <div>
           {col("The small print", [["/about", "About"], ["/contact", "Contact"], ["/privacy", "Privacy"], ["/terms", "Terms"], ["/disclaimer", "Disclaimer"]])}
           <div className="mt-2 text-ink-2"><ConsentLink /></div>

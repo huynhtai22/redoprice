@@ -1,0 +1,9 @@
+type,project,zip,variant,size,quoteAmount,quotesReceived,outcome,quoteMonth,submittedAt,website
+shared-quote,roofing,75201,architectural-asphalt,"2,000 sq ft",16500,3,Hired this contractor,2026-09,2026-10-02T10:00:00Z,
+shared-quote,roofing,75204,architectural-asphalt,1800 sq ft,14200,2,Still deciding,2026-10,2026-10-12T10:00:00Z,
+shared-quote,roofing,75206,standing-seam-metal,2200 sq ft,31000,3,Hired someone else,2026-08,2026-08-20T10:00:00Z,
+shared-quote,roofing,75208,three-tab-asphalt,1500 sq ft,9800,1,Hired this contractor,2026-07,2026-07-02T10:00:00Z,
+shared-quote,roofing,75209,architectural-asphalt,2400 sq ft,19900,4+,Still deciding,2026-10,2026-10-30T10:00:00Z,
+shared-quote,roofing,75210,architectural-asphalt,1900 sq ft,900000,1,Still deciding,2026-10,2026-10-30T10:00:00Z,
+shared-quote,roofing,00000,architectural-asphalt,1900,12000,1,x,2026-10,,
+shared-quote,roofing,75211,architectural-asphalt,1900,12000,1,x,2026-10,,spam

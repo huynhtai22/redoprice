@@ -10,7 +10,7 @@ import { PROJECTS } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Is My Contractor Quote Fair? Free Quote Checker",
-  description: "Enter the price you were quoted and a few details about the job. See if it is low, fair or high compared with typical prices in your ZIP code.",
+  description: "Enter the price you were quoted and a few details about the job. See if it is fair for your ZIP code, which line items to question, and what to ask the contractor before you sign.",
   alternates: { canonical: "/check-my-quote" },
 };
 
@@ -21,7 +21,7 @@ export default function Page() {
         <div className="mx-auto max-w-6xl px-4 pb-6 pt-5">
           <Breadcrumbs items={[{ href: "/check-my-quote", label: "Check my quote" }]} />
           <h1 className="mt-3 font-display text-[2.1rem] font-bold leading-tight tracking-tight sm:text-5xl">Is my quote fair?</h1>
-          <p className="mt-2 max-w-3xl text-ink-2">Pick the project, enter the price you were quoted, and describe the job. We plot your quote on the low, typical and high range for your ZIP code.</p>
+          <p className="mt-2 max-w-3xl text-ink-2">Pick the project, enter the price you were quoted, and describe the job. We plot your quote on the low, typical and high range for your ZIP code, then list what to question: how far it sits above typical, which line items look heavy, the deposit, and what to ask the contractor.</p>
           <div className="mt-3"><DataNote /></div>
         </div>
       </div>

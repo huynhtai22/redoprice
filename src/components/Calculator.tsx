@@ -10,6 +10,7 @@ import { track } from "@/lib/track";
 import AnimatedNumber from "./AnimatedNumber";
 import Swatch from "./Swatch";
 import Icon from "./Icons";
+import QuoteRedFlags from "./QuoteRedFlags";
 
 type Props = {
   projectSlug: string;
@@ -314,6 +315,8 @@ export default function Calculator({ projectSlug, stateCode, metroSlug, preset, 
           {!compact && <p className="mt-2 px-1 text-[11px] leading-relaxed text-mute">An estimate from our cost model, adjusted for your area. Not a quote. <Link href="/how-we-calculate" className="underline">How we calculate</Link></p>}
         </div>
       </div>
+
+      {mode === "quote" && quote > 0 && <QuoteRedFlags p={p} est={est} quote={quote} region={region} zip={zip} inputs={inputs} />}
 
       {/* Mobile sticky estimate bar */}
       {stickyBar && (
