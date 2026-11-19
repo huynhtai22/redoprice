@@ -33,6 +33,8 @@ export function solarModel(i: Inputs, r: Region) {
 
 export const solar: Project = {
   key: "solar",
+  group: "systems",
+  permit: S.permit as [number, number, number],
   slug: "solar-panel-cost",
   name: "Solar panels",
   noun: "solar system",

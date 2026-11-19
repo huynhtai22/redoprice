@@ -1,0 +1,281 @@
+{
+ "meta": {
+  "dataset": "national-costs-depth",
+  "version": "2026.11-estimate",
+  "updated": "2026-11-11",
+  "status": "estimate",
+  "sources": [
+   "Own cost model built from typical installed-cost ranges (materials + labor) for the US, cross-checked against manufacturer list prices and big-box retail material prices (to be sampled)",
+   "BLS Producer Price Index series for lumber, plastics, gypsum, copper and fabricated metal products (for quarterly inflation updates)"
+  ],
+  "notes": "ESTIMATE. National installed rates before regional adjustment for the 15 projects added in Nov 2026, plus typical repair-cost ranges for all 20 projects (used by the repair-or-replace verdicts). Same shape as national-costs.json: low/typical/high are per unit, laborShare is the share of the installed rate that is labor. 'options' hold multipliers (factor = whole rate, laborFactor = labor only) or add-ons (add = per job, addPerUnit = per unit), each as [low, typical, high]. Not copied from any competitor's price table."
+ },
+ "gutters": {
+  "unit": "linear ft",
+  "materials": {
+   "aluminum-seamless": { "low": 8, "typical": 11, "high": 15, "laborShare": 0.5, "lifespanYears": 25 },
+   "vinyl":             { "low": 4, "typical": 6, "high": 9, "laborShare": 0.45, "lifespanYears": 15 },
+   "galvanized-steel":  { "low": 9, "typical": 13, "high": 18, "laborShare": 0.5, "lifespanYears": 20 },
+   "copper":            { "low": 25, "typical": 35, "high": 50, "laborShare": 0.4, "lifespanYears": 60 },
+   "zinc":              { "low": 22, "typical": 30, "high": 42, "laborShare": 0.4, "lifespanYears": 50 }
+  },
+  "options": {
+   "size": { "5": { "factor": 1 }, "6": { "factor": 1.15 } },
+   "stories": { "1": { "laborFactor": 1 }, "2": { "laborFactor": 1.15 }, "3": { "laborFactor": 1.3 } },
+   "guards": { "no": {}, "yes": { "addPerUnit": [4, 7, 12] } }
+  },
+  "removalPerUnit": [1, 1.5, 2.5],
+  "permit": [0, 0, 0],
+  "minJob": 600
+ },
+ "siding": {
+  "unit": "sq ft of wall",
+  "materials": {
+   "vinyl":           { "low": 5, "typical": 7, "high": 10, "laborShare": 0.45, "lifespanYears": 30 },
+   "fiber-cement":    { "low": 8, "typical": 11, "high": 15, "laborShare": 0.5, "lifespanYears": 50 },
+   "engineered-wood": { "low": 7, "typical": 9.5, "high": 13, "laborShare": 0.5, "lifespanYears": 30 },
+   "cedar":           { "low": 9, "typical": 12.5, "high": 17, "laborShare": 0.5, "lifespanYears": 25 },
+   "stucco":          { "low": 8, "typical": 10.5, "high": 14, "laborShare": 0.6, "lifespanYears": 50 },
+   "steel":           { "low": 8, "typical": 11, "high": 15, "laborShare": 0.45, "lifespanYears": 40 },
+   "brick-veneer":    { "low": 14, "typical": 19, "high": 26, "laborShare": 0.6, "lifespanYears": 75 }
+  },
+  "options": {
+   "stories": { "1": { "laborFactor": 1 }, "2": { "laborFactor": 1.12 }, "3": { "laborFactor": 1.25 } },
+   "insulated": { "no": {}, "yes": { "addPerUnit": [1, 1.5, 2.25] } }
+  },
+  "removalPerUnit": [1, 1.5, 2.25],
+  "permit": [150, 400, 900]
+ },
+ "deck": {
+  "unit": "sq ft of deck",
+  "materials": {
+   "pressure-treated": { "low": 25, "typical": 35, "high": 48, "laborShare": 0.55, "lifespanYears": 15 },
+   "cedar":            { "low": 32, "typical": 45, "high": 60, "laborShare": 0.55, "lifespanYears": 20 },
+   "composite":        { "low": 45, "typical": 60, "high": 80, "laborShare": 0.45, "lifespanYears": 30 },
+   "pvc":              { "low": 50, "typical": 68, "high": 90, "laborShare": 0.45, "lifespanYears": 35 },
+   "ipe":              { "low": 55, "typical": 75, "high": 100, "laborShare": 0.5, "lifespanYears": 40 }
+  },
+  "options": {
+   "height": { "ground": { "factor": 1 }, "raised": { "factor": 1.15 }, "second-story": { "factor": 1.35 } },
+   "railing": { "none": { "factor": 1 }, "wood": { "factor": 1.08 }, "metal": { "factor": 1.15 }, "glass": { "factor": 1.3 } },
+   "stairs": { "no": {}, "yes": { "add": [600, 1000, 1800] } }
+  },
+  "removalPerUnit": [3, 5, 8],
+  "permit": [200, 500, 1200],
+  "minJob": 3000
+ },
+ "exteriorPaint": {
+  "unit": "sq ft of wall",
+  "materials": {
+   "wood":         { "low": 2.5, "typical": 3.5, "high": 5.0, "laborShare": 0.8, "lifespanYears": 8 },
+   "vinyl":        { "low": 2.0, "typical": 3.0, "high": 4.25, "laborShare": 0.8, "lifespanYears": 10 },
+   "fiber-cement": { "low": 2.0, "typical": 3.0, "high": 4.25, "laborShare": 0.8, "lifespanYears": 12 },
+   "stucco":       { "low": 2.25, "typical": 3.25, "high": 4.75, "laborShare": 0.8, "lifespanYears": 10 },
+   "brick":        { "low": 2.5, "typical": 3.75, "high": 5.5, "laborShare": 0.82, "lifespanYears": 12 }
+  },
+  "options": {
+   "prep": { "good": { "factor": 1 }, "peeling": { "factor": 1.2 }, "heavy": { "factor": 1.45 } },
+   "stories": { "1": { "laborFactor": 1 }, "2": { "laborFactor": 1.12 }, "3": { "laborFactor": 1.25 } },
+   "colors": { "1": { "factor": 1 }, "2": { "factor": 1.07 }, "3": { "factor": 1.14 } },
+   "lead": { "no": {}, "yes": { "add": [600, 1500, 3000] } }
+  },
+  "permit": [0, 0, 0],
+  "minJob": 1500
+ },
+ "driveway": {
+  "unit": "sq ft",
+  "materials": {
+   "asphalt":         { "low": 5, "typical": 7, "high": 10, "laborShare": 0.45, "lifespanYears": 20 },
+   "concrete":        { "low": 7, "typical": 10, "high": 14, "laborShare": 0.5, "lifespanYears": 30 },
+   "stamped-concrete":{ "low": 12, "typical": 16, "high": 22, "laborShare": 0.55, "lifespanYears": 25 },
+   "pavers":          { "low": 14, "typical": 20, "high": 30, "laborShare": 0.6, "lifespanYears": 40 },
+   "gravel":          { "low": 1.5, "typical": 2.5, "high": 4, "laborShare": 0.5, "lifespanYears": 10 }
+  },
+  "options": {
+   "base": { "good": { "factor": 1 }, "rework": { "factor": 1.18 } }
+  },
+  "removalPerUnit": [1.5, 2.5, 4],
+  "permit": [50, 150, 400],
+  "minJob": 1500
+ },
+ "garageDoor": {
+  "unit": "door",
+  "materials": {
+   "steel":           { "low": 900, "typical": 1300, "high": 1800, "laborShare": 0.3, "lifespanYears": 25 },
+   "insulated-steel": { "low": 1300, "typical": 1800, "high": 2600, "laborShare": 0.28, "lifespanYears": 30 },
+   "wood":            { "low": 2500, "typical": 4000, "high": 6500, "laborShare": 0.25, "lifespanYears": 20 },
+   "aluminum-glass":  { "low": 2500, "typical": 3800, "high": 6000, "laborShare": 0.25, "lifespanYears": 25 },
+   "composite":       { "low": 2000, "typical": 3000, "high": 4500, "laborShare": 0.27, "lifespanYears": 30 }
+  },
+  "options": {
+   "size": { "single": { "factor": 1 }, "double": { "factor": 1.7 } },
+   "opener": { "keep": {}, "new": { "addPerUnit": [400, 600, 900] } }
+  },
+  "removalPerUnit": [100, 150, 250],
+  "permit": [0, 50, 150]
+ },
+ "waterHeater": {
+  "unit": "water heater",
+  "materials": {
+   "tank-gas":         { "low": 1500, "typical": 2200, "high": 3200, "laborShare": 0.4, "lifespanYears": 11 },
+   "tank-electric":    { "low": 1100, "typical": 1700, "high": 2500, "laborShare": 0.4, "lifespanYears": 12 },
+   "tankless-gas":     { "low": 3200, "typical": 4500, "high": 6500, "laborShare": 0.45, "lifespanYears": 20 },
+   "tankless-electric":{ "low": 2000, "typical": 3000, "high": 4500, "laborShare": 0.45, "lifespanYears": 20 },
+   "heat-pump":        { "low": 3000, "typical": 4200, "high": 6000, "laborShare": 0.4, "lifespanYears": 13 }
+  },
+  "options": {
+   "size": { "small": { "factor": 0.92 }, "standard": { "factor": 1 }, "large": { "factor": 1.3 } },
+   "location": { "open": { "laborFactor": 1 }, "tight": { "laborFactor": 1.25 } },
+   "code": { "none": {}, "minor": { "add": [150, 300, 500] }, "major": { "add": [600, 1200, 2200] } }
+  },
+  "removalPerUnit": [100, 150, 250],
+  "permit": [50, 150, 350]
+ },
+ "electricalPanel": {
+  "unit": "panel",
+  "materials": {
+   "replace-100a": { "low": 1300, "typical": 1900, "high": 2700, "laborShare": 0.55, "lifespanYears": 40 },
+   "upgrade-200a": { "low": 2200, "typical": 3200, "high": 4600, "laborShare": 0.55, "lifespanYears": 40 },
+   "upgrade-400a": { "low": 4500, "typical": 6500, "high": 9500, "laborShare": 0.55, "lifespanYears": 40 },
+   "subpanel":     { "low": 700, "typical": 1200, "high": 1900, "laborShare": 0.6, "lifespanYears": 40 },
+   "smart-panel":  { "low": 4000, "typical": 5500, "high": 8000, "laborShare": 0.45, "lifespanYears": 30 }
+  },
+  "options": {
+   "service": { "keep": {}, "new": { "add": [800, 1500, 3000] } },
+   "move": { "no": {}, "yes": { "add": [500, 1000, 2000] } },
+   "surge": { "no": {}, "yes": { "add": [200, 350, 600] } }
+  },
+  "permit": [150, 300, 600]
+ },
+ "insulation": {
+  "unit": "sq ft of attic",
+  "materials": {
+   "blown-fiberglass": { "low": 1.3, "typical": 1.9, "high": 2.6, "laborShare": 0.5, "lifespanYears": 40 },
+   "blown-cellulose":  { "low": 1.2, "typical": 1.8, "high": 2.5, "laborShare": 0.5, "lifespanYears": 30 },
+   "fiberglass-batts": { "low": 1.0, "typical": 1.6, "high": 2.4, "laborShare": 0.5, "lifespanYears": 40 },
+   "open-cell-foam":   { "low": 1.5, "typical": 2.2, "high": 3.2, "laborShare": 0.55, "lifespanYears": 50 },
+   "closed-cell-foam": { "low": 2.5, "typical": 3.6, "high": 5.0, "laborShare": 0.5, "lifespanYears": 50 }
+  },
+  "options": {
+   "rvalue": { "r38": { "factor": 0.85 }, "r49": { "factor": 1 }, "r60": { "factor": 1.2 } },
+   "airseal": { "no": {}, "yes": { "addPerUnit": [0.5, 0.9, 1.5] } }
+  },
+  "removalPerUnit": [1, 1.75, 2.75],
+  "permit": [0, 0, 0],
+  "minJob": 1000
+ },
+ "kitchen": {
+  "unit": "sq ft of kitchen",
+  "materials": {
+   "cosmetic":  { "low": 80, "typical": 120, "high": 170, "laborShare": 0.45, "lifespanYears": 15 },
+   "mid-range": { "low": 180, "typical": 250, "high": 340, "laborShare": 0.45, "lifespanYears": 20 },
+   "upscale":   { "low": 340, "typical": 450, "high": 620, "laborShare": 0.42, "lifespanYears": 25 },
+   "luxury":    { "low": 550, "typical": 750, "high": 1000, "laborShare": 0.4, "lifespanYears": 25 }
+  },
+  "options": {
+   "layout": { "same": { "factor": 1 }, "move": { "factor": 1.18, "laborFactor": 1.1 } },
+   "cabinets": { "reface": { "factor": 0.85 }, "stock": { "factor": 1 }, "semi-custom": { "factor": 1.12 }, "custom": { "factor": 1.3 } },
+   "appliances": { "reuse": {}, "mid": { "add": [4000, 6500, 9000] }, "pro": { "add": [12000, 20000, 35000] } }
+  },
+  "permit": [300, 800, 2000]
+ },
+ "bathroom": {
+  "unit": "sq ft of bathroom",
+  "materials": {
+   "cosmetic":   { "low": 120, "typical": 180, "high": 260, "laborShare": 0.5, "lifespanYears": 15 },
+   "mid-range":  { "low": 250, "typical": 350, "high": 480, "laborShare": 0.5, "lifespanYears": 20 },
+   "upscale":    { "low": 450, "typical": 600, "high": 850, "laborShare": 0.45, "lifespanYears": 25 },
+   "accessible": { "low": 350, "typical": 480, "high": 650, "laborShare": 0.5, "lifespanYears": 25 }
+  },
+  "options": {
+   "layout": { "same": { "factor": 1 }, "move": { "factor": 1.2, "laborFactor": 1.1 } },
+   "shower": { "keep": {}, "convert": { "add": [3000, 5500, 9000] }, "walkin": { "add": [6000, 10000, 16000] } }
+  },
+  "permit": [200, 500, 1200],
+  "minJob": 4000
+ },
+ "flooring": {
+  "unit": "sq ft",
+  "materials": {
+   "carpet":              { "low": 3, "typical": 4.5, "high": 6.5, "laborShare": 0.35, "lifespanYears": 10 },
+   "luxury-vinyl-plank":  { "low": 4, "typical": 6, "high": 8.5, "laborShare": 0.45, "lifespanYears": 20 },
+   "laminate":            { "low": 3.5, "typical": 5, "high": 7, "laborShare": 0.45, "lifespanYears": 18 },
+   "engineered-hardwood": { "low": 7, "typical": 10, "high": 14, "laborShare": 0.4, "lifespanYears": 30 },
+   "solid-hardwood":      { "low": 8, "typical": 12, "high": 16, "laborShare": 0.45, "lifespanYears": 75 },
+   "porcelain-tile":      { "low": 8, "typical": 12, "high": 18, "laborShare": 0.55, "lifespanYears": 50 }
+  },
+  "options": {
+   "subfloor": { "good": {}, "repair": { "addPerUnit": [1, 2.5, 4] } },
+   "layout": { "open": { "laborFactor": 1 }, "rooms": { "laborFactor": 1.12 } }
+  },
+  "removalPerUnit": [1, 2, 3.5],
+  "permit": [0, 0, 0],
+  "minJob": 800
+ },
+ "interiorPaint": {
+  "unit": "sq ft of floor",
+  "materials": {
+   "walls-only":             { "low": 2.0, "typical": 3.0, "high": 4.5, "laborShare": 0.8, "lifespanYears": 8 },
+   "walls-and-ceilings":     { "low": 3.0, "typical": 4.25, "high": 6.0, "laborShare": 0.8, "lifespanYears": 8 },
+   "walls-ceilings-and-trim":{ "low": 4.0, "typical": 5.75, "high": 8.0, "laborShare": 0.8, "lifespanYears": 8 }
+  },
+  "options": {
+   "ceilings": { "standard": { "factor": 1 }, "tall": { "factor": 1.2 } },
+   "prep": { "good": { "factor": 1 }, "patching": { "factor": 1.15 } },
+   "colorChange": { "no": { "factor": 1 }, "yes": { "factor": 1.12 } }
+  },
+  "permit": [0, 0, 0],
+  "minJob": 400
+ },
+ "basement": {
+  "unit": "sq ft of basement",
+  "materials": {
+   "basic":     { "low": 25, "typical": 35, "high": 48, "laborShare": 0.5, "lifespanYears": 30 },
+   "mid-range": { "low": 40, "typical": 55, "high": 72, "laborShare": 0.5, "lifespanYears": 30 },
+   "high-end":  { "low": 65, "typical": 85, "high": 115, "laborShare": 0.45, "lifespanYears": 30 }
+  },
+  "options": {
+   "bathroom": { "none": {}, "half": { "add": [8000, 12000, 18000] }, "full": { "add": [15000, 22000, 32000] } },
+   "egress": { "no": {}, "yes": { "add": [3000, 4500, 7000] } },
+   "moisture": { "dry": {}, "wet": { "addPerUnit": [3, 6, 10] } }
+  },
+  "permit": [500, 1200, 2500]
+ },
+ "sewer": {
+  "unit": "linear ft",
+  "materials": {
+   "open-trench":  { "low": 80, "typical": 120, "high": 200, "laborShare": 0.65, "lifespanYears": 60 },
+   "pipe-bursting":{ "low": 90, "typical": 150, "high": 220, "laborShare": 0.55, "lifespanYears": 60 },
+   "pipe-lining":  { "low": 80, "typical": 140, "high": 220, "laborShare": 0.5, "lifespanYears": 50 }
+  },
+  "options": {
+   "depth": { "shallow": { "laborFactor": 1 }, "deep": { "laborFactor": 1.35 } },
+   "surface": { "lawn": {}, "hardscape": { "addPerUnit": [10, 25, 45] } },
+   "tap": { "no": {}, "yes": { "add": [500, 1500, 3500] } }
+  },
+  "permit": [150, 400, 1000],
+  "minJob": 3000
+ },
+ "repairs": {
+  "roofing":         [{ "label": "Replace a few shingles or a pipe boot", "cost": [300, 650] }, { "label": "Reflash a chimney or skylight", "cost": [500, 1500] }, { "label": "Repair one slope after wind damage", "cost": [900, 2500] }],
+  "solar":           [{ "label": "Replace a failed microinverter", "cost": [300, 700] }, { "label": "Replace a string inverter", "cost": [1500, 3500] }, { "label": "Remove and reinstall panels for a reroof", "cost": [2500, 6000] }],
+  "hvac":            [{ "label": "Capacitor or contactor", "cost": [150, 450] }, { "label": "Blower or condenser fan motor", "cost": [450, 1200] }, { "label": "Refrigerant leak repair and recharge", "cost": [800, 2500] }, { "label": "Compressor", "cost": [1800, 3500] }],
+  "windows":         [{ "label": "Replace a failed glass unit (foggy pane)", "cost": [200, 600] }, { "label": "Rebuild sashes, cords or balances", "cost": [200, 450] }, { "label": "Reseal and repaint frames", "cost": [150, 400] }],
+  "fence":           [{ "label": "Replace a few boards or pickets", "cost": [150, 450] }, { "label": "Reset or replace a rotted post", "cost": [250, 600] }, { "label": "Rehang or rebuild a sagging gate", "cost": [200, 650] }],
+  "gutters":         [{ "label": "Reseal leaking seams and corners", "cost": [150, 400] }, { "label": "Rehang a sagging run with new hangers", "cost": [200, 600] }, { "label": "Replace a damaged section or downspout", "cost": [250, 800] }],
+  "siding":          [{ "label": "Replace a few damaged boards or panels", "cost": [300, 1000] }, { "label": "Repair one wall after rot or impact", "cost": [1200, 3500] }, { "label": "Patch and recoat stucco cracks", "cost": [500, 2000] }],
+  "deck":            [{ "label": "Replace damaged boards", "cost": [300, 1200] }, { "label": "Sister or replace rotted joists", "cost": [600, 2500] }, { "label": "Rebuild stairs or railing", "cost": [800, 2500] }],
+  "exteriorPaint":   [{ "label": "Touch up trim and the sunniest wall", "cost": [600, 1800] }, { "label": "Scrape, prime and paint one side", "cost": [1200, 3500] }],
+  "driveway":        [{ "label": "Fill and seal cracks", "cost": [300, 900] }, { "label": "Sealcoat an asphalt drive", "cost": [250, 700] }, { "label": "Resurface (asphalt overlay)", "cost": [2500, 6000] }, { "label": "Lift sunken concrete slabs", "cost": [800, 2500] }],
+  "garageDoor":      [{ "label": "Replace torsion springs", "cost": [200, 450] }, { "label": "Replace cables, rollers or a bent track", "cost": [150, 450] }, { "label": "Replace one damaged panel", "cost": [400, 1200] }],
+  "waterHeater":     [{ "label": "Replace a thermostat or heating element", "cost": [150, 400] }, { "label": "Replace a gas valve or thermocouple", "cost": [200, 650] }, { "label": "Replace the anode rod and flush", "cost": [150, 350] }],
+  "electricalPanel": [{ "label": "Replace a faulty breaker", "cost": [150, 350] }, { "label": "Tighten and repair burnt lugs or bus", "cost": [300, 900] }, { "label": "Add a few circuits with tandem breakers", "cost": [300, 800] }],
+  "insulation":      [{ "label": "Top up thin spots with blown-in", "cost": [500, 1500] }, { "label": "Air seal attic penetrations", "cost": [400, 1200] }, { "label": "Remove wet or damaged insulation in one area", "cost": [500, 2000] }],
+  "kitchen":         [{ "label": "Paint or reface cabinets", "cost": [3000, 9000] }, { "label": "New countertops only", "cost": [2500, 7000] }, { "label": "New backsplash, sink and faucet", "cost": [1500, 4000] }],
+  "bathroom":        [{ "label": "Regrout and reseal the tile", "cost": [300, 900] }, { "label": "Replace vanity, toilet and fixtures", "cost": [1500, 4000] }, { "label": "Refinish or reglaze the tub", "cost": [400, 800] }],
+  "flooring":        [{ "label": "Replace damaged planks or tiles", "cost": [200, 800] }, { "label": "Sand and refinish hardwood", "cost": [2000, 5000] }, { "label": "Restretch and patch carpet", "cost": [150, 450] }],
+  "interiorPaint":   [{ "label": "Touch up walls in the busiest rooms", "cost": [300, 900] }, { "label": "Repaint one room", "cost": [400, 1100] }],
+  "basement":        [{ "label": "Seal foundation cracks", "cost": [400, 1500] }, { "label": "Install a sump pump", "cost": [1200, 3000] }, { "label": "Replace drywall after a minor flood", "cost": [1500, 5000] }],
+  "sewer":           [{ "label": "Clear roots with a cutter or jetter", "cost": [250, 700] }, { "label": "Spot repair one bad section", "cost": [1500, 4500] }, { "label": "Line a short damaged section", "cost": [2000, 5000] }]
+ }
+}

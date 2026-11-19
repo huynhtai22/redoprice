@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Photo from "./Photo";
-import { PROJECTS } from "@/lib/projects";
+import { PROJECTS, getProject } from "@/lib/projects";
 
 /** "Next job on the list" ledger. Drives pages per session. */
 export default function RelatedProjects({ exclude, stateSlug, title = "Next job on the list" }: { exclude?: string; stateSlug?: string; title?: string }) {
-  const list = PROJECTS.filter((p) => p.slug !== exclude);
+  // Same part of the house first (a roof page suggests gutters and siding), six at most.
+  const self = exclude ? getProject(exclude) : undefined;
+  const others = PROJECTS.filter((p) => p.slug !== exclude);
+  const list = (self ? [...others.filter((p) => p.group === self.group), ...others.filter((p) => p.group !== self.group)] : others).slice(0, 6);
   return (
     <section>
       <h2 className="font-display text-[1.75rem] font-bold tracking-tight">{title}</h2>

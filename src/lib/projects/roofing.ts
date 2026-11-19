@@ -7,6 +7,8 @@ type Mat = keyof typeof R.materials;
 
 export const roofing: Project = {
   key: "roofing",
+  group: "outside",
+  permit: R.permit as [number, number, number],
   slug: "roof-replacement-cost",
   name: "Roof replacement",
   noun: "roof",

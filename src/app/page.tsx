@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import Photo from "@/components/Photo";
 import Byline from "@/components/Byline";
 import RangeChart from "@/components/RangeChart";
-import { COMPARISONS, PROJECTS, comparisonSlug } from "@/lib/projects";
+import { COMPARISONS, PROJECTS, PROJECT_GROUPS, comparisonSlug, isLaunchProject } from "@/lib/projects";
 import { DATASETS, METROS, NATIONAL_REGION, STATES, regionFor } from "@/lib/data";
 import { GUIDES } from "@/lib/guides";
 import { formatUSD, roundMoney } from "@/lib/format";
@@ -32,7 +32,7 @@ export default function Home() {
     { label: "United States", low: us.roofing.low, typical: us.roofing.typical, high: us.roofing.high, highlight: true, note: "National typical" },
     ...pick.slice(5).map(({ st, e }) => ({ label: st.name, href: `/${roof.slug}/${st.slug}`, low: e.low, typical: e.typical, high: e.high })),
   ];
-  const comps = PROJECTS.flatMap((p) => COMPARISONS[p.key].slice(0, 2).map(([a, b]) => ({ p, a, b })));
+  const comps = PROJECTS.filter(isLaunchProject).flatMap((p) => COMPARISONS[p.key].slice(0, 2).map(([a, b]) => ({ p, a, b })));
   return (
     <>
       <section className="border-b border-line">
@@ -80,7 +80,9 @@ export default function Home() {
               <tr className="border-b border-line"><th className="py-3 pr-4">Project</th><th className="py-3 pr-4">Standard job</th><th className="py-3 pr-4 text-right">Low</th><th className="py-3 pr-4 text-right">Typical</th><th className="py-3 pr-4 text-right">High</th><th className="py-3" /></tr>
             </thead>
             <tbody className="divide-y divide-line">
-              {PROJECTS.map((p) => {
+              {PROJECT_GROUPS.flatMap((g) => [
+                <tr key={g.key}><th colSpan={6} className="pb-2 pt-6 text-left text-[12px] font-semibold uppercase tracking-wider text-mute">{g.label}</th></tr>,
+                ...g.projects.map((p) => {
                 const e = us[p.key];
                 return (
                   <tr key={p.slug}>
@@ -92,7 +94,7 @@ export default function Home() {
                     <td className="py-3.5 text-right"><Link href={`/${p.slug}`} className="link whitespace-nowrap text-[14px]">Price yours</Link></td>
                   </tr>
                 );
-              })}
+              })])}
             </tbody>
           </table>
         </div>

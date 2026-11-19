@@ -27,8 +27,20 @@ export type Variant = {
 
 export type FAQ = { q: string; a: string };
 
+export type ProjectKey =
+  | "roofing" | "solar" | "hvac" | "fence" | "windows"
+  | "gutters" | "siding" | "deck" | "exteriorPaint" | "driveway" | "garageDoor"
+  | "waterHeater" | "electricalPanel" | "insulation" | "sewer"
+  | "kitchen" | "bathroom" | "flooring" | "interiorPaint" | "basement";
+
+/** Where the job is on the house. Drives navigation and the project index. */
+export type ProjectGroup = "outside" | "systems" | "inside";
+
 export type Project = {
-  key: "roofing" | "solar" | "hvac" | "fence" | "windows";
+  key: ProjectKey;
+  group: ProjectGroup;
+  /** Permit range [low, typical, high] before the regional labor index. */
+  permit: [number, number, number];
   slug: string;
   name: string;            // "Roof replacement"
   noun: string;            // "roof"
